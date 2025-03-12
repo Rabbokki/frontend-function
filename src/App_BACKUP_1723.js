@@ -21,7 +21,7 @@ function App() {
         });
   },[]);
   return (
-
+<<<<<<< HEAD
     <div className="App">
       <TopNav navigate={navigate} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
 
@@ -31,7 +31,7 @@ function App() {
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
       />
-
+=======
     <div>
       {message.map((x,y)=>(
         <div key={x.id} style={{ border: '1px solid black', margin: '10px', padding: '10px' }}>
@@ -50,6 +50,7 @@ function App() {
           )}
         </div>
       ))}
+>>>>>>> main
     </div>
   )
 }
