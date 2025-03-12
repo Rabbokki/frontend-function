@@ -1,0 +1,33 @@
+.login-button {
+    width: 100%;
+
+    color: white;
+    background-color: #ae8fca;
+
+    padding: 12px;
+    border: 5px;
+    border-radius: 6px;
+    border-color: rgba(84, 46, 119, 0.5);
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.signup-button {
+    width: 100%;
+
+    color: white;
+    background-color: #cab08f;
+
+    padding: 12px;
+    border: 5px;
+    border-radius: 6px;
+    border-color: rgba(119, 85, 46, 0.5);
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
