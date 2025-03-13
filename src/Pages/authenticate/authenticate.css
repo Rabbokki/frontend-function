@@ -72,3 +72,17 @@
   font-size: 0.875rem;
   margin-top: 16px;
 }
+
+.toggle-auth-button { 
+  border: none;
+  margin-left: 10%;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.toggle-auth-button:hover {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}

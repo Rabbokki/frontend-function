@@ -2,12 +2,11 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import axios from 'axios';
 import "./authenticate.css";
-import LoginButton from "../../components/buttons/LoginButton";
-import SignUpButton from "../../components/buttons/SignUpButton";
+import AuthenticateButton from "../../Components/buttons/AuthenticateButton";
 
-const LoginMenu = ({emailRef, passwordRef, login, loggedIn, setLoggedIn}) => {
+const LoginMenu = ({emailRef, passwordRef, login, loggedIn, setLoggedIn, showLogin, setShowLogin}) => {
     return (
-        <div>
+        <>
             {!loggedIn ? (
                 <div className="auth-container">
                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
@@ -19,8 +18,9 @@ const LoginMenu = ({emailRef, passwordRef, login, loggedIn, setLoggedIn}) => {
                             <input type="text" placeholder="이매일" ref={emailRef} className="login-input" /><br />
                             <input type="password" placeholder="비밀번호" ref={passwordRef} className="login-input" /><br />
                             <p className="auth-footer">
-                                <LoginButton clickEvent={(event) => login(event)} />
+                                <AuthenticateButton clickEvent={(event) => login(event)} showLogin={showLogin}/>
                             </p>
+                            <button onClick={() => setShowLogin(!showLogin)} className="toggle-auth-button">{showLogin ? '회원가입' : '로그인'}</button>
                         </motion.div>
                     </motion.div>
                 </div>
@@ -35,13 +35,13 @@ const LoginMenu = ({emailRef, passwordRef, login, loggedIn, setLoggedIn}) => {
                     }}>로그아웃</button>
                 </div>
             )}
-        </div>
+        </>
     )
 }
 
-const RegisterMenu = ({registered, saveUser, emailRef, passwordRef, nicknameRef}) => {
+const RegisterMenu = ({registered, saveUser, emailRef, passwordRef, nicknameRef, showLogin, setShowLogin}) => {
     return (
-        <div>
+        <>
           {!registered ? (
             <div className="auth-container">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
@@ -54,8 +54,9 @@ const RegisterMenu = ({registered, saveUser, emailRef, passwordRef, nicknameRef}
                             <input type="text" placeholder="유저내임" ref={nicknameRef} className="register-input" /><br />
                             <input type="password" placeholder="비밀번호" ref={passwordRef} className="register-input" /><br />
                             <p className="auth-footer">
-                                <SignUpButton clickEvent={(event) => saveUser(event)} />
+                                <AuthenticateButton clickEvent={(event) => saveUser(event)} showLogin={showLogin}/>
                             </p>
+                            <button onClick={() => setShowLogin(!showLogin)} className="toggle-auth-button">{showLogin ? '회원가입' : '로그인'}</button>
                         </motion.div>
               </motion.div>
             </div>
@@ -65,7 +66,7 @@ const RegisterMenu = ({registered, saveUser, emailRef, passwordRef, nicknameRef}
               <a href="/login">로그인 페이지로 가기</a>
             </div>
           )}
-        </div>
+        </>
       );
 }
 
@@ -141,12 +142,14 @@ const Authenticate = (props) => {
             <div>
                 {showLogin ? (
                     <LoginMenu emailRef={emailRef} passwordRef={passwordRef}
-                    login={login} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+                    login={login} loggedIn={loggedIn} setLoggedIn={setLoggedIn}
+                    showLogin={showLogin} setShowLogin={setShowLogin}/>
                 ) : ( <RegisterMenu registered={registered} saveUser={saveUser} emailRef={emailRef} 
-                                    nicknameRef={nicknameRef} passwordRef={passwordRef}/>
+                                    nicknameRef={nicknameRef} passwordRef={passwordRef}
+                                    showLogin={showLogin} setShowLogin={setShowLogin}/>
                 )}
+                
             </div>
-            <button onClick={() => setShowLogin(!showLogin)}>{showLogin ? '회원가입' : '로그인'}</button>
         </div>
 
     );

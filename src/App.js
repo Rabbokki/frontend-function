@@ -1,9 +1,8 @@
 import "./App.css";
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
-
-import TopNav from "./components/TopNav"
-import RouteComponents from "./components/RouteComponents"
+import TopNav from "./Components/TopNav"
+import RouteComponents from "./Components/RouteComponents"
 
 function App() {
 
@@ -12,18 +11,14 @@ function App() {
   let navigate = useNavigate();
  
   return (
-
     <div className="App">
       <TopNav navigate={navigate} loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
-
       <RouteComponents
         currentUser={currentUser}
         setCurrentUser={setCurrentUser}
         loggedIn={loggedIn}
         setLoggedIn={setLoggedIn}
       />
-
-    
       
     </div>
   )
