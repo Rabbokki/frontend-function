@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 function App() {
   const [message, setMessage]=useState([]);
   useEffect(()=>{
-    fetch("/account/api/demo-web")
+    fetch("https://localhost:8443/api/demo-web")
         .then((response)=>{
           return response.json();
         })

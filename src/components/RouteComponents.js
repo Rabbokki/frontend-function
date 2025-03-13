@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import Authenticate from "../pages/authenticate/authenticate";
+import Authenticate from "../Pages/authenticate/authenticate";
 
 const RouteComponents = ({currentUser, setCurrentUser, loggedIn, setLoggedIn}) => {
   return (
