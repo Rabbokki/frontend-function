@@ -3,17 +3,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Whiskey from "../Pages/Whiskey";
 import { Routes, Route, Navigate } from "react-router-dom";
-<<<<<<< HEAD
-
 import Authenticate from "../Pages/authenticate/authenticate";
-=======
-import Authenticate from "../Pages/Authenticate/authenticate";
 import MyPage from "../Pages/MyPage/my-page";
 import Champagne from '../Pages/Champagne/index';
 import Wine from '../Pages/Wine/index';
 import Vodka from '../Pages/Vodka/index';
 import CartPage from '../Pages/CartPage/index';
->>>>>>> feature-you2
 
 const RouteComponents = ({currentUser, setCurrentUser, loggedIn, setLoggedIn}) => {
   return (
