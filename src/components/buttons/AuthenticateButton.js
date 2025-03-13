@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import "./button.css";
 
-const LoginButton = ({clickEvent, showLogin}) => {
+const AuthenticateButton = ({clickEvent, showLogin}) => {
     return (
         <>
             <motion.button onClick={clickEvent} whileHover={{ scale: 1.1 }}
@@ -12,4 +12,4 @@ const LoginButton = ({clickEvent, showLogin}) => {
     )
 }
 
-export default LoginButton
+export default AuthenticateButton
