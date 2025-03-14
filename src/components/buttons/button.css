@@ -33,8 +33,8 @@
 }
 
 .edit-button {
-    background-color: #4CAF50; /* Green background */
-    color: white; /* White text */
+    background-color: #4CAF50;
+    color: white;
     padding: 10px 20px;
     font-size: 16px;
     border: none;
@@ -44,6 +44,45 @@
   }
   
   .edit-button:hover {
-    opacity: 0.5; /* Makes text translucent */
+    opacity: 0.5;
     cursor: pointer;
   }
+
+  .stop-button {
+    background-color: #d34f4f;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .save-changes-button {
+    width: 100%;
+    
+    color: white;
+    background-color: #5a67d8;
+    
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    
+    border: none;
+    border-radius: 6px;
+    
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.save-changes-button.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.save-changes-button:hover {
+    background-color: #434190;
+}

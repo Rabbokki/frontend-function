@@ -1,0 +1,10 @@
+.bg-gray-200 {
+    background-color: #b4b4b4;
+}
+.bg-white {
+    background-color: #ffffff;
+}
+
+::placeholder {
+    color: #e6e6e6;
+}

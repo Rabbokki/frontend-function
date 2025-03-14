@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import EditButton from "../../components/buttons/EditButton";
+import "./my-page.css";
+import EditButton from "../../Components/buttons/EditButton";
+import SaveChangesButton from '../../Components/buttons/SaveChangesButton';
 
 const MyPage = () => {
     const [userData, setUserData] = useState(null)
@@ -11,8 +13,13 @@ const MyPage = () => {
     const [newNickname, setNewNickname] = useState("")
     const [newPassword, setNewPassword] = useState("")
 
+    const [editing, setEditing] = useState(false)
+
     const handleEditClick = (field) => setEditField(field)
-    const handleEditUnactive = () => setEditField("")
+    const handleEditUnactive = () => {
+        setEditField("")
+        setEditing(false)
+    }
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -38,9 +45,18 @@ const MyPage = () => {
     }, [])
     if (error) return <div>{error}</div>
 
-    const handleEmailChange = (event) => setNewEmail(event.target.value)
-    const handleNicknameChange = (event) => setNewNickname(event.target.value)
-    const handlePasswordChange = (event) => setNewPassword(event.target.value)
+    const handleEmailChange = (event) => {
+        setNewEmail(event.target.value)
+        setEditing(true)
+    }
+    const handleNicknameChange = (event) => {
+        setNewNickname(event.target.value)
+        setEditing(true)
+    }
+    const handlePasswordChange = (event) => {
+        setNewPassword(event.target.value)
+        setEditing(true)
+    }
 
     const updateUserDetail = async (event) => {
         event.preventDefault()
@@ -84,18 +100,18 @@ const MyPage = () => {
             {userData ? (
                 <form onSubmit={updateUserDetail}>
                     <div>
-                        <input placeholder={userData.email} readOnly={editField !== 'email'} onChange={handleEmailChange}/>
+                        <input placeholder={userData.email} readOnly={editField !== 'email'} onChange={handleEmailChange} className={`p-2 ${editField !== 'email' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}/>
                         <EditButton clickEventEdit={() => handleEditClick('email')} clickEventDone={handleEditUnactive} fieldName='email' editField={editField}/>
                     </div>
                     <div>
-                        <input placeholder={userData.nickname} readOnly={editField !== 'nickname'} onChange={handleNicknameChange}/>
+                        <input placeholder={userData.nickname} readOnly={editField !== 'nickname'} onChange={handleNicknameChange} className={`p-2 ${editField !== 'nickname' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}/>
                         <EditButton clickEventEdit={() => handleEditClick('nickname')} clickEventDone={handleEditUnactive} fieldName='nickname' editField={editField}/>
                     </div>
                     <div>
-                        <input placeholder={userData.password} readOnly={editField !== 'password'} onChange={handlePasswordChange}/>
+                        <input placeholder={userData.password} readOnly={editField !== 'password'} onChange={handlePasswordChange} className={`p-2 ${editField !== 'password' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}/>
                         <EditButton clickEventEdit={() => handleEditClick('password')} clickEventDone={handleEditUnactive} fieldName='password' editField={editField}/>
                     </div>
-                    <button type="submit">Save Changes</button>
+                    {editing ? <SaveChangesButton editing={editing} /> : <></>}
                 </form>
             ) : (
                 <p>사용자 정보를 로드 중...</p>

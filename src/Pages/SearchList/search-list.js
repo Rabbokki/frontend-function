@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { FaStar } from "react-icons/fa";
 import { Button, Card } from "react-bootstrap";
 
-const List = () => {
+const SearchList = () => {
     return (
         <div className="container">
             <div className="row">
@@ -32,4 +32,4 @@ const List = () => {
     );
 };
 
-export default List;
+export default SearchList;

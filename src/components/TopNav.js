@@ -15,7 +15,7 @@ const TopNav = ({navigate, loggedIn, setLoggedIn}) => {
           <Navbar.Brand href="/"><img src="/image/logoo.jpg.png" style={{width : '80px' , height: 'auto'}}></img></Navbar.Brand>
           <Nav className="me-auto">
             {/* ListPage */}
-            <Nav.Link as={Link} to={"/list"}>ListPage</Nav.Link>
+            <Nav.Link as={Link} to={"/search-list"}>ListPage</Nav.Link>
             <NavDropdown title="Category" id="basic-nav-dropdown" className="custom-dropdown">
               <NavDropdown.Item as={Link} to={"/whiskey"}>Whiskey</NavDropdown.Item>
               <NavDropdown.Item as={Link} to={"/champagne"}>Champagne</NavDropdown.Item>
