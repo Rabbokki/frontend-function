@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import EditButton from "../../Components/buttons/EditButton";
+import EditButton from "../../components/buttons/EditButton";
 
 const MyPage = () => {
     const [userData, setUserData] = useState(null)

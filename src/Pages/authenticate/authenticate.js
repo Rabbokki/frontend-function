@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import axios from 'axios';
 import "./authenticate.css";
-import AuthenticateButton from "../../Components/buttons/AuthenticateButton";
+import AuthenticateButton from "../../components/buttons/AuthenticateButton";
 
 const LoginMenu = ({emailRef, passwordRef, login, loggedIn, setLoggedIn, showLogin, setShowLogin}) => {
     return (
