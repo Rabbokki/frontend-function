@@ -9,6 +9,7 @@ import Champagne from '../Pages/Champagne/index';
 import Wine from '../Pages/Wine/index';
 import Vodka from '../Pages/Vodka/index';
 import CartPage from '../Pages/CartPage/index';
+import List from '../Pages/List/list';
 
 const RouteComponents = ({currentUser, setCurrentUser, loggedIn, setLoggedIn}) => {
   return (
@@ -21,6 +22,7 @@ const RouteComponents = ({currentUser, setCurrentUser, loggedIn, setLoggedIn}) =
         <Route path="/wine" element={<Wine></Wine>}/>
         <Route path="/vodka" element={<Vodka></Vodka>}/>
         <Route path="/cart" element={<div className="cartPage"><CartPage></CartPage></div>}></Route>
+        <Route path="/list" element={<List></List>}/>
         <Route path="*" element={
           <Container>
           <Row>
