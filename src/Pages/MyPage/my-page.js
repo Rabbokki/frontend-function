@@ -59,39 +59,40 @@ const MyPage = () => {
     }
 
     const updateUserDetail = async (event) => {
-        event.preventDefault()
+        event.preventDefault();
     
         const accessToken = localStorage.getItem("accessToken");
         if (!accessToken) {
-            setError('로그인 상태가 아닙니다.')
-            return
+            setError('로그인 상태가 아닙니다.');
+            return;
         }
     
         const updatedData = {
             email: newEmail || userData.email,
             nickname: newNickname || userData.nickname,
             password: newPassword || userData.password
-        }
+        };
     
         try {
             const response = await axios.put('/account/me', updatedData, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
-            })
+            });
     
             if (response.data.success) {
                 setUserData((prevData) => ({
                     ...prevData,
                     email: updatedData.email,
                     nickname: updatedData.nickname
-                }))
-                setError(null)
+                }));
+                setError(null);
                 alert("Your details have been updated!")
-            }
+            } else setError(response.data.error.message)
         } catch (error) {
-            console.error(error)
-            setError('사용자 정보를 업데이트하는 데 실패했습니다.')
+            console.error(error);
+            if (error.response && error.response.data && error.response.data.message) setError(error.response.data.message)
+            else setError('사용자 정보를 업데이트하는 데 실패했습니다.')
         }
     }
 
