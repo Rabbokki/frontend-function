@@ -10,6 +10,7 @@ const SearchList = () => {
     useEffect(() => {
         axios.get("http://localhost:8081/post") 
             .then((response) => {
+                console.log(response.data)
                 setLiquorList(response.data)
             })
             .catch((error) => {
@@ -26,7 +27,7 @@ const SearchList = () => {
                             <Card style={{ width: '12rem' }}>
                                 <Card.Img 
                                     variant="top" 
-                                    src={liquor.image}
+                                    src={liquor.imageUrls && liquor.imageUrls[0]}
                                     alt="product" 
                                     className="img-fluid" 
                                 />
@@ -35,7 +36,9 @@ const SearchList = () => {
                                     <Card.Text>{liquor.price}원</Card.Text>
                                     <div className="d-flex align-items-center">
                                         <FaStar />
-                                        <span className="ms-1">5.0 (249)</span> {/* You can replace with dynamic ratings */}
+                                        <span className="ms-1">
+                                            {(liquor.averageRating || 0).toFixed(1)} ({liquor.reviewSize})
+                                        </span>
                                     </div>
                                     <Button variant="primary" className="mt-2 w-100">추천</Button>
                                 </Card.Body>
@@ -43,7 +46,7 @@ const SearchList = () => {
                         </div>
                     ))
                 ) : (
-                    <p>Loading...</p> // Or show a loading indicator
+                    <p>Loading...</p>
                 )}
             </div>
         </div>

@@ -1,124 +1,116 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import "./my-page.css";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserData, updateUserData } from '../../Components/reducers/user/userThunk';
 import EditButton from "../../Components/buttons/EditButton";
 import SaveChangesButton from '../../Components/buttons/SaveChangesButton';
+import "./my-page.css";
 
-const MyPage = () => {
-    const [userData, setUserData] = useState(null)
-    const [error, setError] = useState(null)
-
-    const [editField, setEditField] = useState(null)
-    const [newEmail, setNewEmail] = useState("")
-    const [newNickname, setNewNickname] = useState("")
-    const [newPassword, setNewPassword] = useState("")
-
-    const [editing, setEditing] = useState(false)
-
-    const handleEditClick = (field) => setEditField(field)
-    const handleEditUnactive = () => {
-        setEditField("")
-        setEditing(false)
-    }
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const accessToken = localStorage.getItem("accessToken");
-                if (!accessToken) {
-                    setError('로그인 상태가 아닙니다.')
-                    return
-                }
-                
-                const response = await axios.get('/account/me', {
-                    headers: { Authorization: `Bearer ${accessToken}` }
-                })
-                setUserData(response.data.data)
-
-            } catch (error) {
-                setError('사용자 정보를 가져오는 데 실패했습니다.')
-                console.error(error)
-            }
-        }
-
-        fetchUserData()
-    }, [])
-    if (error) return <div>{error}</div>
-
-    const handleEmailChange = (event) => {
-        setNewEmail(event.target.value)
-        setEditing(true)
-    }
-    const handleNicknameChange = (event) => {
-        setNewNickname(event.target.value)
-        setEditing(true)
-    }
-    const handlePasswordChange = (event) => {
-        setNewPassword(event.target.value)
-        setEditing(true)
-    }
-
-    const updateUserDetail = async (event) => {
-        event.preventDefault();
-    
-        const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) {
-            setError('로그인 상태가 아닙니다.');
-            return;
-        }
-    
-        const updatedData = {
-            email: newEmail || userData.email,
-            nickname: newNickname || userData.nickname,
-            password: newPassword || userData.password
-        };
-    
-        try {
-            const response = await axios.put('/account/me', updatedData, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-    
-            if (response.data.success) {
-                setUserData((prevData) => ({
-                    ...prevData,
-                    email: updatedData.email,
-                    nickname: updatedData.nickname
-                }));
-                setError(null);
-                alert("Your details have been updated!")
-            } else setError(response.data.error.message)
-        } catch (error) {
-            console.error(error);
-            if (error.response && error.response.data && error.response.data.message) setError(error.response.data.message)
-            else setError('사용자 정보를 업데이트하는 데 실패했습니다.')
-        }
-    }
-
-    return (
-        <div>
-            {userData ? (
-                <form onSubmit={updateUserDetail}>
-                    <div>
-                        <input placeholder={userData.email} readOnly={editField !== 'email'} onChange={handleEmailChange} className={`p-2 ${editField !== 'email' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}/>
-                        <EditButton clickEventEdit={() => handleEditClick('email')} clickEventDone={handleEditUnactive} fieldName='email' editField={editField}/>
-                    </div>
-                    <div>
-                        <input placeholder={userData.nickname} readOnly={editField !== 'nickname'} onChange={handleNicknameChange} className={`p-2 ${editField !== 'nickname' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}/>
-                        <EditButton clickEventEdit={() => handleEditClick('nickname')} clickEventDone={handleEditUnactive} fieldName='nickname' editField={editField}/>
-                    </div>
-                    <div>
-                        <input placeholder={userData.password} readOnly={editField !== 'password'} onChange={handlePasswordChange} className={`p-2 ${editField !== 'password' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}/>
-                        <EditButton clickEventEdit={() => handleEditClick('password')} clickEventDone={handleEditUnactive} fieldName='password' editField={editField}/>
-                    </div>
-                    {editing ? <SaveChangesButton editing={editing} /> : <></>}
-                </form>
-            ) : (
-                <p>사용자 정보를 로드 중...</p>
-            )}
-        </div>
-    )
+const formStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '30vh',
+    padding: '20px'
 }
 
-export default MyPage
+const MyPage = () => {
+    const dispatch = useDispatch();
+    const { userData, loading, error } = useSelector((state) => state.user);
+    const passwordLength = useSelector((state) => state.user.passwordLength);
+    const [editField, setEditField] = useState(null);
+    const [newEmail, setNewEmail] = useState("");
+    const [newNickname, setNewNickname] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [editing, setEditing] = useState(false);
+  
+    const handleEditClick = (field) => {
+      setEditField(field);
+      if (field === "email") setNewEmail(userData.email);
+      if (field === "nickname") setNewNickname(userData.nickname);
+      if (field === "password") setNewPassword(userData.password);
+    };
+  
+    const handleEditUnactive = () => {
+      setEditField(null);
+      setEditing(false);
+      if (newEmail === "") setNewEmail("");
+      if (newNickname === "") setNewNickname(""); 
+      if (newPassword === "") setNewPassword("");
+    };
+  
+    useEffect(() => {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        dispatch(fetchUserData(accessToken));
+      }
+    }, [dispatch]);
+  
+    const handleEmailChange = (event) => {
+      setNewEmail(event.target.value);
+      setEditing(true);
+    };
+    const handleNicknameChange = (event) => {
+      setNewNickname(event.target.value);
+      setEditing(true);
+    };
+    const handlePasswordChange = (event) => {
+      setNewPassword(event.target.value);
+      setEditing(true);
+    };
+  
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const updatedData = {
+        email: newEmail || userData.email,
+        nickname: newNickname || userData.nickname,
+        password: newPassword || userData.password,
+      };
+      dispatch(updateUserData(updatedData));
+    };
+  
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
+  
+    return (
+      <div>
+        {userData ? (
+          <form style={formStyle} onSubmit={handleSubmit}>
+            <div>
+              <input
+                placeholder={userData.email}
+                readOnly={editField !== 'email'}
+                onChange={handleEmailChange}
+                className={`p-2 ${editField !== 'email' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
+              />
+              <EditButton clickEventEdit={() => handleEditClick('email')} clickEventDone={handleEditUnactive} fieldName="email" editField={editField} />
+            </div>
+            <div>
+              <input
+                placeholder={userData.nickname}
+                readOnly={editField !== 'nickname'}
+                onChange={handleNicknameChange}
+                className={`p-2 ${editField !== 'nickname' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
+              />
+              <EditButton clickEventEdit={() => handleEditClick('nickname')} clickEventDone={handleEditUnactive} fieldName="nickname" editField={editField} />
+            </div>
+            <div>
+              <input
+                placeholder={passwordLength > 0 ? "*".repeat(passwordLength) : "Enter new password"} 
+                readOnly={editField !== 'password'}
+                onChange={handlePasswordChange}
+                className={`p-2 ${editField !== 'password' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
+              />
+              <EditButton clickEventEdit={() => handleEditClick('password')} clickEventDone={handleEditUnactive} fieldName="password" editField={editField} />
+            </div>
+            {editing && <SaveChangesButton editing={editing} />}
+          </form>
+        ) : (
+          <p>사용자 정보를 로드 중...</p>
+        )}
+      </div>
+    );
+};
+  
+
+export default MyPage;

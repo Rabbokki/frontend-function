@@ -64,6 +64,10 @@
     
     color: white;
     background-color: #5a67d8;
+
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
     
     padding: 12px;
     font-size: 16px;
