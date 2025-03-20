@@ -1,7 +1,7 @@
 import "./App.css";
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
-import TopNav from "./Components/TopNav"
+import TopNav from "./Components/TopNav.js"
 import RouteComponents from "./Components/RouteComponents"
 
 function App() {

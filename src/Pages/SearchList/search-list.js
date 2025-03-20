@@ -3,12 +3,15 @@ import axios from 'axios'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaStar } from "react-icons/fa";
 import { Button, Card } from "react-bootstrap";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const SearchList = () => {
     const [liquorList, setLiquorList] = useState([]);
-    
+
     useEffect(() => {
-        axios.get("http://localhost:8081/post") 
+        axios.get("http://localhost:8081/api/liquor") 
             .then((response) => {
                 console.log(response.data)
                 setLiquorList(response.data)
@@ -18,12 +21,24 @@ const SearchList = () => {
             })
     }, [])
 
+
     return (
         <div className="container">
             <div className="row">
                 {liquorList.length > 0 ? (
                     liquorList.map((liquor, index) => (
                         <div key={index} className="col-md-3">
+                            <Container>
+                                <Row>
+                                  <Col>
+                                    <img src={liquor.imageUrls && liquor.imageUrls[0]} alt='product' className='img-fluid'></img>
+                                    <h2>{liquor.name}</h2>
+                                    <h4>{liquor.price}원</h4>
+                                    <h5>{liquor.stock}개</h5>
+
+                                  </Col>
+                                </Row>
+                              </Container>
                             <Card style={{ width: '12rem' }}>
                                 <Card.Img 
                                     variant="top" 
