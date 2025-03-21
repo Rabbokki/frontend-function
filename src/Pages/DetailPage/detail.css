@@ -1,0 +1,74 @@
+/* 전체 페이지 중앙 위에 위치 */
+.detail-page {
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: flex-start; /* 수직 중앙 위에 정렬 */
+  height: 100vh; /* 화면 전체 높이 차지 */
+  width: 100%; /* 화면 전체 너비 차지 */
+  padding-top: 50px; /* 상단 여백 */
+  font-family: 'Arial', sans-serif; /* 글꼴 설정 */
+  background-color: #f4f4f4; /* 배경색 */
+  position: relative; /* 절대 위치 조정 용 */
+}
+
+/* 왼쪽 섹션 스타일 (이미지 및 제목) */
+.left-section {
+  text-align: left;
+  flex: 1; /* 왼쪽 섹션이 차지하는 비율 */
+  padding-left: 20px; /* 왼쪽 여백 */
+  max-width: 50%; /* 최대 너비를 화면의 50%로 제한 */
+  margin-right: 20px; /* 오른쪽 간격 */
+}
+
+.left-section h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.left-section img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 오른쪽 섹션 스타일 (가격, 내용, 버튼들) */
+.right-section {
+  text-align: left;
+  flex: 1; /* 오른쪽 섹션이 차지하는 비율 */
+  padding-right: 20px; /* 오른쪽 여백 */
+  max-width: 50%; /* 최대 너비를 화면의 50%로 제한 */
+}
+
+.right-section .info {
+  margin-bottom: 20px; /* 정보 간격 */
+}
+
+.right-section .info p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.right-section .buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end; /* 버튼들을 오른쪽 정렬 */
+}
+
+.right-section .buttons button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.right-section .buttons button:hover {
+  background-color: #0056b3;
+}
