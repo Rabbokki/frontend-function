@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './Components/reducers/authenticate/authSlice'; // Ensure authSlice.js exists
-import userReducer from './Components/reducers/user/userSlice'; // Import userReducer
+import authReducer from './Components/reducers/authenticate/authSlice';
+import userReducer from './Components/reducers/user/userSlice';
+import postReducer from "./Components/reducers/post/postSlice";
+import likeReducer from "./Components/reducers/likes/likeSlice";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     user: userReducer,
+    posts: postReducer,
+    likes: likeReducer
   },
 });
 
