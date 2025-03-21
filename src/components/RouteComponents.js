@@ -38,7 +38,7 @@ const RouteComponents = () => {
           <Row>
             <Col xs><div className="main_colum_1">Content</div></Col>
             <Col xs><div className="main_colum_2">Event</div></Col>
-            <Col xs><div className="main_colum_3">Chice</div></Col>
+            <Col xs><div className="main_colum_3">Choice</div></Col>
           </Row>
         </Container>
         } />
