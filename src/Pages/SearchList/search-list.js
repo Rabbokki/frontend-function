@@ -38,7 +38,7 @@ const SearchList = () => {
                             <Container>
                                 <Row>
                                   <Col>
-                                    <div className="image-wrapper" onClick={()=>{handleClick(index + 1)}}>
+                                    <div className="image-wrapper" onClick={()=>{handleClick(liquor.id)}}>
                                      <img 
                                        src={liquor.imageUrls && liquor.imageUrls[0]} 
                                        alt="product" 
