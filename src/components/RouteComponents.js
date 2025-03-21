@@ -10,6 +10,7 @@ import Wine from '../Pages/Wine/index';
 import Vodka from '../Pages/Vodka/index';
 import CartPage from '../Pages/CartPage/index';
 import SearchList from '../Pages/SearchList/search-list';
+import DetailPage from '../Pages/DetailPage/detail'
 
 const RouteComponents = ({currentUser, setCurrentUser, loggedIn, setLoggedIn}) => {
   return (
@@ -23,6 +24,8 @@ const RouteComponents = ({currentUser, setCurrentUser, loggedIn, setLoggedIn}) =
         <Route path="/vodka" element={<Vodka></Vodka>}/>
         <Route path="/cart" element={<div className="cartPage"><CartPage></CartPage></div>}></Route>
         <Route path="/search-list" element={<SearchList></SearchList>}/>
+        {/* 상품 상세 페이지 */}
+        <Route path="/detail/:id" element={<DetailPage></DetailPage>}></Route>
         <Route path="*" element={
           <Container>
           <Row>

@@ -6,12 +6,15 @@ import { Button, Card } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import './search-list.css'
+import {  useNavigate } from 'react-router-dom';
 
 const SearchList = () => {
     const [liquorList, setLiquorList] = useState([]);
+    const Navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:8081/api/liquor") 
+        axios.get("http://localhost:8081/post") 
             .then((response) => {
                 console.log(response.data)
                 setLiquorList(response.data)
@@ -20,6 +23,10 @@ const SearchList = () => {
                 console.error("There was an error fetching the liquor data!", error);
             })
     }, [])
+
+    const handleClick = (id)=>{
+        Navigate(`/detail/${id}`)
+    }
 
 
     return (
@@ -31,15 +38,22 @@ const SearchList = () => {
                             <Container>
                                 <Row>
                                   <Col>
-                                    <img src={liquor.imageUrls && liquor.imageUrls[0]} alt='product' className='img-fluid'></img>
-                                    <h2>{liquor.name}</h2>
-                                    <h4>{liquor.price}원</h4>
-                                    <h5>{liquor.stock}개</h5>
-
+                                    <div className="image-wrapper" onClick={()=>{handleClick(index + 1)}}>
+                                     <img 
+                                       src={liquor.imageUrls && liquor.imageUrls[0]} 
+                                       alt="product" 
+                                       className="img-fluid product-image" 
+                                     />
+                                     <div className="product-info">
+                                       <h2 className="product-title">{liquor.title}</h2>
+                                       <h4 className="product-price">{liquor.price}원</h4>
+                                       <h5 className="product-stock">{liquor.stock}개</h5>
+                                     </div>
+                                    </div>
                                   </Col>
                                 </Row>
                               </Container>
-                            <Card style={{ width: '12rem' }}>
+                            {/* <Card style={{ width: '12rem' }}>
                                 <Card.Img 
                                     variant="top" 
                                     src={liquor.imageUrls && liquor.imageUrls[0]}
@@ -57,7 +71,7 @@ const SearchList = () => {
                                     </div>
                                     <Button variant="primary" className="mt-2 w-100">추천</Button>
                                 </Card.Body>
-                            </Card>
+                            </Card> */}
                         </div>
                     ))
                 ) : (
