@@ -24,7 +24,7 @@
 }
 
 .register-box {
-  border: 1px solid #ebab6f;
+  border: 1px solid #55f7a8;
   border-radius: 8px;
   padding: 24px;
   width: 384px;
@@ -57,14 +57,14 @@
   width: 100%;
   padding: 8px;
   margin-top: 16px;
-  border: 1px solid #e7dfd2;
+  border: 1px solid #d2e7dd;
   border-radius: 6px;
   outline: none;
 }
 
 .register-input:focus {
-  border-color: #ebab6f;
-  box-shadow: 0px 0px 5px rgba(235, 171, 111, 0.5);
+  border-color: #55f7a8;
+  box-shadow: 0px 0px 5px rgba(111, 235, 148, 0.5);
 }
 
 .auth-footer {

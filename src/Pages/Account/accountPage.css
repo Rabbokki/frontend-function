@@ -1,0 +1,114 @@
+/* General Styles */
+.account-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.account-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Default single column for small screens */
+  gap: 16px;
+  min-width: 320px; /* Minimum width for the grid */
+}
+
+@media (min-width: 768px) {
+  .account-grid {
+    grid-template-columns: 1fr 1fr; /* Two columns for medium screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .account-grid {
+    grid-template-columns: 2fr 1fr; /* Profile takes more space on large screens */
+  }
+}
+
+@media (min-width: 1280px) {
+  .account-grid {
+    grid-template-columns: 2fr 1fr 1fr; /* Three columns with wishlist taking full row */
+  }
+}
+
+/* Profile, Address Book, Payment, and Wishlist Cards */
+.profile-card, .address-card, .payment-card, .wishlist-card {
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.profile-card {
+  grid-column: span 2; /* Profile spans two columns at small screen sizes */
+  background-color: #eed8d8;
+}
+
+.wishlist-card {
+  grid-column: span 2; /* Wishlist spans two columns for smaller screens */
+  background-color: #bafcb8;
+}
+
+.address-card {
+  background-color: #eeed9f;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Distribute height equally */
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.payment-card {
+  background-color: #C2EBEF;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Distribute height equally */
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.label {
+  font-weight: bold;
+  color: #666;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn.black {
+  background: black;
+  color: white;
+}
+
+.btn.grey {
+  background: #ddd;
+  color: black;
+  border: 1px solid #bbb;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}

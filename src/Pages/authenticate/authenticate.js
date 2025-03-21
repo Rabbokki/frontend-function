@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from "../../Components/reducers/authenticate/authThunk.js"
-import { setPasswordLength } from "../../Components/reducers/user/userSlice";
-import { registerUser } from '../../Components/reducers/user/userThunk';
+import { setPasswordLength } from "../../Components/reducers/user/userSlice.js";
+import { registerUser } from '../../Components/reducers/user/userThunk.js';
 
 import "./authenticate.css";
-import AuthenticateButton from "../../Components/buttons/AuthenticateButton";
+import AuthenticateButton from "../../Components/buttons/AuthenticateButton.js";
 
 const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
     const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
     }
   
     return (
-      <>
+      <div className="auth-background">
         {!loggedIn ? (
           <div className="auth-container">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="login-box">
@@ -48,7 +48,7 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
             <button onClick={() => localStorage.clear()}>로그아웃</button>
           </div>
         )}
-      </>
+      </div>
     )
   }
 

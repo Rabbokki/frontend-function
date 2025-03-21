@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData, updateUserData } from '../../Components/reducers/user/userThunk';
 import EditButton from "../../Components/buttons/EditButton";
 import SaveChangesButton from '../../Components/buttons/SaveChangesButton';
-import "./my-page.css";
+import "./editDetails.css";
 
 const formStyle = {
     display: 'flex',
@@ -14,7 +14,7 @@ const formStyle = {
     padding: '20px'
 }
 
-const MyPage = () => {
+const EditDetails = () => {
     const dispatch = useDispatch();
     const { userData, loading, error } = useSelector((state) => state.user);
     const passwordLength = useSelector((state) => state.user.passwordLength);
@@ -113,4 +113,4 @@ const MyPage = () => {
 };
   
 
-export default MyPage;
+export default EditDetails;

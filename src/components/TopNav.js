@@ -35,7 +35,7 @@ const TopNav = () => {
             <div className="d-flex gap-2">
               <Nav.Link onClick={() => {
                 console.log(loggedIn)
-                navigate(loggedIn ? "/myPage" : "/authenticate")}}>
+                navigate(loggedIn ? "/account" : "/authenticate")}}>
                 <FontAwesomeIcon icon={faUser} style={{ fontSize: "30px" }} />
               </Nav.Link>
             </div>

@@ -19,6 +19,9 @@ const userSlice = createSlice({
     setRegistered: (state, action) => {
       state.registered = action.payload;
     },
+    logout: (state) => {
+      state.userData = null;
+    },
   },
   extraReducers: (builder) => {
     builder

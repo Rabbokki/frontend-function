@@ -2,10 +2,35 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaStar } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { Button, Card } from "react-bootstrap";
 
 const SearchList = () => {
     const [liquorList, setLiquorList] = useState([]);
+    const [likedPosts, setLikedPosts] = useState({});
+
+    const toggleLike = async (postId) => {
+        try {
+            const isLiked = likedPosts[postId];
+      
+            // If it's already liked, remove the like (unlike)
+            if (isLiked) {
+              setLikedPosts(prev => {
+                const updated = { ...prev };
+                delete updated[postId];
+                return updated;
+              });
+              // Optionally, call backend to unlike
+              await axios.delete(`http://localhost:8081/likes/${postId}`);
+            } else {
+              setLikedPosts(prev => ({ ...prev, [postId]: true }));
+              // Call backend to like the post
+              await axios.get(`http://localhost:8081/likes/${postId}`);
+            }
+          } catch (error) {
+            console.error("Error while toggling like:", error);
+          }
+        };
     
     useEffect(() => {
         axios.get("http://localhost:8081/post") 
@@ -39,6 +64,10 @@ const SearchList = () => {
                                         <span className="ms-1">
                                             {(liquor.averageRating || 0).toFixed(1)} ({liquor.reviewSize})
                                         </span>
+                                        <Button variant="light" className="like-button"
+                                            onClick={() => toggleLike(liquor.id)}>
+                                                <FaHeart color={likedPosts[liquor.id] ? "red" : "gray"} />
+                                        </Button>
                                     </div>
                                     <Button variant="primary" className="mt-2 w-100">추천</Button>
                                 </Card.Body>
