@@ -20,14 +20,16 @@ export const registerUser = createAsyncThunk(
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (accessToken, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('/account/me', {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue("사용자 정보를 가져오는 데 실패했습니다.");
-    }
+      try {
+          const response = await axios.get('http://192.168.0.71:8081/account/me', { // 전체 URL로 수정
+              headers: { Access_Token: accessToken }, // 헤더 수정
+          });
+          console.log("fetchUserData 응답:", response.data);
+          return response.data.data; // 백엔드 응답 구조에 맞게 조정
+      } catch (error) {
+          console.error("fetchUserData 오류:", error.response?.data);
+          return rejectWithValue("사용자 정보를 가져오는 데 실패했습니다.");
+      }
   }
 );
 

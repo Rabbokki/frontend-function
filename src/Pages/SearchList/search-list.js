@@ -26,11 +26,11 @@ const SearchList = () => {
                 return updated;
               });
               // Optionally, call backend to unlike
-              await axios.delete(`http://localhost:8081/likes/${postId}`);
+              await axios.delete(`http://192.168.0.71:8081/likes/${postId}`);
             } else {
               setLikedPosts(prev => ({ ...prev, [postId]: true }));
               // Call backend to like the post
-              await axios.get(`http://localhost:8081/likes/${postId}`);
+              await axios.get(`http://192.168.0.71:8081/likes/${postId}`);
             }
           } catch (error) {
             console.error("Error while toggling like:", error);
@@ -40,7 +40,7 @@ const SearchList = () => {
     const Navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:8081/post") 
+        axios.get("http://192.168.0.71:8081/post") 
             .then((response) => {
                 console.log(response.data)
                 setLiquorList(response.data)

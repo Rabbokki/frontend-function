@@ -7,7 +7,7 @@ import axios from 'axios';
 function CartPage(){
   const [cartList , setCartList] = useState([])
   useEffect(()=>{
-    axios.get("http://localhost:8081/cart/find")
+    axios.get("http://192.168.0.71:8081/cart/find")
     .then((response)=>{
       setCartList(response.data)
     })

@@ -1,35 +1,29 @@
+// src/Components/reducers/chat/chatSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  messages: [],
-  roomId: null,
   roomName: null,
-  sender: "",
-  isConnected: false,
+  messages: [],
+  loading: false,
+  error: null,
 };
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setSender: (state, action) => {
-      state.sender = action.payload;
-    },
-    setRoom: (state, action) => {
-      state.roomId = action.payload.roomId;
-      state.roomName = action.payload.roomName;
+    setRoomName: (state, action) => {
+      state.roomName = action.payload;
     },
     addMessage: (state, action) => {
       state.messages.push(action.payload);
     },
-    clearMessages: (state) => {
+    clearChat: (state) => {
+      state.roomName = null;
       state.messages = [];
-    },
-    setConnectionStatus: (state, action) => {
-      state.isConnected = action.payload;
     },
   },
 });
 
-export const { setSender, setRoom, addMessage, clearMessages, setConnectionStatus } = chatSlice.actions;
+export const { setRoomName, addMessage, clearChat } = chatSlice.actions;
 export default chatSlice.reducer;
