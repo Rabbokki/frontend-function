@@ -6,17 +6,39 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faUser } from "@fortawesome/free-solid-svg-icons";
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import axios from 'axios';
+import { useRef } from 'react';
 
 const TopNav = () => {
   const navigate = useNavigate()
   const loggedIn = useSelector((state) => state.auth.loggedIn);
+  const inputRef = useRef(null)
+  const onSearch = ()=>{
+    const searchText = inputRef.current.value;
+    if(searchText){
+      axios.get(`/api/liqour`)
+      .then((response) =>{
+        if(response.data.length > 0){
+          alert("검색이 되었습니다")
+        }else{
+          alert("검색결과가 없습니다");
+        }
+      })
+      .catch((error)=>{
+        alert("오류")
+      });
+    }
+    inputRef.current.value='';
+  };
 
   return (
     <div>
       <Navbar bg="light" data-bs-theme="light">
         <Container>
           <Navbar.Brand href="/">
-            <img src="/image/logoo.jpg.png" style={{ width: "80px", height: "auto" }} alt="Logo" />
+            <img src="/image/logo.jpg" style={{ width: "100px", height: "auto" }} alt="Logo" />
           </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link as={Link} to={"/search-list"}>ListPage</Nav.Link>
@@ -28,15 +50,24 @@ const TopNav = () => {
             </NavDropdown>
             <Nav.Link>Features</Nav.Link>
           </Nav>
+            <div className='searchBox'>
+              <input type='text' placeholder='category' ref={inputRef} className='searchInput'></input>
+              <button onClick={onSearch} id='search-Btn'><img src='/image/image.png' alt='search icon' className='search-Img'></img></button>
+            </div>
           <Nav>
             <Nav.Link as={Link} to={"/cart"}>
-              <FontAwesomeIcon icon={faCartShopping} style={{ fontSize: "30px" }} />
+              <FontAwesomeIcon icon={faCartShopping} style={{ fontSize: "50px" }} />
             </Nav.Link>
             <div className="d-flex gap-2">
               <Nav.Link onClick={() => {
                 console.log(loggedIn)
+<<<<<<< HEAD
                 navigate(loggedIn ? "/account" : "/authenticate")}}>
                 <FontAwesomeIcon icon={faUser} style={{ fontSize: "30px" }} />
+=======
+                navigate(loggedIn ? "/myPage" : "/authenticate")}}>
+                <FontAwesomeIcon icon={faUser} style={{ fontSize: "50px" }} />
+>>>>>>> feature-jang
               </Nav.Link>
             </div>
           </Nav>

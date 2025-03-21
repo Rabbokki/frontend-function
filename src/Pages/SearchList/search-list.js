@@ -4,9 +4,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { FaStar } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { Button, Card } from "react-bootstrap";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import './search-list.css'
+import {  useNavigate } from 'react-router-dom';
 
 const SearchList = () => {
     const [liquorList, setLiquorList] = useState([]);
+<<<<<<< HEAD
     const [likedPosts, setLikedPosts] = useState({});
 
     const toggleLike = async (postId) => {
@@ -32,6 +38,10 @@ const SearchList = () => {
           }
         };
     
+=======
+    const Navigate = useNavigate();
+
+>>>>>>> feature-jang
     useEffect(() => {
         axios.get("http://localhost:8081/post") 
             .then((response) => {
@@ -43,13 +53,36 @@ const SearchList = () => {
             })
     }, [])
 
+    const handleClick = (id)=>{
+        Navigate(`/detail/${id}`)
+    }
+
+
     return (
         <div className="container">
             <div className="row">
                 {liquorList.length > 0 ? (
                     liquorList.map((liquor, index) => (
                         <div key={index} className="col-md-3">
-                            <Card style={{ width: '12rem' }}>
+                            <Container>
+                                <Row>
+                                  <Col>
+                                    <div className="image-wrapper" onClick={()=>{handleClick(index + 1)}}>
+                                     <img 
+                                       src={liquor.imageUrls && liquor.imageUrls[0]} 
+                                       alt="product" 
+                                       className="img-fluid product-image" 
+                                     />
+                                     <div className="product-info">
+                                       <h2 className="product-title">{liquor.title}</h2>
+                                       <h4 className="product-price">{liquor.price}원</h4>
+                                       <h5 className="product-stock">{liquor.stock}개</h5>
+                                     </div>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </Container>
+                            {/* <Card style={{ width: '12rem' }}>
                                 <Card.Img 
                                     variant="top" 
                                     src={liquor.imageUrls && liquor.imageUrls[0]}
@@ -71,7 +104,7 @@ const SearchList = () => {
                                     </div>
                                     <Button variant="primary" className="mt-2 w-100">추천</Button>
                                 </Card.Body>
-                            </Card>
+                            </Card> */}
                         </div>
                     ))
                 ) : (

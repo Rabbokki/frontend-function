@@ -76,3 +76,42 @@
   width: 200px; /* 이미지가 부모 div의 너비를 채우도록 설정 */
   height: auto; /* 비율에 맞게 자동으로 높이를 설정 */
 }
+/* searchBar Css */
+.searchInput{
+  width: 500px;
+  height: 35px;
+  border-radius: 10px;
+  border: 1px solid #999999;
+}
+.searchInput{
+  font-size: 15px;
+  font-weight: 60;
+  padding: 5px;
+}
+.searchInput:focus{
+  outline: 1.5px solid #999999;
+}
+.searchInput:focus::placeholder {
+  color: transparent;
+}
+.searchBox{
+  position: relative;
+  width: 700px;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.search-Img{
+  height: 30px;
+}
+.search-Img:hover{
+  filter: invert(62%) sepia(87%) saturate(275%) hue-rotate(344deg) brightness(102%) contrast(98%);
+}
+#search-Btn{
+  border: none;
+  background-color: #ffffff;
+  right: 15px;
+  top: 7px;
+  cursor: pointer;
+}
+/* searchBar Css(End) */
