@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaStar } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
+// import { FaHeart } from "react-icons/fa";
 import { Button, Card } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -12,7 +12,6 @@ import {  useNavigate } from 'react-router-dom';
 
 const SearchList = () => {
     const [liquorList, setLiquorList] = useState([]);
-<<<<<<< HEAD
     const [likedPosts, setLikedPosts] = useState({});
 
     const toggleLike = async (postId) => {
@@ -38,10 +37,8 @@ const SearchList = () => {
           }
         };
     
-=======
     const Navigate = useNavigate();
 
->>>>>>> feature-jang
     useEffect(() => {
         axios.get("http://localhost:8081/post") 
             .then((response) => {
