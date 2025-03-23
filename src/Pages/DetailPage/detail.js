@@ -2,11 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserData } from '../../Components/reducers/user/userThunk';
-import { logout } from '../../Components/reducers/authenticate/authSlice';
+import { fetchUserData } from '../../components/reducers/user/userThunk';
+import { logout } from '../../components/reducers/authenticate/authSlice';
 import "./detail.css";
 
-const baseUrl = "http://192.168.0.71:8081";
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const DetailPage = () => {
     const { id } = useParams();

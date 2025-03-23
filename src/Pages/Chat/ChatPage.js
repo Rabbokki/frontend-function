@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import { setRoom, addMessage, setSender, setConnectionStatus } from './chatSlice';
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
-import { fetchUserData } from '../../Components/reducers/user/userThunk';
+import { fetchUserData } from '../../components/reducers/user/userThunk';
 
-const baseUrl = 'http://192.168.0.71:8081';
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 function ChatPage() {
   const dispatch = useDispatch();

@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Whiskey from "../Pages/Alcohol/Whiskey";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Authenticate from "../Pages/Authenticate/authenticate";
+import Authenticate from "../Pages/authenticate/authenticate";
 import Account from "../Pages/Account/accountPage";
 import AccountEdit from "../Pages/Account/editDetails";
 import Champagne from '../Pages/Alcohol/Champagne/index';

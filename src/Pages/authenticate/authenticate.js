@@ -2,12 +2,12 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from "../../Components/reducers/authenticate/authThunk.js"
-import { setPasswordLength } from "../../Components/reducers/user/userSlice.js";
-import { registerUser } from '../../Components/reducers/user/userThunk.js';
+import { login } from "../../components/reducers/authenticate/authThunk.js"
+import { setPasswordLength } from "../../components/reducers/user/userSlice.js";
+import { registerUser } from '../../components/reducers/user/userThunk.js';
 
 import "./authenticate.css";
-import AuthenticateButton from "../../Components/buttons/AuthenticateButton.js";
+import AuthenticateButton from "../../components/buttons/AuthenticateButton.js";
 
 const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
     const dispatch = useDispatch()

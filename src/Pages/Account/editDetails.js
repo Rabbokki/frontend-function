@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserData, updateUserData } from '../../Components/reducers/user/userThunk';
-import EditButton from "../../Components/buttons/EditButton";
-import SaveChangesButton from '../../Components/buttons/SaveChangesButton';
+import { fetchUserData, updateUserData } from '../../components/reducers/user/userThunk';
+import EditButton from "../../components/buttons/EditButton";
+import SaveChangesButton from '../../components/buttons/SaveChangesButton';
 import "./editDetails.css";
 
 const formStyle = {

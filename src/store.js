@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './Components/reducers/authenticate/authSlice'; // Ensure authSlice.js exists
-import userReducer from './Components/reducers/user/userSlice'; // Import userReducer
-import chatReducer from './Components/redux/chatSlice';
+import authReducer from './components/reducers/authenticate/authSlice'; // Ensure authSlice.js exists
+import userReducer from './components/reducers/user/userSlice'; // Import userReducer
+import chatReducer from './components/redux/chatSlice';
 
 const store = configureStore({
   reducer: {

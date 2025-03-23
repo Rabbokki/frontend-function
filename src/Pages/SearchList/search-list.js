@@ -13,7 +13,7 @@ import {  useNavigate } from 'react-router-dom';
 const SearchList = () => {
     const [liquorList, setLiquorList] = useState([]);
     const [likedPosts, setLikedPosts] = useState({});
-
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const toggleLike = async (postId) => {
         try {
             const isLiked = likedPosts[postId];
@@ -40,7 +40,7 @@ const SearchList = () => {
     const Navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://192.168.0.71:8081/post") 
+        axios.get(`${baseUrl}/post`) 
             .then((response) => {
                 console.log(response.data)
                 setLiquorList(response.data)

@@ -1,8 +1,8 @@
 import "./App.css";
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
-import TopNav from "./Components/TopNav.js"
-import RouteComponents from "./Components/RouteComponents"
+import TopNav from "./components/TopNav.js"
+import RouteComponents from "./components/RouteComponents"
 
 function App() {
 
