@@ -1,74 +1,117 @@
-/* 전체 페이지 중앙 위에 위치 */
+/* 전체 페이지 중앙 정렬 및 스타일 */
 .detail-page {
   display: flex;
-  justify-content: center; /* 수평 중앙 정렬 */
-  align-items: flex-start; /* 수직 중앙 위에 정렬 */
-  height: 100vh; /* 화면 전체 높이 차지 */
-  width: 100%; /* 화면 전체 너비 차지 */
-  padding-top: 50px; /* 상단 여백 */
-  font-family: 'Arial', sans-serif; /* 글꼴 설정 */
-  background-color: #f4f4f4; /* 배경색 */
-  position: relative; /* 절대 위치 조정 용 */
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  width: 100%;
+  padding-top: 50px;
+  font-family: 'Arial', sans-serif;
+  background-color: #ffffff;
 }
 
-/* 왼쪽 섹션 스타일 (이미지 및 제목) */
+/* 왼쪽 섹션 (이미지) */
 .left-section {
-  text-align: left;
-  flex: 1; /* 왼쪽 섹션이 차지하는 비율 */
-  padding-left: 20px; /* 왼쪽 여백 */
-  max-width: 50%; /* 최대 너비를 화면의 50%로 제한 */
-  margin-right: 20px; /* 오른쪽 간격 */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-.left-section h1 {
+.product-image {
+  max-width: 90%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 오른쪽 섹션 (상품 정보) */
+.right-section {
+  flex: 1;
+  padding: 20px;
+  max-width: 500px;
+}
+
+.product-title {
   font-size: 2rem;
   font-weight: bold;
   color: #333;
   margin-bottom: 10px;
 }
 
-.left-section img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.product-price {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff6600;
+  margin-bottom: 15px;
 }
 
-/* 오른쪽 섹션 스타일 (가격, 내용, 버튼들) */
-.right-section {
-  text-align: left;
-  flex: 1; /* 오른쪽 섹션이 차지하는 비율 */
-  padding-right: 20px; /* 오른쪽 여백 */
-  max-width: 50%; /* 최대 너비를 화면의 50%로 제한 */
-}
-
-.right-section .info {
-  margin-bottom: 20px; /* 정보 간격 */
-}
-
-.right-section .info p {
+.product-content {
   font-size: 1.2rem;
   color: #555;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.right-section .buttons {
+/* 버튼 스타일 */
+.buttons {
   display: flex;
-  flex-direction: column;
   gap: 10px;
-  align-items: flex-end; /* 버튼들을 오른쪽 정렬 */
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-.right-section .buttons button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+.buttons button {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
-.right-section .buttons button:hover {
+.wishlist {
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.wishlist.liked {
+  color: red;
+}
+
+.wishlist:not(.liked) {
+  color: gray;
+}
+
+.wishlist:hover {
+  transform: scale(1.1);
+}
+
+.chat {
+  background-color: #ffcc00;
+  color: black;
+}
+.chat:hover {
+  background-color: #e6b800;
+}
+
+.buy-now {
+  background-color: #ff3333;
+  color: white;
+}
+.buy-now:hover {
+  background-color: #cc0000;
+}
+
+.bookmark {
+  background-color: #007bff;
+  color: white;
+}
+.bookmark:hover {
   background-color: #0056b3;
 }
+
