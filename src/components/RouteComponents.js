@@ -12,6 +12,8 @@ import Vodka from '../pages/alcohol/Vodka/index';
 import CartPage from '../pages/cart/index';
 import SearchList from '../pages/searchList/search-list';
 import DetailPage from '../pages/detail/detail'
+import ChatPage from '../pages/Chat/ChatPage'
+import ChatRoom from '../pages/Chat/ChatRoom'
 
 const RouteComponents = () => {
   return (
@@ -28,6 +30,8 @@ const RouteComponents = () => {
         <Route path="/search-list" element={<SearchList></SearchList>}/>
         {/* 상품 상세 페이지 */}
         <Route path="/detail/:id" element={<DetailPage></DetailPage>}></Route>
+        <Route path="/chat/:roomName" element={<ChatPage />} />
+        <Route path="/chatrooms" element={<ChatRoom />} />
         <Route path="*" element={
           <Container>
           <Row>

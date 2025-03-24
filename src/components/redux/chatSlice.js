@@ -1,11 +1,10 @@
-// src/Components/reducers/chat/chatSlice.js
+// src/components/redux/chatSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  roomName: null,
+  roomName: '',
+  roomId: null,
   messages: [],
-  loading: false,
-  error: null,
 };
 
 const chatSlice = createSlice({
@@ -15,15 +14,17 @@ const chatSlice = createSlice({
     setRoomName: (state, action) => {
       state.roomName = action.payload;
     },
+    setRoomId: (state, action) => {
+      state.roomId = action.payload;
+    },
     addMessage: (state, action) => {
       state.messages.push(action.payload);
     },
-    clearChat: (state) => {
-      state.roomName = null;
-      state.messages = [];
+    setMessages: (state, action) => { // 초기 메시지 설정
+      state.messages = action.payload;
     },
   },
 });
 
-export const { setRoomName, addMessage, clearChat } = chatSlice.actions;
+export const { setRoomName, setRoomId, addMessage, setMessages } = chatSlice.actions;
 export default chatSlice.reducer;
