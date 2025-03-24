@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUserData, updateUserData, registerUser } from './userThunk';
+import { fetchUserData, updateUserData, registerUser, fetchUserPosts } from './userThunk';
 
 const initialState = {
   userData: null,
@@ -62,6 +62,18 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.registered = false;
+      })
+      .addCase(fetchUserPosts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchUserPosts.fulfilled, (state, action) => {
+        state.userPosts = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchUserPosts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

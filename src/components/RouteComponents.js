@@ -2,13 +2,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Whiskey from "../pages/alcohol/Whiskey";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Authenticate from "../pages/authenticate/authenticate";
 import Account from "../pages/account/accountPage";
 import AccountEdit from "../pages/account/editDetails";
 import Champagne from '../pages/alcohol/Champagne/index';
 import Wine from '../pages/alcohol/Wine/index';
 import Vodka from '../pages/alcohol/Vodka/index';
+import Upload from '../pages/alcohol/upload/upload';
 import CartPage from '../pages/cart/index';
 import SearchList from '../pages/searchList/search-list';
 import DetailPage from '../pages/detail/detail'
@@ -20,6 +21,7 @@ const RouteComponents = () => {
         <Route path="/authenticate" element={<Authenticate/>}/>
         <Route path="/account" element={<Account/>}/>
         <Route path="/account/edit" element={<AccountEdit/>}/>
+        <Route path="/uploadProduct" element={<Upload></Upload>}/>
         <Route path="/whiskey" element={<Whiskey></Whiskey>}/>
         <Route path="/champagne" element={<Champagne></Champagne>}/>
         <Route path="/wine" element={<Wine></Wine>}/>

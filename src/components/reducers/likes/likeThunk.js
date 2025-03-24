@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// Helper function to get auth headers
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
@@ -11,46 +12,52 @@ const getAuthHeaders = () => {
   };
 };
 
+// ✅ Like a post (POST)
 export const addPostLike = createAsyncThunk(
-  "like/addPostLike",
+  "likes/addPostLike",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/likes/${postId}`, {
+      const response = await axios.post(`http://localhost:8081/likes/${postId}`, {}, {
         headers: getAuthHeaders(),
       });
 
-      return response.data;
+      return response.data; // Response from the server
     } catch (error) {
+      // Error handling: Return server response if available or fallback to a default message
       return rejectWithValue(error.response?.data || "Failed to like post");
     }
   }
 );
 
+// ✅ Unlike a post (DELETE)
 export const removePostLike = createAsyncThunk(
-  "like/removePostLike",
+  "likes/removePostLike",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`/likes/${postId}`, {
+      const response = await axios.delete(`http://localhost:8081/likes/${postId}`, {
         headers: getAuthHeaders(),
       });
 
-      return response.data;
+      return response.data; // Response from the server
     } catch (error) {
+      // Error handling: Return server response if available or fallback to a default message
       return rejectWithValue(error.response?.data || "Failed to remove like");
     }
   }
 );
 
+// ✅ Fetch like status (GET)
 export const fetchPostLikeStatus = createAsyncThunk(
-  "like/fetchPostLikeStatus",
+  "likes/fetchPostLikeStatus",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/likes/status/${postId}`, {
+      const response = await axios.get(`http://localhost:8081/likes/status/${postId}`, {
         headers: getAuthHeaders(),
       });
 
-      return response.data; // Should return the like status (true/false)
+      return response.data; // Response from the server
     } catch (error) {
+      // Error handling: Return server response if available or fallback to a default message
       return rejectWithValue(error.response?.data || "Failed to fetch like status");
     }
   }

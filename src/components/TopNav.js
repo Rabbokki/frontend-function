@@ -5,9 +5,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faUser } from "@fortawesome/free-solid-svg-icons";
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
+import { faCartShopping, faWineBottle, faUser } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 import { useRef } from 'react';
 
@@ -55,6 +53,9 @@ const TopNav = () => {
               <button onClick={onSearch} id='search-Btn'><img src='/image/image.png' alt='search icon' className='search-Img'></img></button>
             </div>
           <Nav>
+            <Nav.Link as={Link} to={"/uploadProduct"}>
+              <FontAwesomeIcon icon={faWineBottle} style={{ fontSize: "50px" }} />
+            </Nav.Link>
             <Nav.Link as={Link} to={"/cart"}>
               <FontAwesomeIcon icon={faCartShopping} style={{ fontSize: "50px" }} />
             </Nav.Link>

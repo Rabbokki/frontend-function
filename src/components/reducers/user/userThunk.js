@@ -56,3 +56,17 @@ export const updateUserData = createAsyncThunk(
     }
   }
 );
+
+export const fetchUserPosts = createAsyncThunk(
+  'user/fetchUserPosts',
+  async (accessToken, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('/post/user/posts', {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("사용자의 게시물을 가져오는 데 실패했습니다.");
+    }
+  }
+);

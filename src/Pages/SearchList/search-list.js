@@ -18,12 +18,10 @@ const SearchList = () => {
   const [likedPosts, setLikedPosts] = useState({});
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
-  // ✅ Redux로 데이터 요청 (useEffect 하나만 유지)
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
 
-  // ✅ 좋아요 기능 (중복 제거)
   const toggleLike = async (postId) => {
     try {
       const isLiked = likedPosts[postId];
@@ -44,7 +42,6 @@ const SearchList = () => {
     }
   };
 
-  // ✅ 상품 클릭 시 상세 페이지 이동
   const handleClick = (id) => {
     navigate(`/detail/${id}`);
   };

@@ -13,7 +13,7 @@ const DetailPage = () => {
   const { postDetail, loading, error } = useSelector((state) => state.posts);
   const { likedPosts } = useSelector((state) => state.likes);
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(() => likedPosts.includes(id));
 
   useEffect(() => {
     dispatch(fetchPostById(id));

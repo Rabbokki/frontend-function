@@ -112,3 +112,93 @@ h2 {
 .btn:hover {
   opacity: 0.8;
 }
+
+/* User Products Section */
+.user-products-section {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.user-products-section h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Products Grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns for small screens */
+  gap: 16px;
+}
+
+/* Responsive Layout */
+@media (min-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr); /* Three columns for medium screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr); /* Four columns for larger screens */
+  }
+}
+
+/* Individual Product Card */
+.product-card {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: scale(1.03);
+}
+
+/* Product Image */
+.product-image {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* Product Info */
+.product-info {
+  margin-top: 10px;
+}
+
+.product-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.product-price {
+  font-size: 14px;
+  color: #e60023;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* "See More" Button */
+.btn.see-more {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn.see-more:hover {
+  opacity: 0.8;
+}
