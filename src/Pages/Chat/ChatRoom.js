@@ -1,63 +1,57 @@
+// src/pages/Chat/ChatRoom.js
 import React, { useEffect, useState } from 'react';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
-import { useSelector } from 'react-redux';  // 로그인한 사용자 정보 가져오기
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const ChatRoom = ({ roomName }) => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
-  const [stompClient, setStompClient] = useState(null);
-  
-  // Redux에서 로그인한 사용자 이메일 가져오기
-  const sender = useSelector(state => state.auth.userEmail);  // 상태에서 이메일을 가져오는 방식
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
+const ChatRoom = () => {
+  const [chatRooms, setChatRooms] = useState([]);
+  const sender = useSelector(state => state.auth.user?.email); // auth 슬라이스에서 이메일 가져오기
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const socket = new SockJS('http://192.168.0.71:8081/ws/chat');
-    const stomp = Stomp.over(socket);
+    const accessToken = localStorage.getItem('accessToken');
+    if (!sender || !accessToken) {
+      alert("로그인이 필요합니다.");
+      navigate('/authenticate');
+      return;
+    }
 
-    stomp.connect({}, (frame) => {
-      console.log('Connected: ' + frame);
-      stomp.subscribe(`/sub/chatroom/${roomName}`, (message) => {
-        const receivedMessage = JSON.parse(message.body);
-        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-      });
-    });
-
-    setStompClient(stomp);
-
-    // 컴포넌트 언마운트 시 연결 종료
-    return () => {
-      if (stompClient) {
-        stompClient.disconnect();
+    const fetchChatRooms = async () => {
+      try {
+        const response = await axios.get(`${baseUrl}/chat/rooms`, {
+          headers: { 'Access_Token': accessToken }
+        });
+        setChatRooms(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch chat rooms:", error);
+        alert("채팅방 목록을 가져올 수 없습니다.");
       }
     };
-  }, [roomName]);
 
-  const sendMessage = () => {
-    if (message.trim() && stompClient && sender) {
-      stompClient.send('/app/chat', {}, JSON.stringify({
-        roomId: roomName,
-        sender: sender,  // Redux에서 가져온 이메일
-        message: message
-      }));
-      setMessage('');  // 메시지 전송 후 입력 필드 비우기
-    }
+    fetchChatRooms();
+  }, [sender, navigate]);
+
+  const goToChat = (roomName) => {
+    navigate(`/chat/${roomName}`);
   };
 
   return (
     <div>
-      <div>
-        {messages.map((msg, idx) => (
-          <p key={idx}><strong>{msg.sender}:</strong> {msg.message}</p>
-        ))}
-      </div>
-      <input 
-        type="text" 
-        value={message} 
-        onChange={(e) => setMessage(e.target.value)} 
-        placeholder="메시지를 입력하세요" 
-      />
-      <button onClick={sendMessage}>Send</button>
+      <h2>내 채팅방 목록</h2>
+      {chatRooms.length === 0 ? (
+        <p>참여 중인 채팅방이 없습니다.</p>
+      ) : (
+        <ul>
+          {chatRooms.map((room) => (
+            <li key={room.id} onClick={() => goToChat(room.roomName)}>
+              {room.roomName} - 최근 메시지: {room.latestChatMessage || "없음"}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
