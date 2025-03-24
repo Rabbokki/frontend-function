@@ -2,7 +2,7 @@ import "./App.css";
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import TopNav from "./components/TopNav.js"
-import RouteComponents from "./components/RouteComponents"
+import RouteComponents from "./components/RouteComponents.js"
 
 function App() {
 
