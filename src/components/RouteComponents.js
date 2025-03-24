@@ -1,17 +1,17 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Whiskey from "../Pages/Alcohol/Whiskey";
+import Whiskey from "../pages/alcohol/Whiskey";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Authenticate from "../Pages/Authenticate/authenticate";
-import Account from "../Pages/Account/accountPage";
-import AccountEdit from "../Pages/Account/editDetails";
-import Champagne from '../Pages/Alcohol/Champagne/index';
-import Wine from '../Pages/Alcohol/Wine/index';
-import Vodka from '../Pages/Alcohol/Vodka/index';
-import CartPage from '../Pages/CartPage/index';
-import SearchList from '../Pages/SearchList/search-list';
-import DetailPage from '../Pages/DetailPage/detail'
+import Authenticate from "../pages/authenticate/authenticate";
+import Account from "../pages/account/accountPage";
+import AccountEdit from "../pages/account/editDetails";
+import Champagne from '../pages/alcohol/Champagne/index';
+import Wine from '../pages/alcohol/Wine/index';
+import Vodka from '../pages/alcohol/Vodka/index';
+import CartPage from '../pages/cart/index';
+import SearchList from '../pages/searchList/search-list';
+import DetailPage from '../pages/detail/detail'
 
 const RouteComponents = () => {
   return (

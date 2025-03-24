@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from "react-router-dom"; 
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../Components/reducers/authenticate/authSlice';
-import { fetchUserData } from '../../Components/reducers/user/userThunk';
+import { logout } from '../../components/reducers/authenticate/authSlice';
+import { fetchUserData } from '../../components/reducers/user/userThunk';
 import './accountPage.css';
 
 export default function AccountPage() {

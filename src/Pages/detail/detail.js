@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPostById } from "../../Components/reducers/post/postThunk";
-import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../Components/reducers/likes/likeThunk"; // Add the import here
+import { fetchPostById } from "../../components/reducers/post/postThunk";
+import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk"; // Add the import here
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";  
 import { faHeart } from "@fortawesome/free-solid-svg-icons";  
 import "./detail.css";
@@ -16,7 +16,6 @@ const DetailPage = () => {
   const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
-    console.log("isLiked: ", isLiked)
     dispatch(fetchPostById(id));
   }, [dispatch, id]);
 
@@ -33,10 +32,16 @@ const DetailPage = () => {
   }, [likedPosts, postDetail]);
 
   const handleLikeToggle = () => {
-    if (isLiked) dispatch(removePostLike(postDetail.id));
-    else dispatch(addPostLike(postDetail.id));
-    setIsLiked(!isLiked);
+    const newLikedState = !isLiked;
+    setIsLiked(newLikedState);
+
+    if (newLikedState) {
+      dispatch(removePostLike(postDetail.id));
+    } else {
+      dispatch(addPostLike(postDetail.id));
+    }
   };
+  
 
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">Error: {error}</p>;

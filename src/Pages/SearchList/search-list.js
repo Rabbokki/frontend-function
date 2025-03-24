@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {useNavigate} from 'react-router-dom';
 
 import axios from 'axios'
-import { fetchPosts } from "../../Components/reducers/post/postThunk";
+import { fetchPosts } from "../../components/reducers/post/postThunk";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaStar } from "react-icons/fa";
