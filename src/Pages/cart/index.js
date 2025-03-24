@@ -2,13 +2,12 @@ import Button from 'react-bootstrap/Button';
 import './cart.css'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserData } from '../../Components/reducers/user/userThunk';
+import { fetchUserData } from '../../components/reducers/user/userThunk';
 import axios from 'axios';
 import { data } from 'react-router-dom';
 import axiosInstance from '../../Token/Token';
 
 function CartPage(){
-<<<<<<< HEAD:src/Pages/cart/index.js
   const [cartList , setCartList] = useState([])
   useEffect(()=>{
     axios.get("http://192.168.0.71:8081/cart/find")
@@ -19,13 +18,7 @@ function CartPage(){
       console.log("this error")
     })
   },[])
-=======
-  const [cartList , setCartList] = useState([]);
   const dispatch = useDispatch();
-  
- 
-  
->>>>>>> feature-jang--cart:src/Pages/CartPage/index.js
 
   return(
     <div>
