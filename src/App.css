@@ -45,37 +45,7 @@
   color: white;
 } */
 /* 밑에는 CartPage */
-.cartPage{
-  margin: 10px auto;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-}
-.cartDiv_box{
-  border: 1px solid black;
-  width: 600px;
-  margin: 10px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between; /* 왼쪽과 오른쪽에 공간을 배분 */
-}
-.cartImg_box{
-  border: 1px solid black;
-  margin: 10px;
-  padding: 10px;
-  width: 400px; /* 두 div를 가로로 배치하기 위해 너비 설정 */
-}
-.cartInfo_box{
-  border: 1px solid black;
-  margin: 10px;
-  padding: 10px;
-  width: 300px; /* 두 div를 가로로 배치하기 위해 너비 설정 */
-}
-.cartImg{
-  width: 200px; /* 이미지가 부모 div의 너비를 채우도록 설정 */
-  height: auto; /* 비율에 맞게 자동으로 높이를 설정 */
-}
+
 /* searchBar Css */
 .searchInput{
   width: 500px;
