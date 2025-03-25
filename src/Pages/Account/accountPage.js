@@ -70,7 +70,7 @@ const ProductsListing = ({userPosts, navigate}) => {
 
 export default function AccountPage() {
   const dispatch = useDispatch();
-  const { userData, userPosts } = useSelector((state) => state.user);
+  const { userData } = useSelector((state) => state.user);
   const navigate = useNavigate()
 
   useEffect(() => {
