@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { fetchUserData } from '../../../components/reducers/user/userThunk';
 import { createPost } from "../../../components/reducers/post/postThunk";
 import "./upload.css";
 
@@ -15,6 +16,19 @@ export default function ProductForm() {
   const [acceptPriceOffer, setAcceptPriceOffer] = useState(true);
   const [shippingIncluded, setShippingIncluded] = useState(true);
 
+  const accessToken = localStorage.getItem("accessToken");
+  useEffect(() => {
+    if (accessToken) {
+      console.log("Fetching user data with token:", accessToken);
+      dispatch(fetchUserData(accessToken))
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    } else {
+      console.log("No access token found");
+    }
+  }, [dispatch, accessToken]);
+
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
     setImages((prevImages) => [...prevImages, ...files].slice(0, 12));
@@ -29,18 +43,22 @@ export default function ProductForm() {
       return;
     }
 
+    const formData = new FormData();
+
+    images.forEach((image) => {
+      formData.append("postImg", image); // Ensure correct key name
+    });
+
     const newProduct = {
-      name: productName,
-      condition,
-      description,
-      images,
-      tags: tags.split(",").slice(0, 5),
-      price,
-      acceptPriceOffer,
-      shippingIncluded,
+      title: productName,
+      content: description,
+      price: price,
+      stock: 999,
+      img: images
     };
 
-    dispatch(createPost(newProduct));
+    formData.append("dto", new Blob([JSON.stringify(newProduct)], { type: "application/json" }));
+    dispatch(createPost({formData, accessToken}));
   };
 
   return (
@@ -86,14 +104,14 @@ export default function ProductForm() {
           className="form-textarea"
         ></textarea>
 
-        <label className="form-label">태그 (선택)</label>
+        {/* <label className="form-label">태그 (선택)</label>
         <input
           type="text"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
           placeholder="태그를 입력해 주세요. (최대 5개)"
           className="form-input"
-        />
+        /> */}
 
         <label className="form-label">가격</label>
         <input
@@ -103,15 +121,15 @@ export default function ProductForm() {
           placeholder="가격을 입력해 주세요."
           className="form-input"
         />
-        <label>
+        {/* <label>
           <input
             type="checkbox"
             checked={acceptPriceOffer}
             onChange={() => setAcceptPriceOffer(!acceptPriceOffer)}
           /> 가격제안 받기
-        </label>
+        </label> */}
 
-        <label className="form-label">택배거래</label>
+        {/* <label className="form-label">택배거래</label>
         <label>
           <input
             type="radio"
@@ -125,7 +143,7 @@ export default function ProductForm() {
             checked={!shippingIncluded}
             onChange={() => setShippingIncluded(false)}
           /> 배송비 별도
-        </label>
+        </label> */}
 
         <button type="submit" className="form-button">등록하기</button>
       </form>
