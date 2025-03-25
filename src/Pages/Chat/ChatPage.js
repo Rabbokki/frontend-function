@@ -23,16 +23,17 @@ function ChatPage() {
 
   useEffect(() => {
     if (isLoaded) return;
-    console.log('ChatPage useEffect called');
+    console.log('ChatPage useEffect - urlRoomName:', urlRoomName, 'roomId:', location.state?.roomId);
 
     const accessToken = localStorage.getItem('accessToken');
     let account = userData?.email || localStorage.getItem('userEmail');
     const passedRoomId = location.state?.roomId;
 
-    console.log('accessToken:', accessToken);
-    console.log('account:', account);
-    console.log('passedRoomId:', passedRoomId);
-    console.log('localStorage contents:', { ...localStorage });
+    if (!urlRoomName) {
+      alert('채팅방 이름이 누락되었습니다.');
+      navigate('/');
+      return;
+    }
 
     if (!accessToken) {
       alert("로그인이 필요합니다.");
@@ -41,7 +42,6 @@ function ChatPage() {
     }
 
     if (!account) {
-      console.warn('userEmail not found, extracting from JWT');
       const payload = JSON.parse(atob(accessToken.split('.')[1]));
       account = payload.sub;
       localStorage.setItem('userEmail', account);
@@ -50,28 +50,24 @@ function ChatPage() {
 
     const fetchChatData = async () => {
       try {
-        // 채팅방 정보 가져오기
         const roomResponse = await axios.get(`${baseUrl}/chat/${urlRoomName}`, {
           headers: { 'Access_Token': accessToken }
         });
         const roomData = roomResponse.data.data;
         console.log('Chat room data:', roomData);
-        dispatch(setRoomName(roomData.roomName));
+        dispatch(setRoomName(roomData.name)); // 서버 응답의 'name' 사용
         dispatch(setRoomId(passedRoomId || roomData.id));
 
-        // 기존 메시지 가져오기
-        const messagesResponse = await axios.get(`${baseUrl}/chat/${roomData.roomName}/messages`, {
+        const messagesResponse = await axios.get(`${baseUrl}/chat/${roomData.name}/messages`, {
           headers: { 'Access_Token': accessToken }
         });
-        const messagesData = messagesResponse.data.data;
-        console.log('Fetched messages:', messagesData);
-        dispatch(setMessages(messagesData));
+        dispatch(setMessages(messagesResponse.data.data));
 
-        connectWebSocket(roomData.roomName, account, accessToken);
+        connectWebSocket(roomData.name, account, accessToken);
         setIsLoaded(true);
       } catch (error) {
         console.error("Failed to fetch chat data:", error);
-        alert("채팅방 정보를 가져올 수 없습니다.");
+        alert("채팅방 정보를 가져올 수 없습니다: " + (error.response?.data?.error || error.message));
         navigate('/');
       }
     };

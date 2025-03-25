@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchUserData } from '../../../components/reducers/user/userThunk';
 import { createPost } from "../../../components/reducers/post/postThunk";
 import "./upload.css";
 
 export default function ProductForm() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [productName, setProductName] = useState("");
   const [condition, setCondition] = useState("사용감 적음");
@@ -15,6 +17,7 @@ export default function ProductForm() {
   const [price, setPrice] = useState("");
   const [acceptPriceOffer, setAcceptPriceOffer] = useState(true);
   const [shippingIncluded, setShippingIncluded] = useState(true);
+  const [category, setCategory] = useState("");
 
   const accessToken = localStorage.getItem("accessToken");
   useEffect(() => {
@@ -34,19 +37,17 @@ export default function ProductForm() {
     setImages((prevImages) => [...prevImages, ...files].slice(0, 12));
   };
 
-  const handleNewProduct = (event) => {
+  const handleNewProduct = async (event) => {
     event.preventDefault();
 
-    // Validate that all required fields are filled
     if (!productName || !description || !price || images.length === 0) {
       alert("모든 필드를 입력해야 합니다.");
       return;
     }
 
     const formData = new FormData();
-
     images.forEach((image) => {
-      formData.append("postImg", image); // Ensure correct key name
+      formData.append("postImg", image);
     });
 
     const newProduct = {
@@ -54,11 +55,21 @@ export default function ProductForm() {
       content: description,
       price: price,
       stock: 999,
-      img: images
+      category: category,
     };
-
+    console.log("Sending category:", category); // 디버깅 로그 추가
     formData.append("dto", new Blob([JSON.stringify(newProduct)], { type: "application/json" }));
-    dispatch(createPost({formData, accessToken}));
+
+    try {
+      const resultAction = await dispatch(createPost({ formData, accessToken })).unwrap(); // unwrap으로 결과 처리
+      console.log("Post created successfully:", resultAction);
+      alert("게시글이 작성되었습니다.");
+      const postId = resultAction.id; // 서버에서 반환된 게시글 ID 추출
+      navigate(`/detail/${postId}`); // 상세 페이지로 리다이렉트
+    } catch (error) {
+      console.error("Failed to create post:", error); // 전체 오류 객체 출력
+      alert("게시글 생성에 실패했습니다: " + (error.message || "알 수 없는 오류"));
+    }
   };
 
   return (
@@ -74,6 +85,14 @@ export default function ProductForm() {
           placeholder="상품명을 입력해 주세요."
           className="form-input"
         />
+        <label className="form-label">카테고리</label>
+        <select value={category} onChange={(e) => setCategory(e.target.value)} className="form-input">
+          <option value="">선택하세요</option>
+          <option value="WINE">와인</option>
+          <option value="WHISKY">위스키</option>
+          <option value="VODKA">보드카</option>
+          <option value="CHAMPAGNE">샴페인</option>
+        </select>
 
         <label className="form-label">상품 이미지 ({images.length}/12)</label>
         <div className="image-upload-container">

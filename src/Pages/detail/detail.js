@@ -50,47 +50,57 @@ const DetailPage = () => {
   const handleChat = async () => {
     console.log('handleChat called');
     const accessToken = localStorage.getItem('accessToken');
-    console.log('accessToken from localStorage:', accessToken);
     if (!accessToken) {
       alert('로그인이 필요합니다.');
+      navigate('/authenticate');
       return;
     }
-
-    const userEmail = userData?.email || localStorage.getItem('userEmail');
-    if (userEmail) {
-      localStorage.setItem('userEmail', userEmail);
-    } else {
-      console.warn('userEmail not found, extracting from JWT');
+  
+    if (!postDetail.sellerEmail) {
+      alert('판매자 정보를 찾을 수 없습니다.');
+      return;
+    }
+  
+    const userEmail = userData?.email || localStorage.getItem('userEmail') || (() => {
       const payload = JSON.parse(atob(accessToken.split('.')[1]));
       const extractedEmail = payload.sub;
       localStorage.setItem('userEmail', extractedEmail);
-      console.log('Extracted userEmail from JWT:', extractedEmail);
-    }
-
-    console.log('Sending chat request with targetEmail:', postDetail.sellerEmail);
-    console.log('Request headers:', { 'Access_Token': accessToken });
-
+      return extractedEmail;
+    })();
+  
+    console.log('Current user email:', userEmail);
+    console.log('Target email (seller):', postDetail.sellerEmail);
+  
     try {
       const response = await fetch(`${baseUrl}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Access_Token': accessToken
+          'Access_Token': accessToken,
         },
-        body: JSON.stringify({ targetEmail: postDetail.sellerEmail })
+        body: JSON.stringify({ targetEmail: postDetail.sellerEmail }),
       });
-
-      console.log('Response status:', response.status);
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      }
+  
       const data = await response.json();
-      console.log('Response data:', data);
+      console.log('Chat creation response:', data);
       if (data.success) {
-        navigate(`/chat/${data.data.roomName}`, { state: { roomId: data.data.id } });
+        // data.data.name을 사용 (서버 응답에 맞게 수정)
+        const roomName = data.data.name;
+        if (!roomName) {
+          throw new Error('Room name is missing in response');
+        }
+        navigate(`/chat/${roomName}`, { state: { roomId: data.data.id } });
       } else {
-        alert('채팅방 생성 실패');
+        alert(`채팅방 생성 실패: ${data.error || '알 수 없는 오류'}`);
       }
     } catch (error) {
       console.error('Chat request failed:', error);
-      alert('채팅 요청 중 오류 발생');
+      alert(`채팅 요청 중 오류 발생: ${error.message}`);
     }
   };
 

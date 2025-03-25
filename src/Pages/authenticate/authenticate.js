@@ -78,8 +78,8 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5, duration: 0.8 }}>
                             <input type="text" placeholder="이매일" ref={emailRef} className="register-input" /><br />
-                            <input type="text" placeholder="유저내임" ref={nicknameRef} className="register-input" /><br />
                             <input type="password" placeholder="비밀번호" ref={passwordRef} className="register-input" /><br />
+                            <input type="text" placeholder="유저내임" ref={nicknameRef} className="register-input" /><br />
                             <p className="auth-footer">
                                 <AuthenticateButton clickEvent={registerHandler} showLogin={showLogin}/>
                                 {loading && <p>Loading...</p>}
