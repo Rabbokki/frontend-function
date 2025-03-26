@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserData } from '../../../components/reducers/user/userThunk';
-import { createPost } from "../../../components/reducers/post/postThunk";
-import "./upload.css";
 import { fetchUserData } from '../../components/reducers/user/userThunk';
 import { createPost } from "../../components/reducers/post/postThunk";
+import "./updatePost.css";
 import "./newPost.css";
 
 export default function ProductForm() {

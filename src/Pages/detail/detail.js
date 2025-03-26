@@ -6,7 +6,6 @@ import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../componen
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import "./detail.css";
-import { useNavigate } from 'react-router-dom';
 
 const DetailPage = () => {
   const navigate = useNavigate();
