@@ -55,18 +55,19 @@ function ChatPage() {
         });
         const roomData = roomResponse.data.data;
         console.log('Chat room data:', roomData);
-        dispatch(setRoomName(roomData.name)); // 서버 응답의 'name' 사용
+        dispatch(setRoomName(roomData.roomName));
         dispatch(setRoomId(passedRoomId || roomData.id));
-
-        const messagesResponse = await axios.get(`${baseUrl}/chat/${roomData.name}/messages`, {
+    
+        const messagesResponse = await axios.get(`${baseUrl}/chat/${roomData.roomName}/messages`, {
           headers: { 'Access_Token': accessToken }
         });
+        console.log('Fetched messages:', messagesResponse.data.data);
         dispatch(setMessages(messagesResponse.data.data));
-
-        connectWebSocket(roomData.name, account, accessToken);
+    
+        connectWebSocket(roomData.roomName, account, accessToken);
         setIsLoaded(true);
       } catch (error) {
-        console.error("Failed to fetch chat data:", error);
+        console.error("Failed to fetch chat data:", error.response ? error.response.data : error.message);
         alert("채팅방 정보를 가져올 수 없습니다: " + (error.response?.data?.error || error.message));
         navigate('/');
       }

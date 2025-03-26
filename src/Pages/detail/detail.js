@@ -87,11 +87,11 @@ const DetailPage = () => {
       }
   
       const data = await response.json();
-      console.log('Chat creation response:', data);
+      console.log('Chat creation response:', JSON.stringify(data, null, 2));
       if (data.success) {
-        // data.data.name을 사용 (서버 응답에 맞게 수정)
-        const roomName = data.data.name;
+        const roomName = data.data.roomName;
         if (!roomName) {
+          console.error('Response data:', data.data);
           throw new Error('Room name is missing in response');
         }
         navigate(`/chat/${roomName}`, { state: { roomId: data.data.id } });
