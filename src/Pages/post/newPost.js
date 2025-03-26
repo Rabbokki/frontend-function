@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchUserData } from '../../../components/reducers/user/userThunk';
-import { createPost } from "../../../components/reducers/post/postThunk";
-import "./upload.css";
+import { fetchUserData } from '../../components/reducers/user/userThunk';
+import { createPost } from "../../components/reducers/post/postThunk";
+import "./newPost.css";
 
 export default function ProductForm() {
   const dispatch = useDispatch();
 
   const [productName, setProductName] = useState("");
-  const [condition, setCondition] = useState("사용감 적음");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const [tags, setTags] = useState("");
@@ -37,7 +36,6 @@ export default function ProductForm() {
   const handleNewProduct = (event) => {
     event.preventDefault();
 
-    // Validate that all required fields are filled
     if (!productName || !description || !price || images.length === 0) {
       alert("모든 필드를 입력해야 합니다.");
       return;
@@ -46,7 +44,7 @@ export default function ProductForm() {
     const formData = new FormData();
 
     images.forEach((image) => {
-      formData.append("postImg", image); // Ensure correct key name
+      formData.append("postImg", image);
     });
 
     const newProduct = {

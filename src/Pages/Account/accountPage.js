@@ -44,29 +44,29 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
   )
 }
 
-const ProductsListing = ({userPosts, navigate}) => {
-  return (
-    <div className="user-products-section">
-      <h2>Your Products</h2>
-      <div className="products-grid">
-        {userPosts.slice(0, 8).map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.imageUrl} alt={product.title} className="product-image" />
-            <div className="product-info">
-              <p className="product-title">{product.title}</p>
-              <p className="product-price">{product.price}원</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      {userPosts.length > 8 && (
-        <button className="btn see-more" onClick={() => navigate("/account/products")}>
-          See More
-        </button>
-      )}
-    </div>
-  )
-}
+// const ProductsListing = ({userPosts, navigate}) => {
+//   return (
+//     <div className="user-products-section">
+//       <h2>Your Products</h2>
+//       <div className="products-grid">
+//         {userPosts.slice(0, 8).map((product) => (
+//           <div key={product.id} className="product-card">
+//             <img src={product.imageUrl} alt={product.title} className="product-image" />
+//             <div className="product-info">
+//               <p className="product-title">{product.title}</p>
+//               <p className="product-price">{product.price}원</p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//       {userPosts.length > 8 && (
+//         <button className="btn see-more" onClick={() => navigate("/account/products")}>
+//           See More
+//         </button>
+//       )}
+//     </div>
+//   )
+// }
 
 export default function AccountPage() {
   const dispatch = useDispatch();

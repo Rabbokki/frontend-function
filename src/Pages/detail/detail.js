@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPostById } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk"; // Add the import here
@@ -8,8 +8,10 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import "./detail.css";
 
 const DetailPage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+
   const { postDetail, loading, error } = useSelector((state) => state.posts);
   const { likedPosts } = useSelector((state) => state.likes);
 
@@ -34,11 +36,11 @@ const DetailPage = () => {
   const handleLikeToggle = () => {
     const newLikedState = !isLiked;
     setIsLiked(newLikedState);
-
+  
     if (newLikedState) {
-      dispatch(removePostLike(postDetail.id));
-    } else {
       dispatch(addPostLike(postDetail.id));
+    } else {
+      dispatch(removePostLike(postDetail.id));
     }
   };
   
@@ -72,7 +74,28 @@ const DetailPage = () => {
           </button>
           <button className="chat">번개톡</button>
           <button className="buy-now">바로구매</button>
-          <button className="bookmark">북마크</button>
+          <button 
+            onClick={() => navigate(`/detail/${id}/reviews`, {
+              state: {
+                      title: postDetail.title,
+                      image: postDetail.imageUrls && postDetail.imageUrls[0],
+                      postId: id
+                      }
+            })} 
+            className="review">
+              리뷰
+          </button>
+          <button onClick={() => navigate(`/updatePost/${id}`, {
+              state: {
+                      title: postDetail.title,
+                      content: postDetail.content,
+                      price: postDetail.price,
+                      image: postDetail.imageUrls && postDetail.imageUrls[0],
+                      postId: id
+                      }
+            })} className="edit">
+            수정
+          </button>
         </div>
       </div>
     </div>

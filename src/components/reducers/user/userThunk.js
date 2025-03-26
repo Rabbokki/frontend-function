@@ -5,14 +5,30 @@ export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (newUserData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/account/signup', newUserData);
-      if (response.data.success) {
-        return response.data.data;
-      } else {
-        return rejectWithValue(response.data.error.message);
+      const formData = new FormData();
+
+      // Convert newUserData to a JSON string and append it as 'dto' with explicit content type
+      const dtoBlob = new Blob([JSON.stringify({
+        email: newUserData.email,
+        nickname: newUserData.nickname,
+        password: newUserData.password,
+        birthday: newUserData.birthday,
+      })], { type: "application/json" });
+
+      formData.append("dto", dtoBlob); // Explicitly set the type
+
+      // Append the image if available
+      if (newUserData.imgUrl) {
+        formData.append("accountImg", newUserData.imgUrl);
       }
+
+      const response = await axios.post('/account/signup', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }, // Keep multipart format
+      });
+
+      return response.data;
     } catch (error) {
-      return rejectWithValue("회원가입에 실패했습니다.");
+      return rejectWithValue(error.response?.data?.message || "회원가입에 실패했습니다.");
     }
   }
 );
@@ -24,7 +40,7 @@ export const fetchUserData = createAsyncThunk(
       const response = await axios.get('/account/me', {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
-      return response.data.data;
+      return response.data;
     } catch (error) {
       return rejectWithValue("사용자 정보를 가져오는 데 실패했습니다.");
     }
@@ -33,8 +49,7 @@ export const fetchUserData = createAsyncThunk(
 
 export const updateUserData = createAsyncThunk(
   'user/updateUserData',
-  async (updatedData, { rejectWithValue, getState }) => {
-    const { user } = getState();
+  async (updatedData, { rejectWithValue }) => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (!accessToken) {
@@ -45,12 +60,7 @@ export const updateUserData = createAsyncThunk(
       const response = await axios.put('/account/me', updatedData, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
-
-      if (response.data.success) {
-        return updatedData;
-      } else {
-        return rejectWithValue(response.data.error.message);
-      }
+      return response.data;
     } catch (error) {
       return rejectWithValue("사용자 정보를 업데이트하는 데 실패했습니다.");
     }

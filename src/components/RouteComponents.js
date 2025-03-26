@@ -9,10 +9,13 @@ import AccountEdit from "../pages/account/editDetails";
 import Champagne from '../pages/alcohol/Champagne/index';
 import Wine from '../pages/alcohol/Wine/index';
 import Vodka from '../pages/alcohol/Vodka/index';
-import Upload from '../pages/alcohol/upload/upload';
+import NewPost from '../pages/post/newPost';
+import UpdatePost from '../pages/post/updatePost';
 import CartPage from '../pages/cart/index';
 import SearchList from '../pages/searchList/search-list';
 import DetailPage from '../pages/detail/detail'
+import Reviews from '../pages/review/review'
+import WriteReviews from '../pages/review/writeReview'
 
 const RouteComponents = () => {
   return (
@@ -21,7 +24,8 @@ const RouteComponents = () => {
         <Route path="/authenticate" element={<Authenticate/>}/>
         <Route path="/account" element={<Account/>}/>
         <Route path="/account/edit" element={<AccountEdit/>}/>
-        <Route path="/uploadProduct" element={<Upload></Upload>}/>
+        <Route path="/newPost" element={<NewPost></NewPost>}/>
+        <Route path="/updatePost/:id" element={<UpdatePost></UpdatePost>}/>
         <Route path="/whiskey" element={<Whiskey></Whiskey>}/>
         <Route path="/champagne" element={<Champagne></Champagne>}/>
         <Route path="/wine" element={<Wine></Wine>}/>
@@ -30,6 +34,8 @@ const RouteComponents = () => {
         <Route path="/search-list" element={<SearchList></SearchList>}/>
         {/* 상품 상세 페이지 */}
         <Route path="/detail/:id" element={<DetailPage></DetailPage>}></Route>
+        <Route path="/detail/:id/reviews" element={<Reviews></Reviews>}></Route>
+        <Route path="/detail/:id/writeReview" element={<WriteReviews></WriteReviews>}></Route>
         <Route path="*" element={
           <Container>
           <Row>
