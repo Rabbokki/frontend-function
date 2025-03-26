@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { fetchUserData } from '../../../components/reducers/user/userThunk';
 import { createPost } from "../../../components/reducers/post/postThunk";
 import "./upload.css";
+import { fetchUserData } from '../../components/reducers/user/userThunk';
+import { createPost } from "../../components/reducers/post/postThunk";
+import "./newPost.css";
 
 export default function ProductForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [productName, setProductName] = useState("");
-  const [condition, setCondition] = useState("사용감 적음");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const [tags, setTags] = useState("");

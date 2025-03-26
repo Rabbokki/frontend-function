@@ -1,0 +1,146 @@
+.product-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+.product-details h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    gap: 10px;
+  }
+  
+.image-thumbnail {
+    position: relative;
+    display: inline-block;
+  }
+  
+.uploaded-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .remove-image-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.remove-image-btn:hover {
+    background-color: rgb(255, 0, 0);
+}
+  
+.image-upload-box {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    width: 200px;
+    margin-top: 10px;
+  }
+  
+.image-upload-text {
+    font-size: 14px;
+    color: #555;
+  }
+  
+.image-upload-input {
+    display: none;
+  }
+
+.write-review-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .write-review-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .star-rating {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+  
+  .star {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    margin-right: 0.25rem;
+  }
+  
+  .star.filled {
+    color: #ffc107;
+  }
+  
+  .review-textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  
+  .submit-review-button {
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .submit-review-button:hover {
+    background-color: #0056b3;
+  }
+  

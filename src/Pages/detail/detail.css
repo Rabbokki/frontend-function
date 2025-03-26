@@ -107,11 +107,20 @@
   background-color: #cc0000;
 }
 
-.bookmark {
+.review {
   background-color: #007bff;
   color: white;
 }
-.bookmark:hover {
+.review:hover {
   background-color: #0056b3;
+}
+
+.edit {
+  background-color: #28a745;
+  color: white;
+}
+
+.edit:hover {
+  background-color: #218838;
 }
 

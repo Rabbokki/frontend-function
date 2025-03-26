@@ -53,7 +53,7 @@ const TopNav = () => {
               <button onClick={onSearch} id='search-Btn'><img src='/image/image.png' alt='search icon' className='search-Img'></img></button>
             </div>
           <Nav>
-            <Nav.Link as={Link} to={"/uploadProduct"}>
+            <Nav.Link as={Link} to={"/newPost"}>
               <FontAwesomeIcon icon={faWineBottle} style={{ fontSize: "50px" }} />
             </Nav.Link>
             <Nav.Link as={Link} to={"/cart"}>
