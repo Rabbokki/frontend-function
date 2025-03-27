@@ -13,12 +13,64 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
         <div className="profile-card">
           <h2>Profile</h2>
           <p><span className="label">Nickname</span><br />{userData.nickname}</p>
-          <p><span className="label">Email</span><br />{userData.email}</p>
-          <p><span className="label">Password</span><br />********</p>
+          <img src={userData.imgUrl} alt="Profile" />
           <div className="button-group">
             <button onClick={handleLogout} className="btn black">Log Out</button>
             <button onClick={() => navigate("/account/edit")} className="btn">Edit</button>
           </div>
+        </div>
+
+        <div className="posts-card">
+          <h2>Your Posts</h2>
+          {userData.posts?.length > 0 ? (
+            <ul>
+              {userData.posts.map(post => (
+                <li key={post.id}>
+                  <p><strong>{post.title}</strong></p>
+                  <p>{post.content}</p>
+                  <p>{post.price}</p>
+                  <p><small>{new Date(post.createdAt).toLocaleString()}</small></p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No posts yet.</p>
+          )}
+          <button onClick={() => navigate("/account/posts")} className="btn black">See All Posts</button>
+        </div>
+
+        <div className="reviews-card">
+          <h2>Your Reviews</h2>
+          {userData.reviews?.length > 0 ? (
+            <ul>
+              {userData.reviews.map(review => (
+                <li key={review.id}>
+                  <p>{review.content}</p>
+                  <p><small>{new Date(review.createdAt).toLocaleString()}</small></p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No reviews yet.</p>
+          )}
+          <button onClick={() => navigate("/account/reviews")} className="btn black">See All Reviews</button>
+        </div>
+
+        <div className="bookmarks-card">
+          <h2>Your Bookmarks</h2>
+          {userData.bookMarks?.length > 0 ? (
+            <ul>
+              {userData.bookMarks.map(bookMark => (
+                <li key={bookMark.id}>
+                  <p><strong>{bookMark.postTitle}</strong> (Post ID: {bookMark.postId})</p>
+                  <p><small>{new Date(bookMark.createdAt).toLocaleString()}</small></p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No bookmarks yet.</p>
+          )}
+          <button onClick={() => navigate("/account/bookmarks")} className="btn black">See All Bookmarks</button>
         </div>
 
         <div className="address-card">
