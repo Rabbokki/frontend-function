@@ -81,3 +81,20 @@ export const updatePost = createAsyncThunk(
   }
 );
 
+export const deletePost = createAsyncThunk(
+  "posts/deletePost",
+  async ({ postId, accessToken }, thunkAPI) => {
+    try {
+      await axios.delete(`http://localhost:8081/post/delete/${postId}`, {
+        headers: {
+          Access_Token: accessToken,
+        },
+        withCredentials: true,
+      });
+      return postId;
+    } catch (error) {
+      console.error("Error deleting post:", error.response?.data || error.message);
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);

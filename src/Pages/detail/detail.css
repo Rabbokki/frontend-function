@@ -100,11 +100,11 @@
 }
 
 .buy-now {
-  background-color: #ff3333;
-  color: white;
+  background-color: #ff33f5 !important;
+  color: white !important;
 }
 .buy-now:hover {
-  background-color: #cc0000;
+  background-color: #a31f9d !important;
 }
 
 .review {
@@ -124,3 +124,11 @@
   background-color: #218838;
 }
 
+.delete {
+  background-color: #ff3333;
+  color: white;
+}
+
+.delete:hover {
+  background-color: #cc0000;
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPostById } from "../../components/reducers/post/postThunk";
+import { fetchPostById, deletePost } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -105,6 +105,27 @@ const DetailPage = () => {
     }
   };
 
+  const handleDelete = () => {
+    if (window.confirm('정말 지울 거냐?')) {
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        alert('로그인이 필요합니다.');
+        navigate('/authenticate');
+        return;
+      }
+  
+      dispatch(deletePost({ postId: id, accessToken }))
+        .unwrap()
+        .then(() => {
+          alert('삭제 완료!');
+          navigate('/'); // 삭제 후 홈으로 이동 (또는 적절한 페이지)
+        })
+        .catch((error) => {
+          alert(`삭제 실패: ${error}`);
+        });
+    }
+  };
+
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">Error: {error}</p>;
   if (!postDetail) return <p className="not-found">Post not found.</p>;
@@ -161,6 +182,9 @@ const DetailPage = () => {
                       }
             })} className="edit">
             수정
+          </button>
+          <button onClick={handleDelete} className="delete">
+            삭제
           </button>
         </div>
       </div>
