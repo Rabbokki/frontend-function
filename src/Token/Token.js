@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token'); // 또는 sessionStorage 등
+  const token = localStorage.getItem('accessToken'); // 또는 sessionStorage 등
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
