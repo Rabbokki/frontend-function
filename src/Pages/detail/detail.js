@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserData } from "../../components/reducers/user/userThunk";
 import { fetchPostById, deletePost } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,39 +16,55 @@ const DetailPage = () => {
   const { likedPosts } = useSelector((state) => state.likes);
   const { userData } = useSelector((state) => state.user);
 
-  const [isLiked, setIsLiked] = useState(false)
+  const [isLiked, setIsLiked] = useState(false);
+  const [localLikeCount, setLocalLikeCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     dispatch(fetchPostById(id));
+    dispatch(fetchPostLikeStatus(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    console.log('Redux postDetail:', postDetail);
+    if (postDetail) {
+      console.log('Redux postDetail:', postDetail);
+      setLocalLikeCount(postDetail.likeCount);
+    }
   }, [postDetail]);
 
   useEffect(() => {
-    console.log('postDetail updated:', postDetail);
-    if (postDetail) {
-      console.log('sellerEmail:', postDetail.sellerEmail);
-      dispatch(fetchPostLikeStatus(postDetail.id));
+    if (likedPosts) {
+      const liked = likedPosts.includes(String(id)); // id를 문자열로 변환
+      setIsLiked(liked);
+      console.log('likedPosts:', likedPosts, 'isLiked:', liked);
     }
-  }, [dispatch, postDetail]);
+  }, [likedPosts, id]);
 
-  useEffect(() => {
-    if (postDetail && likedPosts) {
-      setIsLiked(likedPosts.includes(postDetail.id));
-    }
-  }, [likedPosts, postDetail]);
+  const handleLikeToggle = async () => {
+    if (isLoading) return;
 
-  const handleLikeToggle = () => {
     const newLikedState = !isLiked;
+    setIsLoading(true);
     setIsLiked(newLikedState);
-  
-    if (newLikedState) {
-      dispatch(addPostLike(postDetail.id));
-    } else {
-      dispatch(removePostLike(postDetail.id));
+    setLocalLikeCount((prev) => {
+      console.log('Prev count:', prev, 'New state:', newLikedState);
+      return newLikedState ? prev + 1 : prev - 1;
+    });
+
+    try {
+      if (newLikedState) {
+        await dispatch(addPostLike(postDetail.id)).unwrap();
+      } else {
+        await dispatch(removePostLike(postDetail.id)).unwrap();
+      }
+      dispatch(fetchPostLikeStatus(id)); // 상태 동기화
+    } catch (error) {
+      console.error(`${newLikedState ? 'Add' : 'Remove'} like failed:`, error);
+      setIsLiked(!newLikedState);
+      setLocalLikeCount((prev) => (newLikedState ? prev - 1 : prev + 1));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,7 +77,7 @@ const DetailPage = () => {
       navigate('/authenticate');
       return;
     }
-  
+
     try {
       const payload = JSON.parse(atob(accessToken.split('.')[1]));
       const exp = payload.exp * 1000;
@@ -80,22 +95,22 @@ const DetailPage = () => {
       navigate('/authenticate');
       return;
     }
-  
+
     if (!postDetail.sellerEmail) {
       alert('판매자 정보를 찾을 수 없습니다.');
       return;
     }
-  
+
     const userEmail = userData?.email || localStorage.getItem('userEmail') || (() => {
       const payload = JSON.parse(atob(accessToken.split('.')[1]));
       const extractedEmail = payload.sub;
       localStorage.setItem('userEmail', extractedEmail);
       return extractedEmail;
     })();
-  
+
     console.log('Current user email:', userEmail);
     console.log('Target email (seller):', postDetail.sellerEmail);
-  
+
     try {
       const response = await fetch(`${baseUrl}/chat`, {
         method: 'POST',
@@ -105,12 +120,12 @@ const DetailPage = () => {
         },
         body: JSON.stringify({ targetEmail: postDetail.sellerEmail }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
       console.log('Chat creation response:', JSON.stringify(data, null, 2));
       if (data.success) {
@@ -147,7 +162,7 @@ const DetailPage = () => {
         navigate('/authenticate');
         return;
       }
-  
+
       dispatch(deletePost({ postId: id, accessToken }))
         .unwrap()
         .then(() => {
@@ -177,14 +192,16 @@ const DetailPage = () => {
         <h1 className="product-title">{postDetail.title}</h1>
         <span className="views">
           <FontAwesomeIcon icon={faEye} className="eye-icon" /> {postDetail.viewCount}
-          <FontAwesomeIcon icon={faHeart} className="heart-icon"/> {postDetail.likeCount}
+          <FontAwesomeIcon icon={faHeart} className="heart-icon" /> {localLikeCount}
         </span>
         <p className="product-price">{postDetail.price}원</p>
         <p className="product-content">{postDetail.content}</p>
+        <p className="time-ago">{postDetail.timeAgo}</p>
         <div className="buttons">
           <button
             className={`wishlist ${isLiked ? "liked" : ""}`}
             onClick={handleLikeToggle}
+            disabled={isLoading}
           >
             <FontAwesomeIcon
               icon={faHeart}
@@ -199,26 +216,34 @@ const DetailPage = () => {
             번개톡
           </button>
           <button className="buy-now">바로구매</button>
-          <button 
-            onClick={() => navigate(`/detail/${id}/reviews`, {
-              state: {
-                      title: postDetail.title,
-                      image: postDetail.imageUrls && postDetail.imageUrls[0],
-                      postId: id
-                      }
-            })} 
-            className="review">
-              리뷰
+          <button
+            onClick={() =>
+              navigate(`/detail/${id}/reviews`, {
+                state: {
+                  title: postDetail.title,
+                  image: postDetail.imageUrls && postDetail.imageUrls[0],
+                  postId: id,
+                },
+              })
+            }
+            className="review"
+          >
+            리뷰
           </button>
-          <button onClick={() => navigate(`/updatePost/${id}`, {
-              state: {
-                      title: postDetail.title,
-                      content: postDetail.content,
-                      price: postDetail.price,
-                      image: postDetail.imageUrls && postDetail.imageUrls[0],
-                      postId: id
-                      }
-            })} className="edit">
+          <button
+            onClick={() =>
+              navigate(`/updatePost/${id}`, {
+                state: {
+                  title: postDetail.title,
+                  content: postDetail.content,
+                  price: postDetail.price,
+                  image: postDetail.imageUrls && postDetail.imageUrls[0],
+                  postId: id,
+                },
+              })
+            }
+            className="edit"
+          >
             수정
           </button>
           <button onClick={handleDelete} className="delete">

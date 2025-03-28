@@ -94,13 +94,21 @@
   transition: color 0.3s ease;
 }
 
-.wishlist.liked {
-  color: red;
+.wishlist.liked .liked {
+  color: red; /* 좋아요 상태 */
 }
 
-.wishlist:not(.liked) {
-  color: gray;
+.wishlist .unliked {
+  color: grey; /* 기본 상태 */
 }
+
+.wishlist:disabled {
+  opacity: 0.5; /* 요청 중 비활성화 시각적 피드백 */
+  cursor: not-allowed;
+}
+/* .wishlist:not(.liked) {
+  color: gray;
+} */
 
 .wishlist:hover {
   transform: scale(1.1);
