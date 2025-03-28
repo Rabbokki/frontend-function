@@ -18,8 +18,8 @@ export const fetchReviews = createAsyncThunk(
         const response = await axios.get(`http://localhost:8081/reviews/${postId}`, {
           headers: getAuthHeaders(),
         });
-        console.log("response data: ", response.data)
-        console.log("response data data: ", response.data.data)
+        console.log("From review: response data: ", response.data)
+        console.log("From review: response data data: ", response.data.data)
         return response.data.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);
@@ -33,7 +33,7 @@ export const fetchReviews = createAsyncThunk(
       try {
         const response = await axios.post(
           `http://localhost:8081/reviews/${postId}`,
-          { rating, content },  // Send only rating and content as the body
+          { rating, content }, 
           { headers: { ...getAuthHeaders(), "Content-Type": "application/json" } } 
         );
         return response.data;
