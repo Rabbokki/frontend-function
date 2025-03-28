@@ -21,26 +21,26 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
         </div>
 
         <div className="posts-card">
-          <h2>Your Posts</h2>
-          {userData.posts?.length > 0 ? (
+          <h2>상품</h2>
+          {userData.postList?.length > 0 ? (
             <ul>
-              {userData.posts.map(post => (
+              {userData.postList.map(post => (
                 <li key={post.id}>
+                  {post.imgUrl && <img src={post.imgUrl} alt={post.title} className="post-image" />}
                   <p><strong>{post.title}</strong></p>
-                  <p>{post.content}</p>
-                  <p>{post.price}</p>
+                  <p>{post.price}원</p>
                   <p><small>{new Date(post.createdAt).toLocaleString()}</small></p>
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No posts yet.</p>
+            <p>등록한 상품이 없습니다.</p>
           )}
           <button onClick={() => navigate("/account/posts")} className="btn black">See All Posts</button>
         </div>
 
         <div className="reviews-card">
-          <h2>Your Reviews</h2>
+          <h2>상품 후기</h2>
           {userData.reviews?.length > 0 ? (
             <ul>
               {userData.reviews.map(review => (
@@ -51,13 +51,13 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
               ))}
             </ul>
           ) : (
-            <p>No reviews yet.</p>
+            <p>등록된 후기가 없습니다.</p>
           )}
           <button onClick={() => navigate("/account/reviews")} className="btn black">See All Reviews</button>
         </div>
 
         <div className="bookmarks-card">
-          <h2>Your Bookmarks</h2>
+          <h2>찜</h2>
           {userData.bookMarks?.length > 0 ? (
             <ul>
               {userData.bookMarks.map(bookMark => (
@@ -68,7 +68,7 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
               ))}
             </ul>
           ) : (
-            <p>No bookmarks yet.</p>
+            <p>찜한 상품이 없습니다.</p>
           )}
           <button onClick={() => navigate("/account/bookmarks")} className="btn black">See All Bookmarks</button>
         </div>

@@ -51,8 +51,27 @@ const DetailPage = () => {
   const handleChat = async () => {
     console.log('handleChat called');
     const accessToken = localStorage.getItem('accessToken');
+    console.log('Access Token:', accessToken);
     if (!accessToken) {
       alert('로그인이 필요합니다.');
+      navigate('/authenticate');
+      return;
+    }
+  
+    try {
+      const payload = JSON.parse(atob(accessToken.split('.')[1]));
+      const exp = payload.exp * 1000;
+      console.log('Token expiration:', new Date(exp).toISOString());
+      if (Date.now() > exp) {
+        console.log('Token expired');
+        alert('토큰이 만료되었습니다. 다시 로그인해주세요.');
+        navigate('/authenticate');
+        localStorage.removeItem('accessToken');
+        return;
+      }
+    } catch (e) {
+      console.error('Invalid token format:', e);
+      alert('유효하지 않은 토큰입니다. 다시 로그인해주세요.');
       navigate('/authenticate');
       return;
     }
@@ -95,7 +114,17 @@ const DetailPage = () => {
           console.error('Response data:', data.data);
           throw new Error('Room name is missing in response');
         }
-        navigate(`/chat/${roomName}`, { state: { roomId: data.data.id } });
+        navigate(`/chat/${roomName}`, { 
+          state: {
+            roomId: data.data.id, 
+            image: postDetail.imageUrls && postDetail.imageUrls[0],
+            title: postDetail.title,
+            price: postDetail.price,
+            content: postDetail.content,
+            sellerEmail: postDetail.sellerEmail,
+            sellerNickname: postDetail.sellerNickname,
+          }
+        });
       } else {
         alert(`채팅방 생성 실패: ${data.error || '알 수 없는 오류'}`);
       }
