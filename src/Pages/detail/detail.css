@@ -1,4 +1,3 @@
-/* 전체 페이지 중앙 정렬 및 스타일 */
 .detail-page {
   display: flex;
   justify-content: center;
@@ -10,7 +9,6 @@
   background-color: #ffffff;
 }
 
-/* 왼쪽 섹션 (이미지) */
 .left-section {
   flex: 1;
   display: flex;
@@ -26,7 +24,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 오른쪽 섹션 (상품 정보) */
 .right-section {
   flex: 1;
   padding: 20px;
@@ -53,7 +50,25 @@
   margin-bottom: 20px;
 }
 
-/* 버튼 스타일 */
+.views {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  margin-left: 10px;
+  color: #555;
+}
+
+.eye-icon {
+  margin-right: 8px;
+  color: #888;
+}
+
+.heart-icon {
+  margin-left: 20px;
+  margin-right: 8px;
+  color: #888;
+}
+
 .buttons {
   display: flex;
   gap: 10px;

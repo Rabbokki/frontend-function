@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchUserData } from "../../components/reducers/user/userThunk";
 import { fetchPostById, deletePost } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faEye } from "@fortawesome/free-solid-svg-icons";
 import "./detail.css";
 
 const DetailPage = () => {
@@ -14,14 +15,18 @@ const DetailPage = () => {
 
   const { postDetail, loading, error } = useSelector((state) => state.posts);
   const { likedPosts } = useSelector((state) => state.likes);
-  const { userData } = useSelector((state) => state.user); // userSlice에서 userData
+  const { userData } = useSelector((state) => state.user);
 
-  const [isLiked, setIsLiked] = useState(() => likedPosts.includes(id));
+  const [isLiked, setIsLiked] = useState(false)
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
     dispatch(fetchPostById(id));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    console.log('Redux postDetail:', postDetail);
+  }, [postDetail]);
 
   useEffect(() => {
     console.log('postDetail updated:', postDetail);
@@ -147,7 +152,7 @@ const DetailPage = () => {
         .unwrap()
         .then(() => {
           alert('삭제 완료!');
-          navigate('/'); // 삭제 후 홈으로 이동 (또는 적절한 페이지)
+          navigate('/');
         })
         .catch((error) => {
           alert(`삭제 실패: ${error}`);
@@ -170,6 +175,10 @@ const DetailPage = () => {
       </div>
       <div className="right-section">
         <h1 className="product-title">{postDetail.title}</h1>
+        <span className="views">
+          <FontAwesomeIcon icon={faEye} className="eye-icon" /> {postDetail.viewCount}
+          <FontAwesomeIcon icon={faHeart} className="heart-icon"/> {postDetail.likeCount}
+        </span>
         <p className="product-price">{postDetail.price}원</p>
         <p className="product-content">{postDetail.content}</p>
         <div className="buttons">

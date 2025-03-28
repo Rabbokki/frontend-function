@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Helper function to get auth headers
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
@@ -12,41 +11,38 @@ const getAuthHeaders = () => {
   };
 };
 
-// ✅ Like a post (POST)
 export const addPostLike = createAsyncThunk(
   "likes/addPostLike",
   async (postId, { rejectWithValue }) => {
+    console.log("Add like")
     try {
       const response = await axios.post(`http://localhost:8081/likes/${postId}`, {}, {
         headers: getAuthHeaders(),
       });
 
-      return response.data; // Response from the server
+      return response.data;
     } catch (error) {
-      // Error handling: Return server response if available or fallback to a default message
       return rejectWithValue(error.response?.data || "Failed to like post");
     }
   }
 );
 
-// ✅ Unlike a post (DELETE)
 export const removePostLike = createAsyncThunk(
   "likes/removePostLike",
   async (postId, { rejectWithValue }) => {
+    console.log("Remove like")
     try {
       const response = await axios.delete(`http://localhost:8081/likes/${postId}`, {
         headers: getAuthHeaders(),
       });
 
-      return response.data; // Response from the server
+      return response.data;
     } catch (error) {
-      // Error handling: Return server response if available or fallback to a default message
       return rejectWithValue(error.response?.data || "Failed to remove like");
     }
   }
 );
 
-// ✅ Fetch like status (GET)
 export const fetchPostLikeStatus = createAsyncThunk(
   "likes/fetchPostLikeStatus",
   async (postId, { rejectWithValue }) => {
@@ -55,9 +51,8 @@ export const fetchPostLikeStatus = createAsyncThunk(
         headers: getAuthHeaders(),
       });
 
-      return response.data; // Response from the server
+      return response.data;
     } catch (error) {
-      // Error handling: Return server response if available or fallback to a default message
       return rejectWithValue(error.response?.data || "Failed to fetch like status");
     }
   }

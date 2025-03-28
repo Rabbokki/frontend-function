@@ -134,6 +134,10 @@ export default function AccountPage() {
     else console.log("No access token found");
     }, [dispatch]);
 
+  useEffect(() => {
+    console.log(userData)
+  }, [userData]);
+
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");

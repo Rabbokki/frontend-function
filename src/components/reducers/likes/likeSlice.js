@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "./likeThunk";
 
 const initialState = {
-  likedPosts: [], // Ensure it's initialized as an empty array
+  likedPosts: [],
   loading: false,
   error: null,
 };
