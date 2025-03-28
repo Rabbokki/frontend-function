@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { fetchPosts } from "../../components/reducers/post/postThunk";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,6 +14,10 @@ import "./search-list.css";
 const SearchList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get("query")?.toLowerCase() || "";
+
   const { posts, loading, error } = useSelector((state) => state.posts);
   const [likedPosts, setLikedPosts] = useState({});
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -21,6 +25,10 @@ const SearchList = () => {
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
+
+  const filteredPosts = query
+  ? posts.filter((post) => post.title.toLowerCase().includes(query))
+  : posts;
 
   const toggleLike = async (postId) => {
     try {
@@ -52,8 +60,8 @@ const SearchList = () => {
   return (
     <div className="container">
       <div className="row">
-        {posts.length > 0 ? (
-          posts.map((liquor, index) => (
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((liquor, index) => (
             <div key={index} className="col-md-3">
               <Container>
                 <Row>

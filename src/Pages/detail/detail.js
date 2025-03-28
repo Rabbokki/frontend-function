@@ -5,7 +5,7 @@ import { fetchUserData } from "../../components/reducers/user/userThunk";
 import { fetchPostById, deletePost } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
 import "./detail.css";
 
 const DetailPage = () => {
@@ -178,6 +178,7 @@ const DetailPage = () => {
         <span className="views">
           <FontAwesomeIcon icon={faEye} className="eye-icon" /> {postDetail.viewCount}
           <FontAwesomeIcon icon={faHeart} className="heart-icon"/> {postDetail.likeCount}
+          <FontAwesomeIcon icon={faStar} className="star-icon" />  {postDetail.averageRating ? postDetail.averageRating.toFixed(1) : 'No rating'}
         </span>
         <p className="product-price">{postDetail.price}원</p>
         <p className="product-content">{postDetail.content}</p>

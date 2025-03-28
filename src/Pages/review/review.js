@@ -40,14 +40,13 @@ const Review = () => {
           <div className="review-header">
             <div className="avatar"></div>
             <div className="user-info">
-              <span className="username">{review.account?.accountId || "Unknown User"}</span>
-              <span className="review-date">{review.date || "No Date"}</span>
+              <span className="username">{review.nickname || "Unknown User"}</span>
+              <span className="review-date">{review.createdAt || "No Date"}</span>
             </div>
             <div className="rating">{"★".repeat(review.rating)}</div>
           </div>
-          <div className="store-info">판매처: <span className="store-name">{review.store || "Unknown Store"}</span></div>
-          {review.image && <img src={review.image} alt="Product" className="review-image" />}
-          <p className="review-content">{review.content}</p>
+            {review.image && <img src={review.image} alt="Product" className="review-image" />}
+            <p className="review-content">{review.content}</p>
         </div>
       ))}
     </div>

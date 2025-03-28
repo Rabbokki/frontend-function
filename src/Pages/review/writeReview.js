@@ -23,6 +23,10 @@ const WriteReview = ({ onSubmit }) => {
     else console.log("No access token found");
     }, [dispatch]);
 
+    useEffect(() => {
+      console.log(userData)
+    }, [userData]);
+
   useEffect(() => {
     return () => {
         images.forEach((image) => URL.revokeObjectURL(image));
@@ -44,19 +48,18 @@ const WriteReview = ({ onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!userData || !userData.id) {
+    if (!userData || !userData.accountId) {
         alert("User data is not available.");
         return;
       }
 
-    const reviewData = { postId, accountId: userData.id, rating, content };
+    const reviewData = { postId, accountId: userData.accountId, rating, content };
   
     if (!content || !rating) {
       alert("모든 필드를 입력해야 합니다.");
       return;
     }
   
-    // Use JSON format in the body of the request
     dispatch(postReview(reviewData));
   
     setRating(0);

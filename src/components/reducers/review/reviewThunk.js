@@ -29,13 +29,15 @@ export const fetchReviews = createAsyncThunk(
 
   export const postReview = createAsyncThunk(
     "reviews/postReview",
-    async ({ postId, rating, content }, { rejectWithValue }) => {
+    async ({ postId, accountId, rating, content }, { rejectWithValue }) => {
       try {
+        console.log("Sending review data:", { postId, accountId, rating, content });
         const response = await axios.post(
           `http://localhost:8081/reviews/${postId}`,
-          { rating, content }, 
+          { accountId, rating, content }, 
           { headers: { ...getAuthHeaders(), "Content-Type": "application/json" } } 
         );
+        console.log(response.data)
         return response.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);

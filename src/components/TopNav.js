@@ -13,23 +13,34 @@ const TopNav = () => {
   const navigate = useNavigate()
   const loggedIn = useSelector((state) => state.auth.loggedIn);
   const inputRef = useRef(null)
-  const onSearch = ()=>{
-    const searchText = inputRef.current.value;
-    if(searchText){
-      axios.get(`/api/liqour`)
-      .then((response) =>{
-        if(response.data.length > 0){
-          alert("검색이 되었습니다")
-        }else{
-          alert("검색결과가 없습니다");
-        }
-      })
-      .catch((error)=>{
-        alert("오류")
-      });
+
+  const onSearch = () => {
+    const searchText = inputRef.current.value.trim();
+    if (searchText) {
+      navigate(`/search-list?query=${encodeURIComponent(searchText)}`);
     }
-    inputRef.current.value='';
+    inputRef.current.value = "";
   };
+  
+
+
+  // const onSearch = ()=>{
+  //   const searchText = inputRef.current.value;
+  //   if(searchText){
+  //     axios.get(`/api/liqour`)
+  //     .then((response) =>{
+  //       if(response.data.length > 0){
+  //         alert("검색이 되었습니다")
+  //       }else{
+  //         alert("검색결과가 없습니다");
+  //       }
+  //     })
+  //     .catch((error)=>{
+  //       alert("오류")
+  //     });
+  //   }
+  //   inputRef.current.value='';
+  // };
 
   return (
     <div>
