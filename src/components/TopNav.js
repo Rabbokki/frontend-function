@@ -57,7 +57,6 @@ const TopNav = () => {
               <NavDropdown.Item as={Link} to={"/wine"}>Wine</NavDropdown.Item>
               <NavDropdown.Item as={Link} to={"/vodka"}>Vodka</NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link>Features</Nav.Link>
           </Nav>
             <div className='searchBox'>
               <input type='text' placeholder='category' ref={inputRef} className='searchInput'></input>

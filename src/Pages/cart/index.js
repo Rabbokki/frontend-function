@@ -19,8 +19,6 @@ function CartPage() {
           headers: { Access_Token: accessToken },
         })
         .then((res) => {
-          console.log("이건 토큰", accessToken);
-          console.log("이건 데이터", res.data);
           setCartList(res.data);
         })
         .catch((err) => {
@@ -37,9 +35,9 @@ function CartPage() {
     const res = await axios.get(`${baseUrl}/cart/find`, {
       headers: { Access_Token: accessToken },
     });
-    setCartList(res.data)
+    setCartList(res.data);
 
-  }
+  };
   const handleplus = async(id)=>{
     await axios.patch(`${baseUrl}/cart/update/${id}?status=+1` , {} ,{
       headers: {  Access_Token: accessToken },
@@ -47,22 +45,28 @@ function CartPage() {
     const res = await axios.get(`${baseUrl}/cart/find`, {
       headers: { Access_Token: accessToken },
     });
+    setCartList(res.data);
+  };
+  
+  const handleDelete = async(id)=>{
+    await axios.delete(`${baseUrl}/cart/delete/${id}` , {
+      headers: {Access_Token: accessToken},
+    });
+    const res = await axios.get(`${baseUrl}/cart/find`,{
+      headers: {Access_Token: accessToken},
+    });
     setCartList(res.data)
   }
 
 
   
-  let price = cartList.reduce((acc, item)=>{
-    return acc + item.price;
-  }, 0)
-  let total = price.toLocaleString();
-  console.log("ASDASDASDASD", total)
   
+
   
 
 
 
-
+  let price = cartList.reduce((acc, item)=>acc+(item.count * item.price), 0).toLocaleString();
   return (
     <div className="top">
       <h1>Cart Page</h1>
@@ -85,9 +89,9 @@ function CartPage() {
                 </div>
                 <div className="cart-item-price">
                   {/* 수정해야함 */}
-                <h3>{item.price.toLocaleString()}원</h3>
+                <h3>{(item.count * item.price).toLocaleString()}원</h3>
                 </div>
-                <button className="cart-item-remove">삭제</button>
+                <button className="cart-item-remove" onClick={()=>{handleDelete(item.id)}}>삭제</button>
               </div>
             </div>
           ))
@@ -98,7 +102,7 @@ function CartPage() {
         <div className="cart-total">
           <h2>
             총 결제 금액{" "}
-            {total}원
+            {price}원
           </h2>
           <button>결제 하기</button>
         </div>
