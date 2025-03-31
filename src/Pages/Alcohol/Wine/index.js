@@ -5,17 +5,18 @@ import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 
 
 function Wine(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
   useEffect(()=>{
-    axios.get("/api/post")
-    .then(response=>{
-      setPost(response.data)
+    axios.get(`${baseUrl}/post/category/WINE`)
+    .then((res)=>{
+      setPost(res.data)
     })
-    
   },[])
   return(
     <div>
@@ -28,9 +29,10 @@ function Wine(){
                 Navigate(`/detail/${x.id}`)
               }}>
                 <img
-                  src="/image/choice.jpg"
-                  style={{ width: "150px", height: "150px" }}
-                ></img>
+                        src={x.imageUrls?.[0]}
+                        alt="product"
+                        className="img-fluid product-image"
+                      />
                 <h3>{x.title}</h3>
                 <p>
                   <strong>PRICE : </strong>
