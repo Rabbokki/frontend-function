@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { fetchUserData } from '../../components/reducers/user/userThunk';
 import { postReview } from '../../components/reducers/review/reviewThunk.js';
 import './writeReview.css';
 
 const WriteReview = ({ onSubmit }) => {
-  const dispatch = useDispatch(); // Added missing dispatch
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userData } = useSelector((state) => state.user);
-  const { title, image, postId } = useLocation().state || {}; // Get details from location state
+  const { title, image, postId } = useLocation().state || {};
   const [rating, setRating] = useState(0);
   const [images, setImages] = useState([]);
   const [hover, setHover] = useState(0);
