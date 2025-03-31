@@ -10,12 +10,12 @@ import axios from "axios";
 function Vodka(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
   useEffect(()=>{
-    axios.get("/api/post")
-    .then(response=>{
-      setPost(response.data)
+    axios.get(`${baseUrl}/post/category/VODKA`)
+    .then((res)=>{
+      setPost(res.data)
     })
-    
   },[])
   return(
     <div>
@@ -28,9 +28,10 @@ function Vodka(){
                 Navigate(`/detail/${x.id}`)
               }}>
                 <img
-                  src="/image/choice.jpg"
-                  style={{ width: "150px", height: "150px" }}
-                ></img>
+                        src={x.imageUrls?.[0]}
+                        alt="product"
+                        className="img-fluid product-image"
+                      />
                 <h3>{x.title}</h3>
                 <p>
                   <strong>PRICE : </strong>
