@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Await, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPostById, deletePost } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faEye, faStar, faL } from "@fortawesome/free-solid-svg-icons";
 import "./detail.css";
+import axios from "axios";
 
 const DetailPage = () => {
   const navigate = useNavigate();
@@ -20,6 +21,10 @@ const DetailPage = () => {
   const [localLikeCount, setLocalLikeCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const baseUrlsee = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
+
+
+  const [cartAdd ,setCartAdd] = useState(false)
 
   useEffect(() => {
     dispatch(fetchPostById(id));
@@ -178,6 +183,18 @@ const DetailPage = () => {
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">Error: {error}</p>;
   if (!postDetail) return <p className="not-found">Post not found.</p>;
+  const accessToken = localStorage.getItem("accessToken");
+  console.log("이것은 토큰이여" , accessToken)
+  console.log(postDetail)
+  const handleCartAdd = async()=>{
+    await axios.post(`${baseUrlsee}/cart/add/${id}` , {} , {
+      headers: { Access_Token: accessToken} ,
+    }).catch((err)=>{
+      console.log("이것은 에러여" , err)
+    })
+    setCartAdd(true);
+    alert("장바구니에 추가되었습니다.");
+  }
 
   return (
     <div className="detail-page">
@@ -251,6 +268,14 @@ const DetailPage = () => {
           <button onClick={handleDelete} className="delete">
             삭제
           </button>
+          {/* 장바구니 */}
+          <button
+            onClick={handleCartAdd}
+            className="cart"
+          >
+            장바구니
+          </button>
+          
         </div>
       </div>
     </div>
