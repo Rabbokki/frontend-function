@@ -1,3 +1,6 @@
+.col-md-3 {
+  padding: 0 10px; /* 각 컬럼의 좌우 패딩을 10px로 설정 */
+}
 .detail-page {
   display: flex;
   justify-content: center;
@@ -161,4 +164,8 @@
 
 .delete:hover {
   background-color: #cc0000;
+}
+.cart {
+  background-color: rgb(156, 20, 156);
+  color: white;
 }

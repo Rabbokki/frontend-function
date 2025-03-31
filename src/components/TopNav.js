@@ -44,7 +44,7 @@ const TopNav = () => {
 
   return (
     <div>
-      <Navbar bg="light" data-bs-theme="light">
+      <Navbar bg="light" data-bs-theme="light" style={{width:'100%'}}>
         <Container>
           <Navbar.Brand href="/">
             <img src="/image/logo.jpg" style={{ width: "100px", height: "auto" }} alt="Logo" />
