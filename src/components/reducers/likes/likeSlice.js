@@ -1,55 +1,43 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { addPostLike, removePostLike, fetchPostLikeStatus } from "./likeThunk";
-
-const initialState = {
-  likedPosts: [],
-  loading: false,
-  error: null,
-};
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchPostLikeStatus, addPostLike, removePostLike } from './likeThunk';
 
 const likeSlice = createSlice({
-  name: 'like',
-  initialState,
+  name: 'likes',
+  initialState: {
+    likedPosts: [],
+    loading: false,
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(addPostLike.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(addPostLike.fulfilled, (state, action) => {
-        state.loading = false;
-        if (!state.likedPosts.includes(action.payload.postId)) {
-          state.likedPosts.push(action.payload.postId);
-        }
-      })
-      .addCase(addPostLike.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(removePostLike.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(removePostLike.fulfilled, (state, action) => {
-        state.loading = false;
-        state.likedPosts = state.likedPosts.filter(postId => postId !== action.payload.postId);
-      })
-      .addCase(removePostLike.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
       .addCase(fetchPostLikeStatus.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
       .addCase(fetchPostLikeStatus.fulfilled, (state, action) => {
         state.loading = false;
-        state.likedPosts = action.payload.likedPosts || [];
+        const postId = String(action.meta.arg); // 문자열로 변환
+        if (action.payload.data) { // 서버에서 true 반환 시
+          if (!state.likedPosts.includes(postId)) {
+            state.likedPosts.push(postId);
+          }
+        } else {
+          state.likedPosts = state.likedPosts.filter(id => id !== postId);
+        }
       })
       .addCase(fetchPostLikeStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(addPostLike.fulfilled, (state, action) => {
+        const postId = String(action.meta.arg);
+        if (!state.likedPosts.includes(postId)) {
+          state.likedPosts.push(postId);
+        }
+      })
+      .addCase(removePostLike.fulfilled, (state, action) => {
+        const postId = String(action.meta.arg);
+        state.likedPosts = state.likedPosts.filter(id => id !== postId);
       });
   },
 });

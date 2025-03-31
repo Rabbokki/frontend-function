@@ -75,12 +75,13 @@ const SearchList = () => {
                       <div className="product-info">
                         <h2 className="product-title">{liquor.title}</h2>
                         <h4 className="product-price">{liquor.price}원</h4>
-                        <h5 className="product-stock">{liquor.stock}개</h5>
+                        <p className="time-ago">{liquor.timeAgo}</p>
+                        {/* <h5 className="product-stock">{liquor.stock}개</h5> */}
                       </div>
                     </div>
-                    <Button variant="light" className="like-button" onClick={() => toggleLike(liquor.id)}>
+                    {/* <Button variant="light" className="like-button" onClick={() => toggleLike(liquor.id)}>
                       <FaHeart color={likedPosts[liquor.id] ? "red" : "gray"} />
-                    </Button>
+                    </Button> */}
                   </Col>
                 </Row>
               </Container>
