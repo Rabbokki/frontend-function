@@ -6,11 +6,12 @@ import { setPasswordLength } from "../../components/reducers/user/userSlice";
 import { registerUser } from "../../components/reducers/user/userThunk";
 import "./authenticate.css";
 import AuthenticateButton from "../../components/buttons/AuthenticateButton";
+import { useNavigate } from "react-router-dom";
 
 const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
   const dispatch = useDispatch();
   const { loggedIn, loading, error } = useSelector((state) => state.auth);
-
+  const navigate = useNavigate();
   const loginHandler = (event) => {
     event.preventDefault();
     const loginData = {
@@ -20,6 +21,10 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
     dispatch(login(loginData));
     dispatch(setPasswordLength(passwordRef.current.value.length));
   };
+  
+  const REST_API_KEY = "59863455ad799376c5e0310b92c4e537";
+    const REDIRECT_URI = "http://localhost:3000/login";
+    const response_type = "code"
 
   return (
     <div className="auth-background">
@@ -33,6 +38,7 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
               <p className="auth-footer">
                 <AuthenticateButton clickEvent={loginHandler} showLogin={showLogin} />
               </p>
+              <a href={`https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`}>asdasd </a>
               <button onClick={() => setShowLogin(!showLogin)} className="toggle-auth-button">
                 {showLogin ? "회원가입" : "로그인"}
               </button>
