@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../components/reducers/authenticate/authThunk";
+import { login, googleLogin } from "../../components/reducers/authenticate/authThunk";
 import { setPasswordLength } from "../../components/reducers/user/userSlice";
 import { registerUser } from "../../components/reducers/user/userThunk";
 import "./authenticate.css";
@@ -12,13 +12,17 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
   const { loggedIn, loading, error } = useSelector((state) => state.auth);
 
   const loginHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault(); // 폼 제출 기본 동작 방지
     const loginData = {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
     dispatch(login(loginData));
     dispatch(setPasswordLength(passwordRef.current.value.length));
+  };
+
+  const handleGoogleLogin = () => {
+    dispatch(googleLogin());
   };
 
   return (
@@ -28,16 +32,33 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="login-box">
             <h2 className="auth-title">로그인</h2>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
-              <input type="text" placeholder="이메일" ref={emailRef} className="login-input" /><br />
-              <input type="password" placeholder="비밀번호" ref={passwordRef} className="login-input" /><br />
-              <p className="auth-footer">
-                <AuthenticateButton clickEvent={loginHandler} showLogin={showLogin} />
-              </p>
-              <button onClick={() => setShowLogin(!showLogin)} className="toggle-auth-button">
-                {showLogin ? "회원가입" : "로그인"}
-              </button>
-              {loading && <p>Loading...</p>}
-              {error && <p>{error}</p>}
+              <form onSubmit={loginHandler}>
+                <input
+                  type="text"
+                  placeholder="이메일"
+                  ref={emailRef}
+                  className="login-input"
+                />
+                <br />
+                <input
+                  type="password"
+                  placeholder="비밀번호"
+                  ref={passwordRef}
+                  className="login-input"
+                />
+                <br />
+                <p className="auth-footer">
+                  <AuthenticateButton clickEvent={loginHandler} showLogin={showLogin} />
+                  <button type="button" onClick={handleGoogleLogin} className="google-login-btn">
+                    Google 로그인
+                  </button>
+                </p>
+                <button type="button" onClick={() => setShowLogin(!showLogin)} className="toggle-auth-button">
+                  {showLogin ? "회원가입" : "로그인"}
+                </button>
+                {loading && <p>Loading...</p>}
+                {error && <p>{error}</p>}
+              </form>
             </motion.div>
           </motion.div>
         </div>
