@@ -133,38 +133,32 @@ export default function AccountPage() {
       navigate('/authenticate');
     } else if (!userData && !loading) {
       console.log("Fetching user data with token:", accessToken);
-      dispatch(fetchUserData(accessToken)).unwrap()
+      dispatch(fetchUserData(accessToken))
+        .unwrap()
         .catch((err) => {
           console.error("Fetch user data failed:", err);
-          navigate('/authenticate'); // 실패 시 리다이렉션
+          navigate('/authenticate');
         });
     }
   }, [dispatch, navigate, userData, loading]);
-
-  useEffect(() => {
-    console.log("userData updated:", userData);
-    console.log("loading:", loading);
-    console.log("error:", error);
-  }, [userData, loading, error]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     dispatch(logout());
-    dispatch({ type: 'user/logout' });
-    navigate('/');
+    navigate('/authenticate');
   };
 
   if (loading) {
-    return <p>Loading user data...</p>;
+    return <p>사용자 데이터를 불러오는 중...</p>;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p>오류: {error}</p>;
   }
 
   if (!userData) {
-    return null;
+    return <p>사용자 데이터를 불러오는 중입니다...</p>;
   }
 
   return (

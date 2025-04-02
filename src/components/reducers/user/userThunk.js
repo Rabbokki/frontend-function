@@ -37,13 +37,16 @@ export const fetchUserData = createAsyncThunk(
   async (accessToken, { rejectWithValue }) => {
     try {
       console.log("Sending request with Access_Token:", accessToken);
-      const response = await axios.get('/account/me', {
-        headers: { "Access_Token": accessToken }
-      });
-      return response.data.data;
+      const config = {
+        headers: { "Access_Token": accessToken }, // 헤더 이름 확인
+      };
+      console.log("Request config:", config); // 요청 설정 로그 추가
+      const response = await axios.get('/account/me', config);
+      console.log("fetchUserData response:", response.data);
+      return response.data.data || response.data;
     } catch (error) {
       console.error("fetchUserData error:", error.response?.data || error.message);
-      return rejectWithValue("사용자 정보를 가져오는 데 실패했습니다.");
+      return rejectWithValue(error.response?.data?.msg || "사용자 정보를 가져오는 데 실패했습니다.");
     }
   }
 );
