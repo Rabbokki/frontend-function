@@ -42,6 +42,7 @@
 import axios from 'axios';
 import { loginStart, loginSuccess, loginFailure } from './authSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchUserData } from '../user/userThunk';
 
 // 로그인 thunk
 export const login = (loginData) => async (dispatch) => {
@@ -62,17 +63,27 @@ export const login = (loginData) => async (dispatch) => {
   }
 };
 
-// fetchUserData thunk (userThunk에서 이동)
-export const fetchUserData = createAsyncThunk(
-  'user/fetchUserData',
-  async (accessToken, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('/account/me', {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue("사용자 정보를 가져오는 데 실패했습니다.");
-    }
+export const googleLogin = () => async (dispatch) => {
+  dispatch(loginStart());
+  try {
+    // Google OAuth2 인증 페이지로 리다이렉션
+    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
+  } catch (error) {
+    dispatch(loginFailure("Google 로그인 시작에 실패했습니다."));
   }
-);
+};
+
+// fetchUserData thunk (userThunk에서 이동)
+// export const fetchUserData = createAsyncThunk(
+//   'user/fetchUserData',
+//   async (accessToken, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get('/account/me', {
+//         headers: { Authorization: `Bearer ${accessToken}` }
+//       });
+//       return response.data.data;
+//     } catch (error) {
+//       return rejectWithValue("사용자 정보를 가져오는 데 실패했습니다.");
+//     }
+//   }
+// );

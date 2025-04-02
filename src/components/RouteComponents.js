@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Whiskey from "../pages/alcohol/Whiskey";
+import Whiskey from "../Pages/Alcohol/Whiskey";
 import { Routes, Route } from "react-router-dom";
 import Authenticate from "../pages/authenticate/authenticate";
 import Account from "../pages/account/accountPage";
@@ -22,6 +22,26 @@ import WriteReviews from '../pages/review/writeReview'
 import kakaoLoginPage from '../pages/login/index';
 import { useEffect, useState } from "react";
 import axios from "axios";
+
+
+
+
+import Authenticate from "../Pages/authenticate/authenticate";
+import Callback from "../Pages/authenticate/Callback";
+import Account from "../Pages/Account/accountPage";
+import AccountEdit from "../Pages/Account/editDetails";
+import Champagne from '../Pages/Alcohol/Champagne/index';
+import Wine from '../Pages/Alcohol/Wine/index';
+import Vodka from '../Pages/Alcohol/Vodka/index';
+import NewPost from '../Pages/post/newPost';
+import UpdatePost from '../Pages/post/updatePost';
+import CartPage from '../Pages/cart/index';
+import SearchList from '../Pages/SearchList/search-list';
+import DetailPage from '../Pages/detail/detail'
+import ChatPage from '../Pages/Chat/ChatPage'
+import ChatRoom from '../Pages/Chat/ChatRoom'
+import Reviews from '../Pages/review/review'
+import WriteReviews from '../Pages/review/writeReview'
 
 const RouteComponents = () => {
   const [userKakaoToken , setUserKakaoToken] = useState([])
@@ -67,6 +87,7 @@ const RouteComponents = () => {
     <div>
       <Routes>
         <Route path="/authenticate" element={<Authenticate/>}/>
+        <Route path="/callback" element={<Callback />} />
         <Route path="/account" element={<Account/>}/>
         <Route path="/account/edit" element={<AccountEdit/>}/>
         <Route path="/newPost" element={<NewPost></NewPost>}/>

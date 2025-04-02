@@ -86,3 +86,17 @@
   background: rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
+
+.google-login-btn {
+  background-color: #4285f4;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.google-login-btn:hover {
+  background-color: #357abd;
+}

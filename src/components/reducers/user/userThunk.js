@@ -32,17 +32,21 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
-
 export const fetchUserData = createAsyncThunk(
   'user/fetchUserData',
   async (accessToken, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/account/me', {
-        headers: { "Access_Token": accessToken } // 백엔드와 헤더 이름 일치
-      });
-      return response.data.data; // "data"만 반환하도록 수정
+      console.log("Sending request with Access_Token:", accessToken);
+      const config = {
+        headers: { "Access_Token": accessToken }, // 헤더 이름 확인
+      };
+      console.log("Request config:", config); // 요청 설정 로그 추가
+      const response = await axios.get('/account/me', config);
+      console.log("fetchUserData response:", response.data);
+      return response.data.data || response.data;
     } catch (error) {
-      return rejectWithValue("사용자 정보를 가져오는 데 실패했습니다.");
+      console.error("fetchUserData error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data?.msg || "사용자 정보를 가져오는 데 실패했습니다.");
     }
   }
 );
@@ -58,7 +62,7 @@ export const updateUserData = createAsyncThunk(
 
     try {
       const response = await axios.put('/account/me', updatedData, {
-        headers: { Authorization: `${accessToken}` }
+        headers: { "Access_Token": accessToken }
       });
       return response.data;
     } catch (error) {
@@ -72,7 +76,7 @@ export const fetchUserPosts = createAsyncThunk(
   async (accessToken, { rejectWithValue }) => {
     try {
       const response = await axios.get('/post/user/posts', {
-        headers: { Authorization: `Bearer ${accessToken}` }
+        headers: { "Access_Token": accessToken }
       });
       return response.data;
     } catch (error) {

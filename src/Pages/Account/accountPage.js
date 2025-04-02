@@ -122,41 +122,50 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
 
 export default function AccountPage() {
   const dispatch = useDispatch();
-  const { userData } = useSelector((state) => state.user);
-  const navigate = useNavigate()
+  const { userData, loading, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) {
+    console.log("AccountPage - Access Token from localStorage:", accessToken);
+    if (!accessToken) {
+      console.log("No access token found");
+      navigate('/authenticate');
+    } else if (!userData && !loading) {
       console.log("Fetching user data with token:", accessToken);
-      dispatch(fetchUserData(accessToken));
+      dispatch(fetchUserData(accessToken))
+        .unwrap()
+        .catch((err) => {
+          console.error("Fetch user data failed:", err);
+          navigate('/authenticate');
+        });
     }
-    else console.log("No access token found");
-    }, [dispatch]);
-
-  useEffect(() => {
-    console.log(userData)
-  }, [userData]);
+  }, [dispatch, navigate, userData, loading]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    dispatch(logout()); // Reset auth state
-    dispatch({ type: 'user/logout' }); // Reset user data
-    navigate('/'); // Redirect to home
+    dispatch(logout());
+    navigate('/authenticate');
   };
 
-
-    return (
-      <div>
-        {userData ? (
-          <div className="account-container">
-            <AccountDetails userData={userData} handleLogout={handleLogout} navigate={navigate}/>
-            {/* <ProductsListing userPosts={userPosts} navigate={navigate}/> */}
-          </div>
-        ) : (
-          <p>Loading user data...</p>
-        )}
-      </div>
-    );
+  if (loading) {
+    return <p>사용자 데이터를 불러오는 중...</p>;
   }
+
+  if (error) {
+    return <p>오류: {error}</p>;
+  }
+
+  if (!userData) {
+    return <p>사용자 데이터를 불러오는 중입니다...</p>;
+  }
+
+  return (
+    <div>
+      <div className="account-container">
+        <AccountDetails userData={userData} handleLogout={handleLogout} navigate={navigate} />
+      </div>
+    </div>
+  );
+}
