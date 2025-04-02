@@ -18,11 +18,6 @@ export const initiatePayment = createAsyncThunk(
       const response = await axios.post(
         "http://localhost:8081/payment/ready",
         { postId, amount },
-  async (paymentData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(
-        'http://localhost:8081/payment/ready',
-        paymentData,
         {
           headers: getAuthHeaders(),
           withCredentials: true,

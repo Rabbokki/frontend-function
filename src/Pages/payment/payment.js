@@ -1,18 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchPostById } from "../../components/reducers/post/postThunk";
 import { initiatePayment } from "../../components/reducers/payment/paymentThunk";
 
 const Payment = () => {
-  const location = useLocation();
-  const { postId } = location.state || {};
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  console.log("Received state in Payment:", location.state);
-
   const { id: postId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,11 +17,6 @@ const Payment = () => {
       console.error("No postId found!");
       return;
     }
-  
-      console.error("No postId found in URL!");
-      return;
-    }
-
     dispatch(fetchPostById(postId));
   }, [postId, dispatch]);
 
@@ -37,8 +24,6 @@ const Payment = () => {
     if (!postDetail) return;
 
     try {
-      const amount = postDetail.price;
-      const response = await dispatch(initiatePayment({ postId, amount })).unwrap();
       const { title, price } = postDetail;
       const amount = price;
       const quantity = 1;
@@ -62,8 +47,11 @@ const Payment = () => {
 
       const response = await dispatch(initiatePayment(paymentData)).unwrap();
 
-      if (response.next_redirect_pc_url) {
+      if (response?.next_redirect_pc_url) {
         window.location.href = response.next_redirect_pc_url;
+      } else {
+        console.error("No redirect URL received:", response);
+        alert("결제 페이지 이동에 실패했습니다.");
       }
     } catch (error) {
       console.error("Payment initiation failed:", error);
@@ -78,10 +66,14 @@ const Payment = () => {
   return (
     <div className="payment-page">
       <h1>결제 페이지</h1>
-      <img src={postDetail.imageUrls?.[0]} alt={postDetail.title} className="product-image" />
+      <img
+        src={postDetail?.imageUrls?.[0] || "/default-image.jpg"}
+        alt={postDetail?.title || "상품 이미지"}
+        className="product-image"
+      />
       <h2>{postDetail.title}</h2>
       <p>{postDetail.price}원</p>
-      <button onClick={handlePayment} disabled={paymentLoading}>
+      <button onClick={handlePayment} disabled={!postDetail || paymentLoading}>
         {paymentLoading ? "결제 요청 중..." : "결제하기"}
       </button>
       {paymentError && <p className="error">결제 오류: {paymentError}</p>}

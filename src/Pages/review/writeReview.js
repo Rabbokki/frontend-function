@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { fetchUserData } from '../../components/reducers/user/userThunk';
+import { fetchUserData } from '../../components/reducers/user/userThunk.js';
 import { postReview } from '../../components/reducers/review/reviewThunk.js';
 import './writeReview.css';
 
