@@ -38,6 +38,7 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
               <input type="text" placeholder="이메일" ref={emailRef} className="login-input" /><br />
               <input type="password" placeholder="비밀번호" ref={passwordRef} className="login-input" /><br />
+              {/* 카카오 로그인 */}
               <button onClick={handleKakaLogin}><img src='./image/kakao_login_medium_narrow.png'></img></button>
               <p className="auth-footer">
                 <AuthenticateButton clickEvent={loginHandler} showLogin={showLogin} />
