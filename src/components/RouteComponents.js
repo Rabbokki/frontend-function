@@ -18,8 +18,46 @@ import ChatPage from '../pages/Chat/ChatPage'
 import ChatRoom from '../pages/Chat/ChatRoom'
 import Reviews from '../pages/review/review'
 import WriteReviews from '../pages/review/writeReview'
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const RouteComponents = () => {
+  const [userKakaoToken , setUserKakaoToken] = useState([])
+  const [userData , setUserData] =useState([]);
+  const code = new URL(window.location.href).searchParams.get("code")
+  const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
+  const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
+  const kakaoUrl = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${REST_API_KEY}&code=${code}`
+  console.log(code)
+  useEffect(()=>{
+    if(code){
+      axios.post(`${baseUrl}/user`, {code: code})
+      .then((res)=>{
+        console(res.data)
+      })
+      .catch((err)=>{
+        console.log("요청 실패", err)
+      })
+    }
+  })
+
+  // useEffect(()=>{
+  //   if(code){
+  //     axios.post(`${kakaoUrl}`)
+  //     .then((res)=>(
+  //       setUserKakaoToken(res.data.access_token)
+  //       .axios.get("https://kapi.kakao.com/v2/user/me" , {
+  //         Auth: {bearerToken : userKakaoToken}
+  //       })
+  //       .then((res)=>(
+  //         setUserData(res.data)
+  //         .console.log(userData)
+  //       ))
+  //     ))
+  //     .catch((err)=>{
+  //     })
+  //   }
+  // },[code])
   return (
     <div>
       <Routes>
