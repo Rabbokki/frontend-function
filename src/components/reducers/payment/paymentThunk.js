@@ -18,11 +18,20 @@ export const initiatePayment = createAsyncThunk(
       const response = await axios.post(
         "http://localhost:8081/payment/ready",
         { postId, amount },
+  async (paymentData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8081/payment/ready',
+        paymentData,
         {
           headers: getAuthHeaders(),
           withCredentials: true,
         }
       );
+
+      const { next_redirect_pc_url, next_redirect_mobile_url } = response.data.data;
+      window.location.href = next_redirect_pc_url || next_redirect_mobile_url; // Redirect user
+
       return response.data;
     } catch (error) {
       console.error("Error initiating payment:", error.response?.data || error.message);

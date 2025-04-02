@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchPostById } from "../../components/reducers/post/postThunk";
 import { initiatePayment } from "../../components/reducers/payment/paymentThunk";
 
@@ -12,6 +13,10 @@ const Payment = () => {
 
   console.log("Received state in Payment:", location.state);
 
+  const { id: postId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { postDetail, loading, error } = useSelector((state) => state.posts);
   const { paymentUrl, loading: paymentLoading, error: paymentError } = useSelector((state) => state.payment);
 
@@ -21,6 +26,10 @@ const Payment = () => {
       return;
     }
   
+      console.error("No postId found in URL!");
+      return;
+    }
+
     dispatch(fetchPostById(postId));
   }, [postId, dispatch]);
 
@@ -30,6 +39,28 @@ const Payment = () => {
     try {
       const amount = postDetail.price;
       const response = await dispatch(initiatePayment({ postId, amount })).unwrap();
+      const { title, price } = postDetail;
+      const amount = price;
+      const quantity = 1;
+      const userEmail = localStorage.getItem("userEmail");
+      const itemName = title;
+
+      const paymentData = {
+        postId,
+        amount,
+        quantity,
+        userEmail,
+        itemName,
+        totalAmount: amount * quantity,
+        vatAmount: Math.round(amount * 0.1),
+        approvalUrl: "http://localhost:8081/payment/success",
+        cancelUrl: "http://localhost:8081/payment/cancel",
+        failUrl: "http://localhost:8081/payment/fail",
+      };
+
+      console.log("From payment page, here's paymentData:", paymentData);
+
+      const response = await dispatch(initiatePayment(paymentData)).unwrap();
 
       if (response.next_redirect_pc_url) {
         window.location.href = response.next_redirect_pc_url;
