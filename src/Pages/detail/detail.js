@@ -169,6 +169,22 @@ const DetailPage = () => {
     }
 };
 
+  const handleBuyNow = () => {
+    if (!postDetail) {
+      alert("상품 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+
+    navigate(`/payment/${id}`, {
+      state: {
+        title: postDetail.title,
+        price: postDetail.price,
+        image: postDetail.imageUrls && postDetail.imageUrls[0],
+        postId: id,
+      },
+    });
+  };
+
   const handleDelete = () => {
     if (window.confirm('정말 지울 거냐?')) {
       const accessToken = localStorage.getItem('accessToken');
@@ -244,7 +260,7 @@ const DetailPage = () => {
           >
             번개톡
           </button>
-          <button className="buy-now">바로구매</button>
+          <button onClick={handleBuyNow} className="buy-now">바로구매</button>
           <button
             onClick={() =>
               navigate(`/detail/${id}/reviews`, {
