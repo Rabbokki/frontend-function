@@ -19,6 +19,7 @@ import ChatPage from '../pages/Chat/ChatPage'
 import ChatRoom from '../pages/Chat/ChatRoom'
 import Reviews from '../pages/review/review'
 import WriteReviews from '../pages/review/writeReview'
+import kakaoLoginPage from '../pages/login/index';
 
 const RouteComponents = () => {
   return (
