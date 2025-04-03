@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest # 작업이 실행될 환경
+    runs-on: ubuntu-latest
     steps:
     - name: 체크아웃
       uses: actions/checkout@v3
@@ -16,7 +16,10 @@ jobs:
         username: ${{ secrets.DOCKER_USER_NAME }}
         password: ${{ secrets.DOCKER_USER_PW }}
     - name: 이미지 빌드
-      run: docker build -t ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-front .
+      run: |
+        docker build -t ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-front .
+        # 빌드 실패 시 디버깅을 위해 컨테이너 내부 확인 (선택 사항)
+        docker run --rm ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-front ls -la /app/src/pages/authenticate
     - name: 도커허브에 이미지 푸시
       run: docker push ${{ secrets.DOCKER_USER_NAME }}/${{ secrets.DOCKER_IMAGE_NAME }}-front
     - name: AWS EC2에 ssh 접속 후 배포
