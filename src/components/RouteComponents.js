@@ -29,6 +29,7 @@ import axios from "axios";
 const RouteComponents = () => {
   const [userKakaoToken , setUserKakaoToken] = useState([])
   const [userData , setUserData] =useState([]);
+  const [accessToken ,setAccessToken] = useState([])
   const code = new URL(window.location.href).searchParams.get("code")
   const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
   const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
@@ -51,6 +52,9 @@ const RouteComponents = () => {
           })
           .then((serverRespons)=>{
             console.log("서버응답 " , serverRespons.data)
+             localStorage.setItem("accessToken" , serverRespons.data.accessToken)
+
+            setAccessToken(serverRespons.data.accessToken)
           })
           .catch((serverError)=>{
             console.log("서버에러" , serverError)
@@ -63,7 +67,6 @@ const RouteComponents = () => {
       })
     }
   },[code])
-
   console.log("accessToken" , userKakaoToken)
   console.log("account정보" , userData)
   return (
