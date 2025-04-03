@@ -1,0 +1,23 @@
+.payment-success-container {
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .payment-success-container h2 {
+    color: #2ecc71; /* Green success color */
+  }
+  
+  .payment-success-container button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .payment-success-container button:hover {
+    background-color: #2980b9;
+  }
+  

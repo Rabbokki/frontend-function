@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const getAuthHeaders = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
+  const accessToken = localStorage.getItem("accessToken") || sessionStorage.getItem("tempAccessToken");
+  const refreshToken = localStorage.getItem("refreshToken") || sessionStorage.getItem("tempRefreshToken");
 
   return {
     ...(accessToken && { Access_Token: accessToken }),
@@ -15,11 +15,18 @@ export const initiatePayment = createAsyncThunk(
   "payment/initiatePayment",
   async ({ postId, amount }, { rejectWithValue }) => {
     try {
+      const headers = getAuthHeaders();
+
+      // Store tokens in sessionStorage before redirecting to KakaoPay
+      if (headers.Access_Token) sessionStorage.setItem("tempAccessToken", headers.Access_Token);
+      if (headers.Refresh) sessionStorage.setItem("tempRefreshToken", headers.Refresh);
+
       const response = await axios.post(
         "http://localhost:8081/payment/ready",
         { postId, amount },
+        paymentData,
         {
-          headers: getAuthHeaders(),
+          headers,
           withCredentials: true,
         }
       );
@@ -29,7 +36,25 @@ export const initiatePayment = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.error("Error initiating payment:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const approvePayment = createAsyncThunk(
+  "payment/approvePayment",
+  async (pgToken, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/payment/success?pg_token=${pgToken}`,
+        {
+          headers: getAuthHeaders(),
+          withCredentials: true,
+        }
+      );
+
+      return response.data;
+    } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }

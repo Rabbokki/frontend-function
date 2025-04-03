@@ -16,14 +16,14 @@ import CartPage from '../pages/cart/index';
 import SearchList from '../pages/searchList/search-list';
 import DetailPage from '../pages/detail/detail'
 import Payment from '../pages/payment/payment'
+import PaymentProcess from '../pages/payment/paymentProcess';
+import PaymentSuccess from '../pages/payment/paymentSuccess';
 import ChatPage from '../pages/Chat/ChatPage'
 import ChatRoom from '../pages/Chat/ChatRoom'
 import Reviews from '../pages/review/review'
 import WriteReviews from '../pages/review/writeReview'
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-
 
 
 const RouteComponents = () => {
@@ -84,6 +84,8 @@ const RouteComponents = () => {
         {/* 상품 상세 페이지 */}
         <Route path="/detail/:id" element={<DetailPage></DetailPage>}></Route>
         <Route path="/payment/:id" element={<Payment></Payment>}></Route>
+        <Route path="/paymentProcess" element={<PaymentProcess></PaymentProcess>}></Route>
+        <Route path="/paymentSuccess" element={<PaymentSuccess></PaymentSuccess>}></Route>
         <Route path="/chat/:roomName" element={<ChatPage />} />
         <Route path="/chatrooms" element={<ChatRoom />} />
         <Route path="/detail/:id/reviews" element={<Reviews></Reviews>}></Route>

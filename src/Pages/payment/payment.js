@@ -38,7 +38,8 @@ const Payment = () => {
         itemName,
         totalAmount: amount * quantity,
         vatAmount: Math.round(amount * 0.1),
-        approvalUrl: "http://localhost:8081/payment/success",
+        // approvalUrl: "http://localhost:8081/payment/success",
+        approvalUrl: "http://localhost:3000/paymentProcess",
         cancelUrl: "http://localhost:8081/payment/cancel",
         failUrl: "http://localhost:8081/payment/fail",
       };
