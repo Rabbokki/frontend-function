@@ -5,23 +5,23 @@ import Whiskey from "../pages/alcohol/Whiskey/index";
 import { Routes, Route } from "react-router-dom";
 import Authenticate from "../Pages/authenticate/authenticate.js";
 import Callback from "../Pages/authenticate/Callback";
-import Account from "../pages/account/accountPage";
-import AccountEdit from "../pages/account/editDetails";
-import Champagne from '../pages/alcohol/Champagne/index';
-import Wine from '../pages/alcohol/Wine/index';
-import Vodka from '../pages/alcohol/Vodka/index';
-import NewPost from '../pages/post/newPost';
-import UpdatePost from '../pages/post/updatePost';
-import CartPage from '../pages/cart/index';
-import SearchList from '../pages/searchList/search-list';
-import DetailPage from '../pages/detail/detail'
-import Payment from '../pages/payment/payment'
-import PaymentProcess from '../pages/payment/paymentProcess';
-import PaymentSuccess from '../pages/payment/paymentSuccess';
-import ChatPage from '../pages/Chat/ChatPage'
-import ChatRoom from '../pages/Chat/ChatRoom'
-import Reviews from '../pages/review/review'
-import WriteReviews from '../pages/review/writeReview'
+import Account from "../Pages/account/accountPage";
+import AccountEdit from "../Pages/account/editDetails";
+import Champagne from '../Pages/alcohol/Champagne/index';
+import Wine from '../Pages/alcohol/Wine/index';
+import Vodka from '../Pages/alcohol/Vodka/index';
+import NewPost from '../Pages/post/newPost';
+import UpdatePost from '../Pages/post/updatePost';
+import CartPage from '../Pages/cart/index';
+import SearchList from '../Pages/searchList/search-list';
+import DetailPage from '../Pages/detail/detail'
+import Payment from '../Pages/payment/payment'
+import PaymentProcess from '../Pages/payment/paymentProcess';
+import PaymentSuccess from '../Pages/payment/paymentSuccess';
+import ChatPage from '../Pages/Chat/ChatPage'
+import ChatRoom from '../Pages/Chat/ChatRoom'
+import Reviews from '../Pages/review/review'
+import WriteReviews from '../Pages/review/writeReview'
 import { useEffect, useState } from "react";
 import axios from "axios";
 
