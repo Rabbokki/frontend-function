@@ -5,15 +5,15 @@ import Whiskey from "../pages/alcohol/Whiskey/index";
 import { Routes, Route } from "react-router-dom";
 import Authenticate from "../Pages/authenticate/authenticate.js";
 import Callback from "../Pages/authenticate/Callback";
-import Account from "../Pages/account/accountPage";
-import AccountEdit from "../Pages/account/editDetails";
-import Champagne from '../Pages/alcohol/Champagne/index';
-import Wine from '../Pages/alcohol/Wine/index';
-import Vodka from '../Pages/alcohol/Vodka/index';
+import Account from "../Pages/Account/accountPage";
+import AccountEdit from "../Pages/Account/editDetails";
+import Champagne from '../Pages/Alcohol/Champagne/index';
+import Wine from '../Pages/Alcohol/Wine/index';
+import Vodka from '../Pages/Alcohol/Vodka/index';
 import NewPost from '../Pages/post/newPost';
 import UpdatePost from '../Pages/post/updatePost';
 import CartPage from '../Pages/cart/index';
-import SearchList from '../Pages/searchList/search-list';
+import SearchList from '../Pages/SearchList/search-list';
 import DetailPage from '../Pages/detail/detail'
 import Payment from '../Pages/payment/payment'
 import PaymentProcess from '../Pages/payment/paymentProcess';
