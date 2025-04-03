@@ -8,6 +8,7 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
+RUN ls -la /app/src/pages/authenticate
 RUN npm run build
 
 # Nginx를 기반으로 하는 최종 이미지
