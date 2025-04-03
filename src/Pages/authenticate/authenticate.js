@@ -20,7 +20,13 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
     dispatch(login(loginData));
     dispatch(setPasswordLength(passwordRef.current.value.length));
   };
+  //네이버 로그인
+  const NAVER_CLIENT_ID = 'SoCGXgkbeenb0805p8BQ'; // 네이버 개발자 센터에서 발급받은 클라이언트 ID
+  const NAVER_REDIRECT_URI = 'http://localhost:3000/callback'; 
+  const naverUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&redirect_uri=${NAVER_REDIRECT_URI}&state=STATE_STRING`;
 
+
+  //카카오 로그인
   const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
   const REDIRECT_URI = 'http://localhost:3000';
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
@@ -30,6 +36,10 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
 
   const handleGoogleLogin = () => {
     dispatch(googleLogin());
+  };
+
+  const handleNaverLogin = () => {
+    window.location.href = 'http://localhost:8081/oauth2/authorization/naver';
   };
 
   return (
@@ -58,6 +68,9 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
                   <AuthenticateButton clickEvent={loginHandler} showLogin={showLogin} />
                   <button type="button" onClick={handleGoogleLogin} className="google-login-btn">
                     Google 로그인
+                  </button>
+                  <button type="button" onClick={handleNaverLogin}>
+                    <img src="https://static.nid.naver.com/oauth/small_g_in.PNG" alt="Naver Login" />
                   </button>
                   {/* 카카오 로그인 */}
                   <button onClick={handleKakaLogin}><img src='./image/kakao_login_medium_narrow.png'></img></button>
