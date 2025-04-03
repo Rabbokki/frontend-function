@@ -34,7 +34,7 @@ const Callback = () => {
           navigate('/authenticate');
         });
     } else {
-      dispatch(loginFailure('유효하지 않은 Google 로그인 토큰입니다.'));
+      dispatch(loginFailure('유효하지 않은 로그인 토큰입니다.'));
       navigate('/authenticate');
     }
   }, [searchParams, dispatch, navigate]);
