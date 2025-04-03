@@ -1,0 +1,37 @@
+.naver-material-button {
+    background-color: #03C75A; /* Naver Green */
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: white;
+    cursor: pointer;
+    font-family: "Roboto", arial, sans-serif;
+    font-size: 14px;
+    height: 40px;
+    width: 183px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content properly */
+    gap: 8px; /* Adjust for better balance */
+    transition: background-color 0.218s, box-shadow 0.218s;
+}
+
+.naver-material-button-icon {
+    height: 40px; /* Keep the large size */
+    width: 40px;
+    flex-shrink: 0;
+    margin-left: 5px; /* Moves the logo slightly to the right */
+}
+
+.naver-material-button-contents {
+    font-weight: 500;
+    white-space: nowrap;
+    flex-grow: 1; /* Make sure text is balanced */
+    display: flex;
+    align-items: center; /* Center text vertically */
+}
+
+.naver-material-button:not(:disabled):hover {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  }

@@ -23,6 +23,20 @@
   background: white;
 }
 
+.social-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center-align everything */
+  width: 100%;
+  margin-top: 16px; /* Space from the login button */
+}
+
+.social-login-buttons button {
+  margin: 8px 0; /* Add spacing between buttons */
+  padding: 10px;
+  text-align: center;
+}
+
 .register-box {
   border: 1px solid #55f7a8;
   border-radius: 8px;
@@ -99,4 +113,43 @@
 
 .google-login-btn:hover {
   background-color: #357abd;
+}
+
+.kakao-login-btn {
+  all: unset;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.register-link {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #c0c0c0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.register-link:hover {
+  color: #535353;
+}
+
+.login-link {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #c0c0c0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-link:hover {
+  color: #535353;
 }

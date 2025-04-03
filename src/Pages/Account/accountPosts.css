@@ -1,0 +1,83 @@
+.account-posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .post-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    transition: box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+    padding: 8px;
+  }
+  
+  .post-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-image {
+    width: 250px;
+    height: 180px;
+    padding-right: 70px;
+    object-fit: contain;
+    background-color: #f9f9f9;
+  }
+  
+  .post-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .title-price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    padding-bottom: 30px;
+}
+  
+  .post-title {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .post-price {
+    font-size: 18px;
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  
+  .post-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .icon {
+    margin-right: 5px;
+  }
+  
+  .eye-icon {
+    color: #555;
+  }
+  
+  .heart-icon {
+    color: #e74c3c;
+  }
+  
+  .star-icon {
+    color: #f1c40f;
+  }
+  

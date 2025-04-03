@@ -1,4 +1,3 @@
-/* General Styles */
 .account-container {
   max-width: 800px;
   margin: auto;
@@ -6,206 +5,189 @@
   font-family: Arial, sans-serif;
 }
 
-.account-title {
+.card-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 20px;
 }
 
 .account-grid {
-  display: grid;
-  grid-template-columns: 1fr; /* Default single column for small screens */
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  min-width: 320px; /* Minimum width for the grid */
-}
-
-@media (min-width: 768px) {
-  .account-grid {
-    grid-template-columns: 1fr 1fr; /* Two columns for medium screens */
-  }
-}
-
-@media (min-width: 1024px) {
-  .account-grid {
-    grid-template-columns: 2fr 1fr; /* Profile takes more space on large screens */
-  }
-}
-
-@media (min-width: 1280px) {
-  .account-grid {
-    grid-template-columns: 2fr 1fr 1fr; /* Three columns with wishlist taking full row */
-  }
-}
-
-/* Profile, Address Book, Payment, and Wishlist Cards */
-.profile-card, .address-card, .payment-card, .wishlist-card {
-  padding: 16px;
-  border-radius: 10px;
 }
 
 .profile-card {
-  grid-column: span 2; /* Profile spans two columns at small screen sizes */
-  background-color: #eed8d8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #bbeaff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-.wishlist-card {
-  grid-column: span 2; /* Wishlist spans two columns for smaller screens */
-  background-color: #bafcb8;
-}
-
-.address-card {
-  background-color: #eeed9f;
+/* Profile details container */
+.profile-info {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1; /* Distribute height equally */
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
+  justify-content: center;
 }
 
-.payment-card {
-  background-color: #C2EBEF;
-  display: flex;
-  flex-direction: column;
-  flex: 1; /* Distribute height equally */
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
-}
-
-h2 {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+/* Nickname, email, password */
+.profile-info p {
+  margin: 5px 0;
+  font-size: 16px;
 }
 
 .label {
   font-weight: bold;
-  color: #666;
+  font-size: 14px;
+  color: #555;
 }
 
+/* Profile image */
+.profile-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #333;
+}
+
+/* Button group aligned next to image */
 .button-group {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+}
+
+/* Buttons */
+.button-group .btn {
+  padding: 8px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.button-group .btn.logout {
+  background-color: #333;
+  color: white;
+}
+
+.button-group .btn.logout:hover {
+  background-color: #555;
+}
+
+.button-group .btn.edit {
+  background-color: #7c85fd;
+  color: white;
+}
+
+.button-group .btn.edit:hover {
+  background-color: #6a6eaa;
+}
+
+/* Cards for posts, reviews, bookmarks */
+.posts-card, .reviews-card, .bookmarks-card {
+  padding: 16px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.posts-card {
+  position: relative;
+  background-color: #faf9af;
+  padding-bottom: 20px;
+}
+
+.posts-card .btn.all-posts {
+  display: block;
+  margin: 20px auto 0;
+  background-color: #f7c27e;
+  color: white;
+}
+
+.posts-card .btn.all-posts:hover {
+  background-color: #cca36e;
+}
+
+.posts-card h2, .reviews-card h2, .bookmarks-card h2 {
+  font-size: 1.3em;
+  margin-bottom: 10px;
+}
+
+.posts-card ul, .reviews-card ul, .bookmarks-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.posts-card ul {
+  display: flex; 
+  gap: 16px; 
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.posts-card li, .reviews-card li, .bookmarks-card li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.posts-card li {
+  flex: 0 0 auto;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.posts-card li:hover {
+  background-color: #f0f0f0;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.posts-card img {
+  width: 120px; 
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 .btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  display: inline-block;
+  padding: 10px 16px;
   font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .btn.black {
-  background: black;
+  background-color: #333;
   color: white;
 }
 
-.btn.grey {
-  background: #ddd;
-  color: black;
-  border: 1px solid #bbb;
+.btn.black:hover {
+  background-color: #555;
 }
 
-.btn:hover {
-  opacity: 0.8;
-}
-
-/* User Products Section */
-.user-products-section {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-}
-
-.user-products-section h2 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-/* Products Grid */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Two columns for small screens */
-  gap: 16px;
-}
-
-/* Responsive Layout */
-@media (min-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(3, 1fr); /* Three columns for medium screens */
+@media (max-width: 768px) {
+  .profile-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
-}
 
-@media (min-width: 1024px) {
-  .products-grid {
-    grid-template-columns: repeat(4, 1fr); /* Four columns for larger screens */
+  .button-group {
+    margin-top: 10px;
   }
-}
-
-/* Individual Product Card */
-.product-card {
-  background-color: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
-}
-
-.product-card:hover {
-  transform: scale(1.03);
-}
-
-/* Product Image */
-.product-image {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-}
-
-/* Product Info */
-.product-info {
-  margin-top: 10px;
-}
-
-.product-title {
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-}
-
-.product-price {
-  font-size: 14px;
-  color: #e60023;
-  font-weight: bold;
-  margin-top: 5px;
-}
-
-/* "See More" Button */
-.btn.see-more {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  background-color: black;
-  color: white;
-  padding: 10px;
-  border-radius: 6px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.btn.see-more:hover {
-  opacity: 0.8;
-}
-
-.posts-card .post-image {
-  max-width: 100px;
-  height: auto;
-  border-radius: 4px;
-  margin-bottom: 10px;
 }

@@ -6,7 +6,7 @@ const AuthenticateButton = ({clickEvent, showLogin}) => {
         <>
             <motion.button onClick={clickEvent} whileHover={{ scale: 1.1 }}
                            whileTap={{ scale: 0.9 }} className={showLogin ? "login-button" : "signup-button"}>
-                            {showLogin ? '로그인' : '회원가입'}
+                            {showLogin ? 'DopamineX 로그인' : '회원가입'}
             </motion.button>
         </>
     )
