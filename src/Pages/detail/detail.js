@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Await, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPostById, deletePost } from "../../components/reducers/post/postThunk";
+import { fetchPostById } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
+import { fetchUserData } from "../../components/reducers/user/userThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faHeart, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { faHeart, faEye, faStar, faL } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
 import "./detail.css";
 
 const DetailPage = () => {
@@ -62,6 +63,7 @@ const DetailPage = () => {
         await dispatch(removePostLike(postDetail.id)).unwrap();
       }
       dispatch(fetchPostLikeStatus(id));
+      dispatch(fetchUserData(accessToken));
     } catch (error) {
       console.error(`${newLikedState ? 'Add' : 'Remove'} like failed:`, error);
       setIsLiked(!newLikedState);
@@ -185,27 +187,6 @@ const DetailPage = () => {
     });
   };
 
-  const handleDelete = () => {
-    if (window.confirm('정말 지울 거냐?')) {
-      const accessToken = localStorage.getItem('accessToken');
-      if (!accessToken) {
-        alert('로그인이 필요합니다.');
-        navigate('/authenticate');
-        return;
-      }
-
-      dispatch(deletePost({ postId: id, accessToken }))
-        .unwrap()
-        .then(() => {
-          alert('삭제 완료!');
-          navigate('/');
-        })
-        .catch((error) => {
-          alert(`삭제 실패: ${error}`);
-        });
-    }
-  };
-
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">Error: {error}</p>;
   if (!postDetail) return <p className="not-found">Post not found.</p>;
@@ -274,25 +255,6 @@ const DetailPage = () => {
             className="review"
           >
             리뷰
-          </button>
-          <button
-            onClick={() =>
-              navigate(`/updatePost/${id}`, {
-                state: {
-                  title: postDetail.title,
-                  content: postDetail.content,
-                  price: postDetail.price,
-                  image: postDetail.imageUrls && postDetail.imageUrls[0],
-                  postId: id,
-                },
-              })
-            }
-            className="edit"
-          >
-            수정
-          </button>
-          <button onClick={handleDelete} className="delete">
-            삭제
           </button>
           {/* 장바구니 */}
           <button

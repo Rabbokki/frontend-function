@@ -5,7 +5,6 @@ const initialState = {
   userData: null,
   loading: false,
   error: null,
-  passwordLength: 0,
   registered: false
 };
 
@@ -13,9 +12,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setPasswordLength: (state, action) => {
-      state.passwordLength = action.payload;
-    },
     setRegistered: (state, action) => {
       state.registered = action.payload;
     },

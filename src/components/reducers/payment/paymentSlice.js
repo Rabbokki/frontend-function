@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { initiatePayment } from "./paymentThunk";
+import { initiatePayment, approvePayment } from "./paymentThunk";
 
 const initialState = {
   paymentUrl: null,
   loading: false,
   error: null,
+  paymentSuccess: false, // Track payment approval
 };
 
 const paymentSlice = createSlice({
@@ -14,10 +15,12 @@ const paymentSlice = createSlice({
     resetPayment: (state) => {
       state.paymentUrl = null;
       state.error = null;
+      state.paymentSuccess = false;
     },
   },
   extraReducers: (builder) => {
     builder
+      // Initiate Payment
       .addCase(initiatePayment.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -29,6 +32,21 @@ const paymentSlice = createSlice({
       .addCase(initiatePayment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // Approve Payment
+      .addCase(approvePayment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(approvePayment.fulfilled, (state) => {
+        state.loading = false;
+        state.paymentSuccess = true;
+      })
+      .addCase(approvePayment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.paymentSuccess = false;
       });
   },
 });

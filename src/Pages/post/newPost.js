@@ -37,6 +37,10 @@ export default function ProductForm() {
     setImages((prevImages) => [...prevImages, ...files].slice(0, 12));
   };
 
+  const handleRemoveImage = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
   const handleNewProduct = async (event) => {
     event.preventDefault();
 
@@ -61,13 +65,13 @@ export default function ProductForm() {
     formData.append("dto", new Blob([JSON.stringify(newProduct)], { type: "application/json" }));
 
     try {
-      const resultAction = await dispatch(createPost({ formData, accessToken })).unwrap(); // unwrap으로 결과 처리
+      const resultAction = await dispatch(createPost({ formData, accessToken })).unwrap();
       console.log("Post created successfully:", resultAction);
-      alert("게시글이 작성되었습니다.");
-      const postId = resultAction.id; // 서버에서 반환된 게시글 ID 추출
-      navigate(`/detail/${postId}`); // 상세 페이지로 리다이렉트
+      const postId = resultAction.id;
+      navigate(`/detail/${postId}`);
+      dispatch(fetchUserData(accessToken));
     } catch (error) {
-      console.error("Failed to create post:", error); // 전체 오류 객체 출력
+      console.error("Failed to create post:", error);
       alert("게시글 생성에 실패했습니다: " + (error.message || "알 수 없는 오류"));
     }
   };
@@ -109,7 +113,12 @@ export default function ProductForm() {
           </label>
           <div className="image-preview">
             {images.map((image, index) => (
-              <img key={index} src={URL.createObjectURL(image)} alt="Uploaded" className="uploaded-image" />
+              <div key={index} className="image-thumbnail">
+                <img src={URL.createObjectURL(image)} alt="Uploaded" className="uploaded-image" />
+                <button type="button" className="remove-image-btn" onClick={() => handleRemoveImage(index)}>
+                  ✖
+                </button>
+              </div>
             ))}
           </div>
         </div>

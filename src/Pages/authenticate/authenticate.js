@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, googleLogin } from "../../components/reducers/authenticate/authThunk";
-import { setPasswordLength } from "../../components/reducers/user/userSlice";
 import { registerUser } from "../../components/reducers/user/userThunk";
 import "./authenticate.css";
 import AuthenticateButton from "../../components/buttons/AuthenticateButton";
@@ -23,7 +22,6 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
       password: passwordRef.current.value,
     };
     dispatch(login(loginData));
-    dispatch(setPasswordLength(passwordRef.current.value.length));
   };
 
   //네이버 로그인
@@ -100,12 +98,20 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
 const RegisterMenu = ({ emailRef, passwordRef, nicknameRef, birthdayRef, showLogin, setShowLogin }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const { registered, loading, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     setImageFile(file);
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset file input
+    }
   };
 
   const registerHandler = (event) => {
@@ -130,13 +136,26 @@ const RegisterMenu = ({ emailRef, passwordRef, nicknameRef, birthdayRef, showLog
             <input type="text" placeholder="유저네임" ref={nicknameRef} className="register-input" /><br />
             <input type="password" placeholder="비밀번호" ref={passwordRef} className="register-input" /><br />
             <input type="date" placeholder="생일" ref={birthdayRef} className="register-input" /><br />
+
             <label className="form-label">이미지 업로드</label>
-            <input type="file" accept="image/*" onChange={handleImageUpload} /><br />
-            {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="uploaded-image" />}
-            <AuthenticateButton onClick={registerHandler}  showLogin={showLogin} />
-            <p className="login-link" onClick={() => setShowLogin(true)}>
-              로그인
-            </p>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              ref={fileInputRef} // Attach ref
+            /><br />
+
+            {imageFile && (
+              <div className="image-thumbnail">
+                <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="uploaded-image" />
+                <button type="button" className="remove-image-btn" onClick={handleRemoveImage}>
+                  ✖
+                </button>
+              </div>
+            )}
+
+            <AuthenticateButton onClick={registerHandler} showLogin={showLogin} />
+            <p className="login-link" onClick={() => setShowLogin(true)}>로그인</p>
             {loading && <p>Loading...</p>}
             {error && <p>{error}</p>}
           </motion.div>

@@ -6,7 +6,7 @@ import { fetchUserData } from '../../components/reducers/user/userThunk';
 import './accountPage.css';
 
 const AccountDetails = ({userData, handleLogout, navigate}) => {
-  const passwordLength = useSelector((state) => state.user.passwordLength);
+  const passwordLength = localStorage.getItem("passwordLength")
 
   return (
     <>
@@ -49,7 +49,7 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
           </div>
 
 
-        <div className="reviews-card">
+        {/* <div className="reviews-card">
           <h2>상품 후기</h2>
           {userData.reviews?.length > 0 ? (
             <ul>
@@ -64,23 +64,27 @@ const AccountDetails = ({userData, handleLogout, navigate}) => {
             <p>등록된 후기가 없습니다.</p>
           )}
           <button onClick={() => navigate("/account/reviews")} className="btn black">See All Reviews</button>
-        </div>
+        </div> */}
 
-        <div className="bookmarks-card">
-          <h2>찜</h2>
-          {userData.bookMarks?.length > 0 ? (
+        <h2 className="card-title">찜</h2>
+        <div className="likes-card">
+          {userData.likeList?.length > 0 ? (
             <ul>
-              {userData.bookMarks.map(bookMark => (
-                <li key={bookMark.id}>
-                  <p><strong>{bookMark.postTitle}</strong> (Post ID: {bookMark.postId})</p>
-                  <p><small>{new Date(bookMark.createdAt).toLocaleString()}</small></p>
-                </li>
-              ))}
+              {userData.likeList
+                .slice(-8)
+                .reverse()
+                .map(like => (
+                  <li key={like.id} onClick={() => navigate(`/detail/${like.postId}`)} style={{ cursor: "pointer" }}>
+                    {like.imgUrl && <img src={like.imgUrl} alt={like.postTitle} className="post-image" />}
+                    <p><strong>{like.postTitle}</strong></p>
+                    <p><small>{new Date(like.createdAt).toLocaleString()}</small></p>
+                  </li>
+                ))}
             </ul>
           ) : (
             <p>찜한 상품이 없습니다.</p>
           )}
-          <button onClick={() => navigate("/account/bookmarks")} className="btn black">See All Bookmarks</button>
+          <button onClick={() => navigate("/account/likes")} className="btn black">모든 찜 보기</button>
         </div>
       </div>
     </>
@@ -114,6 +118,9 @@ export default function AccountPage() {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("sortBy");
+    localStorage.removeItem("passwordLength");
     dispatch(logout());
     navigate('/authenticate');
   };
