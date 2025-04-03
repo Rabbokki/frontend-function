@@ -1,5 +1,5 @@
 # Node.js를 기반으로 하는 리액트 앱 이미지
-FROM node:18 AS build
+FROM node:20 AS build
 
 # 작업 디렉토리 설정
 WORKDIR /app
