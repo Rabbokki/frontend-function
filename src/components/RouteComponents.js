@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import Whiskey from "../pages/alcohol/Whiskey/index";
 import { Routes, Route } from "react-router-dom";
 import Authenticate from "../Pages/authenticate/authenticate.js";
-import Callback from "../pages/authenticate/Callback";
+import Callback from "../Pages/authenticate/Callback";
 import Account from "../pages/account/accountPage";
 import AccountEdit from "../pages/account/editDetails";
 import Champagne from '../pages/alcohol/Champagne/index';
