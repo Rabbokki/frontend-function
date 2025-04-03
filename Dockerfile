@@ -3,10 +3,10 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
-RUN ls -la /app  # 전체 디렉토리 확인
-RUN ls -la /app/src  # src 디렉토리 확인
-RUN ls -la /app/src/pages  # pages 디렉토리 확인
-RUN ls -la /app/src/pages/authenticate  # authenticate 디렉토리 확인
+RUN ls -la /app || echo "/app not found"
+RUN ls -la /app/src || echo "/app/src not found"
+RUN ls -la /app/src/pages || echo "/app/src/pages not found"
+RUN ls -la /app/src/pages/authenticate || echo "/app/src/pages/authenticate not found"
 RUN npm run build
 
 FROM nginx:alpine
