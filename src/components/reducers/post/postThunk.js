@@ -17,7 +17,7 @@ export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/post`);
+      const response = await axios.get(`${API_URL}/api/post`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch posts");
@@ -29,7 +29,7 @@ export const fetchPostById = createAsyncThunk(
   "posts/fetchPostById",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/post/find/${postId}`);
+      const response = await axios.get(`${API_URL}/api/post/find/${postId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch post");
@@ -42,7 +42,7 @@ export const createPost = createAsyncThunk(
   async ({ formData, accessToken }, thunkAPI) => {
     try {
       const response = await axios.post(
-        `${API_URL}/post/create`,
+        `${API_URL}/api/post/create`,
         formData,
         {
           headers: { Access_Token: accessToken },
@@ -50,7 +50,7 @@ export const createPost = createAsyncThunk(
         }
       );
       console.log("✅ Post creation response:", response.data);
-      return response.data; // Ensure the backend returns the created post
+      return response.data;
     } catch (error) {
       console.error("❌ Error creating post:", error.response?.data || error.message);
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
@@ -63,7 +63,7 @@ export const updatePost = createAsyncThunk(
   async ({ formData, postId, accessToken }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `${API_URL}/post/update/${postId}`,
+        `${API_URL}/api/post/update/${postId}`,
         formData,
         {
           headers: {
@@ -85,7 +85,7 @@ export const deletePost = createAsyncThunk(
   "posts/deletePost",
   async ({ postId, accessToken }, thunkAPI) => {
     try {
-      await axios.delete(`${API_URL}/post/delete/${postId}`, {
+      await axios.delete(`${API_URL}/api/post/delete/${postId}`, {
         headers: {
           Access_Token: accessToken,
         },
