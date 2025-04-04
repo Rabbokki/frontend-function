@@ -10,9 +10,7 @@ import "./accountPosts.css";
 const AccountPosts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [sortBy, setSortBy] = useState(() => {
-    return localStorage.getItem("sortBy") || "upload-date";
-  });
+  const [sortBy, setSortBy] = useState(() => localStorage.getItem("sortBy") || "upload-date");
   const { userData, loading, error } = useSelector((state) => state.user);
 
   const handleSortChange = (e) => {
@@ -24,13 +22,13 @@ const AccountPosts = () => {
   const handleDelete = async (postId) => {
     if (window.confirm("정말 지울 거냐?")) {
       const accessToken = localStorage.getItem("accessToken");
-      
+
       if (!accessToken) {
         alert("로그인이 필요합니다.");
         navigate("/authenticate");
         return;
       }
-  
+
       try {
         await dispatch(deletePost({ postId, accessToken })).unwrap();
         dispatch(fetchUserData(accessToken));
@@ -42,7 +40,6 @@ const AccountPosts = () => {
       }
     }
   };
-  
 
   const sortedPosts = [...(userData?.postList || [])].sort((a, b) => {
     switch (sortBy) {
@@ -86,10 +83,14 @@ const AccountPosts = () => {
           <option value="most-likes">좋아요 많은 순</option>
         </select>
       </div>
-  
+
       <div className="account-posts-container">
-        {sortedPosts.map((post) => (
-          <div key={post.id} className="post-card">
+        {sortedPosts.map((post, index) => (
+          <div
+            key={post.id}
+            className="post-card fade-in"
+            style={{ animationDelay: `${index * 0.2}s` }} // Staggered delay effect
+          >
             {/* Edit & Delete Buttons Positioned at Top Right */}
             <div className="post-actions">
               <button
@@ -108,12 +109,12 @@ const AccountPosts = () => {
               >
                 <FontAwesomeIcon icon={faPen} />
               </button>
-  
+
               <button className="delete-button" onClick={() => handleDelete(post.id)}>
                 <FontAwesomeIcon icon={faTrash} />
               </button>
             </div>
-  
+
             {/* Image Clickable */}
             <img
               src={post.imgUrl}
@@ -121,7 +122,7 @@ const AccountPosts = () => {
               className="post-image"
               onClick={() => navigate(`/detail/${post.id}`)}
             />
-  
+
             <div className="post-content">
               <div className="title-price-container">
                 <h3 className="post-title" onClick={() => navigate(`/detail/${post.id}`)}>
@@ -129,11 +130,11 @@ const AccountPosts = () => {
                 </h3>
                 <p className="post-price">{post.price.toLocaleString()} 원</p>
               </div>
-  
+
               <div className="description-container">
                 <p className="post-description">{post.content}</p>
               </div>
-  
+
               <div className="post-stats">
                 <span>
                   <FontAwesomeIcon icon={faEye} className="icon eye-icon" /> {post.viewCount}
@@ -152,7 +153,6 @@ const AccountPosts = () => {
       </div>
     </div>
   );
-  
 };
 
 export default AccountPosts;

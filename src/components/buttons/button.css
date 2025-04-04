@@ -1,4 +1,4 @@
-.login-button {
+.auth-button {
     width: 100%;
 
     color: white;
@@ -9,23 +9,6 @@
     border: 5px;
     border-radius: 6px;
     border-color: rgba(84, 46, 119, 0.5);
-
-    font-size: 16px;
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
-.signup-button {
-    width: 100%;
-
-    color: white;
-    background-color: #8fcab1;
-
-    padding: 12px;
-    border: 5px;
-    border-radius: 6px;
-    border-color: rgba(119, 85, 46, 0.5);
 
     font-size: 16px;
     font-weight: bold;

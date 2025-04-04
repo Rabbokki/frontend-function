@@ -54,14 +54,14 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="login-box"
+            className="auth-box"
           >
             <h2 className="auth-title">로그인</h2>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
               <form onSubmit={loginHandler}>
-                <input type="text" placeholder="이메일" ref={emailRef} className="login-input" />
+                <input type="text" placeholder="이메일" ref={emailRef} className="auth-input" />
                 <br />
-                <input type="password" placeholder="비밀번호" ref={passwordRef} className="login-input" />
+                <input type="password" placeholder="비밀번호" ref={passwordRef} className="auth-input" />
                 <br />
                 <p className="register-link" onClick={() => setShowLogin(false)}>
                   회원가입
@@ -110,7 +110,7 @@ const RegisterMenu = ({ emailRef, passwordRef, nicknameRef, birthdayRef, showLog
   const handleRemoveImage = () => {
     setImageFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset file input
+      fileInputRef.current.value = "";
     }
   };
 
@@ -129,20 +129,20 @@ const RegisterMenu = ({ emailRef, passwordRef, nicknameRef, birthdayRef, showLog
   return (
     <div className="auth-container">
       {!registered ? (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="register-box">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="auth-box">
           <h2 className="auth-title">회원 가입</h2>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
-            <input type="text" placeholder="이메일" ref={emailRef} className="register-input" /><br />
-            <input type="text" placeholder="유저네임" ref={nicknameRef} className="register-input" /><br />
-            <input type="password" placeholder="비밀번호" ref={passwordRef} className="register-input" /><br />
-            <input type="date" placeholder="생일" ref={birthdayRef} className="register-input" /><br />
+            <input type="text" placeholder="이메일" ref={emailRef} className="auth-input" /><br />
+            <input type="text" placeholder="유저네임" ref={nicknameRef} className="auth-input" /><br />
+            <input type="password" placeholder="비밀번호" ref={passwordRef} className="auth-input" /><br />
+            <input type="date" placeholder="생일" ref={birthdayRef} className="auth-input" /><br />
 
             <label className="form-label">이미지 업로드</label>
             <input
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              ref={fileInputRef} // Attach ref
+              ref={fileInputRef}
             /><br />
 
             {imageFile && (

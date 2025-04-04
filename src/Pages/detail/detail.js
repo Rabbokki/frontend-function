@@ -239,7 +239,7 @@ const DetailPage = () => {
             onClick={() => handleChat(postDetail.id, postDetail.sellerEmail)}
             disabled={!postDetail.sellerEmail || isLoading}
           >
-            번개톡
+            챗
           </button>
           <button onClick={handleBuyNow} className="buy-now">바로구매</button>
           <button
