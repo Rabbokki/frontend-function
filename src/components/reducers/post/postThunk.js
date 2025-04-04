@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
+
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
@@ -15,7 +17,7 @@ export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/post");
+      const response = await axios.get(`${API_URL}/post`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch posts");
@@ -27,7 +29,7 @@ export const fetchPostById = createAsyncThunk(
   "posts/fetchPostById",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:8081/post/find/${postId}`);
+      const response = await axios.get(`${API_URL}/post/find/${postId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch post");
@@ -40,7 +42,7 @@ export const createPost = createAsyncThunk(
   async ({ formData, accessToken }, thunkAPI) => {
     try {
       const response = await axios.post(
-        "http://localhost:8081/post/create",
+        `${API_URL}/post/create`,
         formData,
         {
           headers: { Access_Token: accessToken },
@@ -61,7 +63,7 @@ export const updatePost = createAsyncThunk(
   async ({ formData, postId, accessToken }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `http://localhost:8081/post/update/${postId}`,
+        `${API_URL}/post/update/${postId}`,
         formData,
         {
           headers: {
@@ -83,7 +85,7 @@ export const deletePost = createAsyncThunk(
   "posts/deletePost",
   async ({ postId, accessToken }, thunkAPI) => {
     try {
-      await axios.delete(`http://localhost:8081/post/delete/${postId}`, {
+      await axios.delete(`${API_URL}/post/delete/${postId}`, {
         headers: {
           Access_Token: accessToken,
         },

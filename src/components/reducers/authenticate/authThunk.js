@@ -44,11 +44,13 @@ import { loginStart, loginSuccess, loginFailure } from './authSlice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchUserData } from '../user/userThunk';
 
+const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
+
 // 로그인 thunk
 export const login = (loginData) => async (dispatch) => {
   dispatch(loginStart());
   try {
-    const response = await axios.post("/account/login", loginData);
+    const response = await axios.post(`${API_URL}/account/login`, loginData);
     const accessToken = response.headers['access_token'];
     const refreshToken = response.headers['refresh_token'];
     if (accessToken) {
@@ -69,7 +71,7 @@ export const googleLogin = () => async (dispatch) => {
   dispatch(loginStart());
   try {
     // Google OAuth2 인증 페이지로 리다이렉션
-    window.location.href = 'http://localhost:8081/oauth2/authorization/google';
+    window.location.href = `${API_URL}/oauth2/authorization/google`;
   } catch (error) {
     dispatch(loginFailure("Google 로그인 시작에 실패했습니다."));
   }
