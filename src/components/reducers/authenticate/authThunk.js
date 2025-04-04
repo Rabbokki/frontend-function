@@ -54,7 +54,9 @@ export const login = (loginData) => async (dispatch) => {
     if (accessToken) {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("userEmail", loginData.email); // 이메일 저장
+      localStorage.setItem("userEmail", loginData.email);
+      localStorage.setItem("passwordLength", loginData.password.length);
+      console.log("Trying to log in...")
       await dispatch(fetchUserData(accessToken)); // 사용자 정보 가져오기
       dispatch(loginSuccess());
     }

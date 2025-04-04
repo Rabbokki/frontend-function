@@ -24,25 +24,25 @@ const WriteReview = ({ onSubmit }) => {
     else console.log("No access token found");
     }, [dispatch]);
 
-    useEffect(() => {
-      console.log(userData)
-    }, [userData]);
-
   useEffect(() => {
-    return () => {
-        images.forEach((image) => URL.revokeObjectURL(image));
-    };
-  }, [images]);
+    console.log(userData)
+  }, [userData]);
+
+  // useEffect(() => {
+  //   return () => {
+  //       images.forEach((image) => URL.revokeObjectURL(image));
+  //   };
+  // }, [images]);
   
 
-  const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files);
-    setImages((prevImages) => [...prevImages, ...files].slice(0, 12));
-  };
+  // const handleImageUpload = (event) => {
+  //   const files = Array.from(event.target.files);
+  //   setImages((prevImages) => [...prevImages, ...files].slice(0, 12));
+  // };
 
-  const handleRemoveImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-  };
+  // const handleRemoveImage = (index) => {
+  //   setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  // };
 
 
 
@@ -99,13 +99,13 @@ const WriteReview = ({ onSubmit }) => {
         {/* 리뷰 콘탠츠 */}
         <textarea
           className="review-textarea"
-          placeholder="Write your review here..."
+          placeholder="리뷰 쓰기..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
         />
 
-        {/* 이미지 */}
+        {/* 이미지
         <label className="form-label">상품 이미지 ({images.length}/12)</label>
         <div className="image-upload-container">
           <label className="image-upload-box" htmlFor="image-upload">
@@ -130,7 +130,7 @@ const WriteReview = ({ onSubmit }) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <button type="submit" className="submit-review-button">
           리뷰 제출

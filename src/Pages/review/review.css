@@ -111,67 +111,79 @@
     width: 100%;
     margin-bottom: 10px;
   }
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #333;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
   
-  .avatar {
-    width: 40px;
-    height: 40px;
-    background-color: #ccc;
-    border-radius: 50%;
-  }
-  
-  .user-info {
+.user-info {
     flex: 1;
     padding-left: 10px;
-  }
+}
   
-  .username {
+.username {
     font-weight: bold;
     color: #333;
-  }
+}
   
-  .review-date {
+.review-date {
     font-size: 0.9rem;
     color: #777;
-  }
+}
   
-  .rating {
+.rating {
     font-size: 1.2rem;
     color: gold;
-  }
+}
   
-  .store-info {
+.store-info {
     margin-top: 10px;
     font-size: 1rem;
     color: #555;
-  }
+}
   
-  .store-name {
+.store-name {
     font-weight: bold;
-  }
+}
   
-  .review-image {
+.review-image {
     margin-top: 15px;
     max-width: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+}
   
-  .review-content {
+.review-content {
     margin-top: 10px;
     font-size: 1rem;
     color: #333;
     line-height: 1.5;
-  }
+}
   
   /* 버튼 스타일 */
-  .buttons {
+.buttons {
     display: flex;
     gap: 10px;
     justify-content: space-between;
     margin-top: 20px;
-  }
+}
   
-  .buttons button {
+.buttons button {
     flex: 1;
     padding: 12px;
     font-size: 1rem;
@@ -179,52 +191,52 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
+}
   
-  .wishlist {
+.wishlist {
     background: none;
     border: none;
     font-size: 30px;
     cursor: pointer;
     transition: color 0.3s ease;
-  }
+}
   
-  .wishlist.liked {
+.wishlist.liked {
     color: red;
-  }
+}
   
-  .wishlist:not(.liked) {
+.wishlist:not(.liked) {
     color: gray;
-  }
+}
   
-  .wishlist:hover {
+.wishlist:hover {
     transform: scale(1.1);
-  }
+}
   
-  .chat {
+.chat {
     background-color: #ffcc00;
     color: black;
-  }
+}
   
-  .chat:hover {
+.chat:hover {
     background-color: #e6b800;
-  }
+}
   
-  .buy-now {
+.buy-now {
     background-color: #ff3333;
     color: white;
-  }
+}
   
-  .buy-now:hover {
+.buy-now:hover {
     background-color: #cc0000;
-  }
+}
   
-  .review {
+.review {
     background-color: #007bff;
     color: white;
-  }
+}
   
-  .review:hover {
+.review:hover {
     background-color: #0056b3;
-  }
+}
   

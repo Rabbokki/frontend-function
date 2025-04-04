@@ -42,7 +42,7 @@ export const fetchUserData = createAsyncThunk(
       };
       console.log("Request config:", config); // 요청 설정 로그 추가
       const response = await axios.get('/account/me', config);
-      console.log("fetchUserData response:", response.data);
+      console.log("fetchUserData response:", response.data.data);
       return response.data.data || response.data;
     } catch (error) {
       console.error("fetchUserData error:", error.response?.data || error.message);

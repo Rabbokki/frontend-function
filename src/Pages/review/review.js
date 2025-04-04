@@ -38,15 +38,29 @@ const Review = () => {
       {reviews.map((review) => (
         <div className="review-card" key={review.id}>
           <div className="review-header">
-            <div className="avatar"></div>
+            {/* Fix: Ensure profile image is always a circle and doesn't stretch */}
+            <div className="avatar">
+            <img 
+              src={review.profilePic || "/image/blankProfile.png"} 
+              alt="User Display Pic" 
+              className="profile-image"
+            />
+            </div>
             <div className="user-info">
               <span className="username">{review.nickname || "Unknown User"}</span>
-              <span className="review-date">{review.createdAt || "No Date"}</span>
+              <span className="review-date">
+                {review.createdAt ? new Date(review.createdAt).toLocaleDateString() : "No Date"}
+              </span>
             </div>
-            <div className="rating">{"★".repeat(review.rating)}</div>
+            {/* Fix: Correctly display star rating */}
+            <div className="rating">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <span key={i} style={{ color: i < review.rating ? "gold" : "gray" }}>★</span>
+              ))}
+            </div>
           </div>
-            {review.image && <img src={review.image} alt="Product" className="review-image" />}
-            <p className="review-content">{review.content}</p>
+          {review.image && <img src={review.image} alt="Product" className="review-image" />}
+          <p className="review-content">{review.content}</p>
         </div>
       ))}
     </div>

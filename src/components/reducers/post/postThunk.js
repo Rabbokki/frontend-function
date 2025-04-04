@@ -43,20 +43,18 @@ export const createPost = createAsyncThunk(
         "http://localhost:8081/post/create",
         formData,
         {
-          headers: {
-            Access_Token: accessToken,
-          },
+          headers: { Access_Token: accessToken },
           withCredentials: true,
         }
       );
-      return response.data;
+      console.log("✅ Post creation response:", response.data);
+      return response.data; // Ensure the backend returns the created post
     } catch (error) {
-      console.error("Error creating post:", error.response?.data || error.message);
+      console.error("❌ Error creating post:", error.response?.data || error.message);
       return thunkAPI.rejectWithValue(error.response?.data || error.message);
     }
   }
 );
-
 
 export const updatePost = createAsyncThunk(
   "posts/updatePost",
@@ -68,7 +66,7 @@ export const updatePost = createAsyncThunk(
         {
           headers: {
             Access_Token: accessToken,
-            "Content-Type": "multipart/form-data", // Ensure multipart form data is set
+            "Content-Type": "multipart/form-data",
           },
           withCredentials: true,
         }

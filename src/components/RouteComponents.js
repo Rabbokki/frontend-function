@@ -7,6 +7,8 @@ import Authenticate from "../Pages/authenticate/authenticate.js";
 import Callback from "../Pages/authenticate/Callback";
 import Account from "../Pages/Account/accountPage";
 import AccountEdit from "../Pages/Account/editDetails";
+import AccountPosts from "../Pages/Account/accountPosts";
+import AccountLikes from "../Pages/Account/accountLikes";
 import Champagne from '../Pages/Alcohol/Champagne/index';
 import Wine from '../Pages/Alcohol/Wine/index';
 import Vodka from '../Pages/Alcohol/Vodka/index';
@@ -76,6 +78,8 @@ const RouteComponents = () => {
         <Route path="/callback" element={<Callback />} />
         <Route path="/account" element={<Account/>}/>
         <Route path="/account/edit" element={<AccountEdit/>}/>
+        <Route path="/account/posts" element={<AccountPosts/>}/>
+        <Route path="/account/likes" element={<AccountLikes/>}/>
         <Route path="/newPost" element={<NewPost></NewPost>}/>
         <Route path="/updatePost/:id" element={<UpdatePost></UpdatePost>}/>
         <Route path="/whiskey" element={<Whiskey></Whiskey>}/>

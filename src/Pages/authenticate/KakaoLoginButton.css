@@ -1,0 +1,42 @@
+.kakao-material-button {
+    background-color: #FEE500; /* Kakao Yellow */
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #381E1F; /* Kakao uses a dark brown text color */
+    cursor: pointer;
+    font-family: "Roboto", Arial, sans-serif;
+    font-size: 14px;
+    height: 40px;
+    width: 183px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+    transition: background-color 0.218s, box-shadow 0.218s;
+}
+
+.kakao-material-button-icon {
+    height: 20px;
+    width: 20px;
+    flex-shrink: 0;
+    margin-left: 14px; /* Moves the logo slightly to the right */
+}
+
+.kakao-material-button-contents {
+    font-weight: 500;
+    white-space: nowrap;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.kakao-material-button:disabled {
+    background-color: #FEE50099;
+    cursor: default;
+}
+
+.kakao-material-button:not(:disabled):hover {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+}

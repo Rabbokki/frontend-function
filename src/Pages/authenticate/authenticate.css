@@ -14,7 +14,7 @@
   overflow: hidden;
 }
 
-.login-box {
+.auth-box {
   border: 1px solid #a855f7;
   border-radius: 8px;
   padding: 24px;
@@ -23,13 +23,18 @@
   background: white;
 }
 
-.register-box {
-  border: 1px solid #55f7a8;
-  border-radius: 8px;
-  padding: 24px;
-  width: 384px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background: white;
+.social-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.social-login-buttons button {
+  margin: 8px 0;
+  padding: 10px;
+  text-align: center;
 }
 
 .auth-title {
@@ -39,7 +44,7 @@
   margin-bottom: 16px;
 }
 
-.login-input {
+.auth-input {
   width: 100%;
   padding: 8px;
   margin-top: 16px;
@@ -48,23 +53,9 @@
   outline: none;
 }
 
-.login-input:focus {
+.auth-input:focus {
   border-color: #a855f7;
   box-shadow: 0px 0px 5px rgba(168, 85, 247, 0.5);
-}
-
-.register-input {
-  width: 100%;
-  padding: 8px;
-  margin-top: 16px;
-  border: 1px solid #d2e7dd;
-  border-radius: 6px;
-  outline: none;
-}
-
-.register-input:focus {
-  border-color: #55f7a8;
-  box-shadow: 0px 0px 5px rgba(111, 235, 148, 0.5);
 }
 
 .auth-footer {
@@ -99,4 +90,78 @@
 
 .google-login-btn:hover {
   background-color: #357abd;
+}
+
+.kakao-login-btn {
+  all: unset;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.register-link {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #c0c0c0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.register-link:hover {
+  color: #535353;
+}
+
+.login-link {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #c0c0c0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-link:hover {
+  color: #535353;
+}
+
+.image-thumbnail {
+  position: relative;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.uploaded-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.remove-image-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }

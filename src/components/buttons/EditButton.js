@@ -12,12 +12,10 @@ const EditButton = ({clickEventEdit, clickEventDone, fieldName, editField}) => {
 
     return (
         <>
-            <motion.button onClick={handleClick}
-                           whileHover={{ scale: 1.1 }}
-                           whileTap={{ scale: 0.9 }}
+            <button onClick={handleClick}
                            className={editting ? "stop-button" : "edit-button"}>
                             {editting ? "제거" : "수정"}
-            </motion.button>
+            </button>
         </>
     )
 }

@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData, updateUserData } from '../../components/reducers/user/userThunk';
-import EditButton from "../../components/buttons/EditButton";
-import SaveChangesButton from '../../components/buttons/SaveChangesButton';
 import "./editDetails.css";
 
 const formStyle = {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     height: '30vh',
     padding: '20px'
 }
@@ -17,12 +15,14 @@ const formStyle = {
 const EditDetails = () => {
     const dispatch = useDispatch();
     const { userData, loading, error } = useSelector((state) => state.user);
-    const passwordLength = useSelector((state) => state.user.passwordLength);
+    const passwordLength = localStorage.getItem("passwordLength")
     const [editField, setEditField] = useState(null);
     const [newEmail, setNewEmail] = useState("");
     const [newNickname, setNewNickname] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [editing, setEditing] = useState(false);
+
+    console.log("This is the userData", userData);
   
     const handleEditClick = (field) => {
       setEditField(field);
@@ -74,40 +74,45 @@ const EditDetails = () => {
   
     return (
       <div>
-        {userData ? (
-          <form style={formStyle} onSubmit={handleSubmit}>
-            <div>
-              <input
-                placeholder={userData.email}
-                readOnly={editField !== 'email'}
-                onChange={handleEmailChange}
-                className={`p-2 ${editField !== 'email' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
-              />
-              <EditButton clickEventEdit={() => handleEditClick('email')} clickEventDone={handleEditUnactive} fieldName="email" editField={editField} />
-            </div>
-            <div>
-              <input
-                placeholder={userData.nickname}
-                readOnly={editField !== 'nickname'}
-                onChange={handleNicknameChange}
-                className={`p-2 ${editField !== 'nickname' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
-              />
-              <EditButton clickEventEdit={() => handleEditClick('nickname')} clickEventDone={handleEditUnactive} fieldName="nickname" editField={editField} />
-            </div>
-            <div>
-              <input
-                placeholder={passwordLength > 0 ? "*".repeat(passwordLength) : "Enter new password"} 
-                readOnly={editField !== 'password'}
-                onChange={handlePasswordChange}
-                className={`p-2 ${editField !== 'password' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
-              />
-              <EditButton clickEventEdit={() => handleEditClick('password')} clickEventDone={handleEditUnactive} fieldName="password" editField={editField} />
-            </div>
-            {editing && <SaveChangesButton editing={editing} />}
-          </form>
-        ) : (
-          <p>사용자 정보를 로드 중...</p>
-        )}
+        <div className='edit-account-container'>
+          <div className='edit-box'>
+            {userData ? (
+              <form style={formStyle} onSubmit={handleSubmit}>
+                <div className='edit-input-container'>
+                  <div>
+                    이매일:&nbsp;&nbsp;
+                    <input
+                      placeholder={userData.email}
+                      onChange={handleEmailChange}
+                      className='edit-input'
+                    />
+                  </div>
+                  <div>
+                    닉내임:&nbsp;&nbsp;
+                    <input
+                      placeholder={userData.nickname}
+                      onChange={handleNicknameChange}
+                      className='edit-input'
+                    />
+                  </div>
+                  <div>
+                    비버호:&nbsp;&nbsp;
+                    <input
+                      placeholder={passwordLength > 0 ? "*".repeat(passwordLength) : "Enter new password"} 
+                      onChange={handlePasswordChange}
+                      className='edit-input'
+                    />
+                  </div>
+                </div>
+                <div className="profile-pic-circle">
+                  <img src={userData.imgUrl} alt="Profile" />
+                </div>
+              </form>
+            ) : (
+              <p>사용자 정보를 로드 중...</p>
+            )}
+          </div>
+        </div>
       </div>
     );
 };
