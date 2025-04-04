@@ -18,7 +18,7 @@ export const fetchPosts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/api/post`);
-      return response.data;
+      return response.data.data || response.data; // 'data' 속성이 있으면 사용, 없으면 그대로
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch posts");
     }
