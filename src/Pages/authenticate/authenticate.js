@@ -28,10 +28,10 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
 
   //카카오 로그인
   const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
-  const REDIRECT_URI = 'http://localhost:3000';
+  const REDIRECT_URI = 'http://localhost:3000/callback';
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
   const handleKakaLogin = ()=>{
-    window.location.href = kakaoUrl
+    window.location.href = "http://localhost:8081/oauth2/authorization/kakao"
   }
 
   const handleGoogleLogin = () => {
