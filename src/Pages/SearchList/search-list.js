@@ -90,15 +90,23 @@ const SearchList = () => {
   const query = searchParams.get("query")?.toLowerCase() || "";
 
   const { posts, loading, error } = useSelector((state) => state.posts);
-  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   useEffect(() => {
-    dispatch(fetchPosts());
+    console.log("Fetching posts...");
+    dispatch(fetchPosts()).then((result) => {
+      console.log("Fetch result:", result);
+    });
   }, [dispatch]);
 
+  console.log("Redux posts:", posts);
+  console.log("Query:", query);
+
+  const safePosts = Array.isArray(posts) ? posts : [];
   const filteredPosts = query
-    ? posts.filter((post) => post.title.toLowerCase().includes(query))
-    : posts;
+    ? safePosts.filter((post) => post?.title?.toLowerCase().includes(query))
+    : safePosts;
+
+  console.log("Filtered posts:", filteredPosts);
 
   const handleClick = (id) => {
     navigate(`/detail/${id}`);
@@ -116,20 +124,18 @@ const SearchList = () => {
               <Container>
                 <Row>
                   <Col>
-                    {/* 전체 클릭 가능 영역을 div로 감쌈 */}
                     <div className="image-wrapper" onClick={() => handleClick(liquor.id)}>
                       <img
-                        src={liquor.imageUrls?.[0]}
+                        src={liquor.imageUrls?.[0] || "default-image.jpg"}
                         alt="상품 이미지"
                         className="img-fluid product-image"
                       />
                     </div>
-                    {/* 클릭 가능한 정보 영역 */}
                     <div className="product-info" onClick={() => handleClick(liquor.id)}>
-                      <div className="product-title">{liquor.title}</div>
+                      <div className="product-title">{liquor.title || "제목 없음"}</div>
                       <div className="product-price">
-                        <p>{liquor.price}<span>원</span></p>
-                        <p>{liquor.timeAgo}</p>
+                        <p>{liquor.price ? `${liquor.price}원` : "가격 미정"}</p>
+                        <p>{liquor.timeAgo || "시간 정보 없음"}</p>
                       </div>
                     </div>
                   </Col>
