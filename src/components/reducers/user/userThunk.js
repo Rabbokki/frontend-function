@@ -24,10 +24,10 @@ export const registerUser = createAsyncThunk(
         formData.append("accountImg", newUserData.imgUrl);
       }
 
-      const response = await axios.post(`${API_URL}/api/account/signup`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }, // Keep multipart format
+      const response = await axios.post("/api/account/signup", formData, {  // 상대 경로로 변경
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 10000,
       });
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "회원가입에 실패했습니다.");

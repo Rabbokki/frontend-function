@@ -124,30 +124,25 @@ const RegisterMenu = ({ emailRef, passwordRef, nicknameRef, birthdayRef, showLog
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="auth-box">
           <h2 className="auth-title">회원 가입</h2>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
-            <input type="text" placeholder="이메일" ref={emailRef} className="auth-input" /><br />
-            <input type="text" placeholder="유저네임" ref={nicknameRef} className="auth-input" /><br />
-            <input type="password" placeholder="비밀번호" ref={passwordRef} className="auth-input" /><br />
-            <input type="date" placeholder="생일" ref={birthdayRef} className="auth-input" /><br />
-            <label className="form-label">이미지 업로드</label>
-            <input type="file" accept="image/*" onChange={handleImageUpload} /><br />
-            {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="uploaded-image" />}
-            <p className="login-link" onClick={() => setShowLogin(true)}>
-                  로그인
-                </p>
-            <p className="auth-footer">
+            <form onSubmit={registerHandler}>
+              <input type="text" placeholder="이메일" ref={emailRef} className="auth-input" /><br />
+              <input type="text" placeholder="유저네임" ref={nicknameRef} className="auth-input" /><br />
+              <input type="password" placeholder="비밀번호" ref={passwordRef} className="auth-input" /><br />
+              <input type="date" placeholder="생일" ref={birthdayRef} className="auth-input" /><br />
+              <label className="form-label">이미지 업로드</label>
+              <input type="file" accept="image/*" onChange={handleImageUpload} /><br />
+              {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Uploaded" className="uploaded-image" />}
+              <p className="login-link" onClick={() => setShowLogin(true)}>로그인</p>
               <AuthenticateButton clickEvent={registerHandler} showLogin={showLogin} />
               {loading && <p>Loading...</p>}
-              {error && <p>{error}</p>}
-            </p>
-            <button onClick={() => setShowLogin(!showLogin)} className="toggle-auth-button">
-              {showLogin ? "회원가입" : "로그인"}
-            </button>
+              {error && <p style={{ color: 'red' }}>에러: {error}</p>}
+            </form>
           </motion.div>
         </motion.div>
       ) : (
         <div>
           <p>회원가입이 완료되었습니다! 이제 로그인할 수 있습니다.</p>
-      </div>
+        </div>
       )}
     </div>
   );
