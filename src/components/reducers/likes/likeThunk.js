@@ -18,7 +18,7 @@ export const addPostLike = createAsyncThunk(
   async (postId, { rejectWithValue }) => {
     console.log("Add like")
     try {
-      const response = await axios.post(`http://localhost:8081/likes/${postId}`, {}, {
+      const response = await axios.post(`${API_URL}/api/likes/${postId}`, {}, {
         headers: getAuthHeaders(),
       });
 
@@ -34,7 +34,7 @@ export const removePostLike = createAsyncThunk(
   async (postId, { rejectWithValue }) => {
     console.log("Remove like")
     try {
-      const response = await axios.delete(`http://localhost:8081/likes/${postId}`, {
+      const response = await axios.delete(`${API_URL}/api/${postId}`, {
         headers: getAuthHeaders(),
       });
 
@@ -49,7 +49,7 @@ export const fetchPostLikeStatus = createAsyncThunk(
   "likes/fetchPostLikeStatus",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:8081/likes/status/${postId}`, {
+      const response = await axios.get(`${API_URL}/api/likes/status/${postId}`, {
         headers: getAuthHeaders(),
       });
 

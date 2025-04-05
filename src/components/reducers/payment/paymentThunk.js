@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
+
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken") || sessionStorage.getItem("tempAccessToken");
   const refreshToken = localStorage.getItem("refreshToken") || sessionStorage.getItem("tempRefreshToken");
@@ -22,7 +24,7 @@ export const initiatePayment = createAsyncThunk(
       if (headers.Refresh) sessionStorage.setItem("tempRefreshToken", headers.Refresh);
 
       const response = await axios.post(
-        "http://localhost:8081/payment/ready",
+        `${API_URL}/api/payment/ready`,
         paymentData,
         {
           headers,
@@ -45,7 +47,7 @@ export const approvePayment = createAsyncThunk(
   async (pgToken, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:8081/payment/success?pg_token=${pgToken}`,
+        `${API_URL}/api/payment/success?pg_token=${pgToken}`,
         {
           headers: getAuthHeaders(),
           withCredentials: true,

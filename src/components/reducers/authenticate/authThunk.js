@@ -50,7 +50,7 @@ const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
 export const login = (loginData) => async (dispatch) => {
   dispatch(loginStart());
   try {
-    const response = await axios.post(`${API_URL}/account/login`, loginData);
+    const response = await axios.post(`${API_URL}/api/account/login`, loginData);
     const accessToken = response.headers['access_token'];
     const refreshToken = response.headers['refresh_token'];
     if (accessToken) {

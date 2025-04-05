@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
+
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
@@ -15,7 +17,7 @@ export const fetchReviews = createAsyncThunk(
     "reviews/fetchReviews", 
     async (postId, { rejectWithValue }) => {
       try {
-        const response = await axios.get(`http://localhost:8081/reviews/${postId}`, {
+        const response = await axios.get(`${API_URL}/api/reviews/${postId}`, {
           headers: getAuthHeaders(),
         });
         console.log("From review: response data: ", response.data)
@@ -33,7 +35,7 @@ export const fetchReviews = createAsyncThunk(
       try {
         console.log("Sending review data:", { postId, accountId, rating, content });
         const response = await axios.post(
-          `http://localhost:8081/reviews/${postId}`,
+          `${API_URL}/api/reviews/${postId}`,
           { accountId, rating, content }, 
           { headers: { ...getAuthHeaders(), "Content-Type": "application/json" } } 
         );

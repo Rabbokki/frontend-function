@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
+
 export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (newUserData, { rejectWithValue }) => {
@@ -22,7 +24,7 @@ export const registerUser = createAsyncThunk(
         formData.append("accountImg", newUserData.imgUrl);
       }
 
-      const response = await axios.post('/account/signup', formData, {
+      const response = await axios.post(`${API_URL}/api/account/signup`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }, // Keep multipart format
       });
 
@@ -41,7 +43,7 @@ export const fetchUserData = createAsyncThunk(
         headers: { "Access_Token": accessToken }, // 헤더 이름 확인
       };
       console.log("Request config:", config); // 요청 설정 로그 추가
-      const response = await axios.get('/account/me', config);
+      const response = await axios.get(`${API_URL}/api/account/me`, config);
       console.log("fetchUserData response:", response.data.data);
       return response.data.data || response.data;
     } catch (error) {
@@ -61,7 +63,7 @@ export const updateUserData = createAsyncThunk(
     }
 
     try {
-      const response = await axios.put('/account/me', updatedData, {
+      const response = await axios.put(`${API_URL}/api/account/me`, updatedData, {
         headers: { "Access_Token": accessToken }
       });
       return response.data;
@@ -75,7 +77,7 @@ export const fetchUserPosts = createAsyncThunk(
   'user/fetchUserPosts',
   async (accessToken, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/post/user/posts', {
+      const response = await axios.get(`${API_URL}/api/post/user/posts`, {
         headers: { "Access_Token": accessToken }
       });
       return response.data;
