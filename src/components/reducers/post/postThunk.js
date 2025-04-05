@@ -16,11 +16,10 @@ const getAuthHeaders = () => {
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
-    console.log("Requesting URL:", `${API_URL}/api/post`);
+    const url = "/api/post";  // 상대 경로로 Nginx 프록시 사용
+    console.log("Requesting URL:", url);
     try {
-      const response = await axios.get(`${API_URL}/api/post`, {
-        timeout: 10000, // 10초 타임아웃
-      });
+      const response = await axios.get(url, { timeout: 10000 });
       return response.data.data || response.data;
     } catch (error) {
       console.error("Fetch error:", error);
