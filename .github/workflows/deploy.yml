@@ -1,5 +1,8 @@
 name: 배포
 
+env:
+  REACT_APP_BASE_URL: "http://52.79.225.242:8081"
+
 on:
   push:
     branches: [ "develop" ]

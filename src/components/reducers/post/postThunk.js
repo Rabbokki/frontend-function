@@ -16,10 +16,14 @@ const getAuthHeaders = () => {
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
+    console.log("Requesting URL:", `${API_URL}/api/post`);
     try {
-      const response = await axios.get(`${API_URL}/api/post`);
-      return response.data.data || response.data; // 'data' 속성이 있으면 사용, 없으면 그대로
+      const response = await axios.get(`${API_URL}/api/post`, {
+        timeout: 10000, // 10초 타임아웃
+      });
+      return response.data.data || response.data;
     } catch (error) {
+      console.error("Fetch error:", error);
       return rejectWithValue(error.response?.data || "Failed to fetch posts");
     }
   }
