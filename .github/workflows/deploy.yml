@@ -17,7 +17,7 @@ jobs:
       - name: 의존성 설치 및 빌드
         run: |
           npm install
-          npm run build || true
+          npm run build
       - name: 도커허브에 로그인
         uses: docker/login-action@v1
         with:
