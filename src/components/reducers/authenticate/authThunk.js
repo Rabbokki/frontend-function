@@ -41,7 +41,6 @@
 
 import axios from 'axios';
 import { loginStart, loginSuccess, loginFailure } from './authSlice';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchUserData } from '../user/userThunk';
 
 const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";

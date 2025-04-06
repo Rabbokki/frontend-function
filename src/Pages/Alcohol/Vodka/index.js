@@ -10,7 +10,6 @@ import axios from "axios";
 function Vodka(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
   useEffect(()=>{
     axios.get("/post/category/VODKA")
     .then((res)=>{

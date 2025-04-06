@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { Await, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPostById } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
-import { fetchUserData } from "../../components/reducers/user/userThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faHeart, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
@@ -17,7 +16,6 @@ const DetailPage = () => {
 
   const { postDetail, loading, error } = useSelector((state) => state.posts);
   const { likedPosts } = useSelector((state) => state.likes);
-  const { userData } = useSelector((state) => state.user);
 
   const [isLiked, setIsLiked] = useState(false);
   const [localLikeCount, setLocalLikeCount] = useState(0);

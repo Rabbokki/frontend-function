@@ -13,10 +13,7 @@ export default function ProductForm() {
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
-  const [tags, setTags] = useState("");
   const [price, setPrice] = useState("");
-  const [acceptPriceOffer, setAcceptPriceOffer] = useState(true);
-  const [shippingIncluded, setShippingIncluded] = useState(true);
   const [category, setCategory] = useState("");
 
   const accessToken = localStorage.getItem("accessToken");

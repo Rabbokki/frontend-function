@@ -28,7 +28,7 @@ const AccountLikes = () => {
     } else if (!userData && !loading) {
       dispatch(fetchUserData(accessToken)).unwrap().catch(() => navigate("/authenticate"));
     }
-  }, [dispatch, navigate, userData, loading]);
+  }, [dispatch, navigate, userData, loading,accessToken]);
 
   const handleLikeToggle = async (postId, isLiked) => {
     if (isLiked) {

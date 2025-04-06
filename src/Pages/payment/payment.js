@@ -10,7 +10,7 @@ const Payment = () => {
   const navigate = useNavigate();
 
   const { postDetail, loading, error } = useSelector((state) => state.posts);
-  const { paymentUrl, loading: paymentLoading, error: paymentError } = useSelector((state) => state.payment);
+  const { loading: paymentLoading, error: paymentError } = useSelector((state) => state.payment);
 
   useEffect(() => {
     if (!postId) {

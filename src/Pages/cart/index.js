@@ -1,12 +1,9 @@
 import "./cart.css";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import axios from "axios";
-import { Await } from "react-router-dom";
 
 function CartPage() {
   const [cartList, setCartList] = useState([]);
-  const dispatch = useDispatch();
   const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
 
   const accessToken = localStorage.getItem("accessToken");
@@ -27,7 +24,7 @@ function CartPage() {
     } else {
       console.log("토큰값이 없습니다");
     }
-  }, []);
+  }, [accessToken, baseUrl]);
   const handleMinuse = async(id)=>{
     await axios.patch(`${baseUrl}/cart/update/${id}?status=-1` , {} ,{
       headers: {  Access_Token: accessToken },

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import "./button.css";
 
 const EditButton = ({clickEventEdit, clickEventDone, fieldName, editField}) => {

@@ -31,7 +31,7 @@ import axios from "axios";
 const RouteComponents = () => {
   const [userKakaoToken , setUserKakaoToken] = useState([])
   const [userData , setUserData] =useState([]);
-  const [accessToken ,setAccessToken] = useState([])
+  const [setAccessToken] = useState([])
   const code = new URL(window.location.href).searchParams.get("code")
   const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
   const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
@@ -68,7 +68,7 @@ const RouteComponents = () => {
         console.error("에러", err)
       })
     }
-  },[code])
+  },[code,baseUrl,kakaoUrl])
   console.log("accessToken" , userKakaoToken)
   console.log("account정보" , userData)
   return (
@@ -101,7 +101,7 @@ const RouteComponents = () => {
           <Container>
           <Row>
             <Col>
-              <img className="mainImg" src="/image/main_imgs.jpg"></img>
+              <img className="mainImg" src="/image/main_imgs.jpg" alt="Main Banner"></img>
             </Col>
           </Row>
           <Row>

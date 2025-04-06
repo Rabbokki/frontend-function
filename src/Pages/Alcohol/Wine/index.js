@@ -5,13 +5,11 @@ import Col from "react-bootstrap/Col";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { faX } from "@fortawesome/free-solid-svg-icons";
 
 
 function Wine(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
   useEffect(()=>{
     axios.get("/post/category/WINE")
     .then((res)=>{

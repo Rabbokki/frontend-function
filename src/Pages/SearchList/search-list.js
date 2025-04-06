@@ -71,10 +71,9 @@
 // };
 
 // export default SearchList;
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import { fetchPosts } from "../../components/reducers/post/postThunk";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";

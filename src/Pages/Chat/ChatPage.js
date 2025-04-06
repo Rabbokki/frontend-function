@@ -460,7 +460,7 @@ let subscription = null;
 
 function ChatPage() {
   const dispatch = useDispatch();
-  const { messages, roomName, roomId } = useSelector(state => state.chat);
+  const { messages, roomId } = useSelector(state => state.chat);
   const { loggedIn, user } = useSelector(state => state.auth);
   const { roomName: urlRoomName } = useParams();
   const navigate = useNavigate();
@@ -472,7 +472,7 @@ function ChatPage() {
   const [selectedRoomName, setSelectedRoomName] = useState(urlRoomName);
   const messagesEndRef = useRef(null);
 
-  const { image, title, price, content, sellerEmail, sellerNickname, postId } = location.state || {};
+  const { image, title, price, content, sellerEmail, sellerNickname } = location.state || {};
 
   // 채팅방 목록 가져오기
   useEffect(() => {

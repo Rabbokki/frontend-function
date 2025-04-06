@@ -6,7 +6,6 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faWineBottle, faUser } from "@fortawesome/free-solid-svg-icons";
-import axios from 'axios';
 import { useRef } from 'react';
 
 const TopNav = () => {
