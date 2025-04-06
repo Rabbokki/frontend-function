@@ -6,7 +6,8 @@ const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-
+  console.log("Access Token from localStorage:", accessToken);
+  console.log("Refresh Token from localStorage:", refreshToken);
   return {
     ...(accessToken && { Access_Token: accessToken }),
     ...(refreshToken && { Refresh: refreshToken }),
@@ -32,14 +33,17 @@ export const addPostLike = createAsyncThunk(
 export const removePostLike = createAsyncThunk(
   "likes/removePostLike",
   async (postId, { rejectWithValue }) => {
-    console.log("Remove like")
+    console.log("Remove like for postId:", postId);
+    const headers = getAuthHeaders();
+    console.log("Request headers:", headers);  // 헤더 출력
     try {
       const response = await axios.delete(`/api/likes/${postId}`, {
-        headers: getAuthHeaders(),
+        headers,
       });
-
+      console.log("Remove like response:", response.data);
       return response.data;
     } catch (error) {
+      console.error("Remove like error:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data || "Failed to remove like");
     }
   }

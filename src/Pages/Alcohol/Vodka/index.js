@@ -12,7 +12,7 @@ function Vodka(){
   const Navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
   useEffect(()=>{
-    axios.get(`${API_URL}/post/category/VODKA`)
+    axios.get("/post/category/VODKA")
     .then((res)=>{
       setPost(res.data)
     })

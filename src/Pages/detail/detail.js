@@ -70,7 +70,8 @@ const DetailPage = () => {
       }
       const status = await dispatch(fetchPostLikeStatus(id)).unwrap();
       setIsLiked(status.data);  // 서버 상태로 동기화
-      setLocalLikeCount(postDetail.likeCount);  // 최신 카운트 반영
+      const updatedPost = await dispatch(fetchPostById(id)).unwrap();  // 최신 게시물 정보 가져오기
+      setLocalLikeCount(updatedPost.likeCount);  // 최신 좋아요 수 반영
     } catch (error) {
       console.error("Like toggle failed:", error);
       setIsLiked(!newLikedState);  // 롤백
