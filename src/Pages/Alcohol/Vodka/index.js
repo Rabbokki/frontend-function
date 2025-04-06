@@ -10,9 +10,9 @@ import axios from "axios";
 function Vodka(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
-  const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
+  const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
   useEffect(()=>{
-    axios.get(`${baseUrl}/post/category/VODKA`)
+    axios.get(`${API_URL}/post/category/VODKA`)
     .then((res)=>{
       setPost(res.data)
     })
