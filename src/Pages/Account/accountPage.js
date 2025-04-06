@@ -26,6 +26,7 @@ const AccountDetails = ({ userData, handleLogout, navigate }) => {
         <p><span className="label">Password</span><br />{"*".repeat(passwordLength)}</p>
         <div className="button-group">
           <button onClick={handleLogout} className="btn logout">로그아웃</button>
+          <button onClick={() => navigate("/account/edit")} className="btn">Edit</button>
         </div>
       </motion.div>
 
