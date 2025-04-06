@@ -29,9 +29,8 @@ import axios from "axios";
 
 
 const RouteComponents = () => {
-  const [userKakaoToken , setUserKakaoToken] = useState([])
   const [userData , setUserData] =useState([]);
-  const [setAccessToken] = useState([])
+  const [accessToken, setAccessToken] = useState([]); // 수정
   const code = new URL(window.location.href).searchParams.get("code")
   const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
   const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
@@ -41,7 +40,6 @@ const RouteComponents = () => {
       axios.post(`${kakaoUrl}`)            
       .then((res)=>{
         console.log(res.data)
-        setUserKakaoToken(res.data);
         const userInfoUrl = 'https://kapi.kakao.com/v2/user/me';
         const headers = {Authorization: `Bearer ${res.data.access_token} `};
         axios.get(userInfoUrl,{headers})
@@ -68,8 +66,8 @@ const RouteComponents = () => {
         console.error("에러", err)
       })
     }
-  },[code,baseUrl,kakaoUrl])
-  console.log("accessToken" , userKakaoToken)
+  },[code,baseUrl,kakaoUrl,setAccessToken])
+  console.log("accessToken" , accessToken)
   console.log("account정보" , userData)
   return (
     <div>

@@ -25,8 +25,7 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
   };
 
   //네이버 로그인
-  const NAVER_CLIENT_ID = 'SoCGXgkbeenb0805p8BQ'; // 네이버 개발자 센터에서 발급받은 클라이언트 ID
-  const NAVER_REDIRECT_URI = 'http://52.79.225.242/callback'; // 또는 사용 중인 도메인 
+   // 또는 사용 중인 도메인 
   
   
   //카카오 로그인

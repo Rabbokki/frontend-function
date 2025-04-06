@@ -445,7 +445,7 @@
 
 // export default ChatPage;
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { setRoomName, setRoomId, addMessage, setMessages } from '../../components/redux/chatSlice';
@@ -473,6 +473,35 @@ function ChatPage() {
   const messagesEndRef = useRef(null);
 
   const { image, title, price, content, sellerEmail, sellerNickname } = location.state || {};
+
+  const connectWebSocket = useCallback((roomName, sender, accessToken) => {
+    if (globalStompClient && globalStompClient.connected) {
+      if (subscription) subscription.unsubscribe();
+    } else {
+      const socket = new SockJS(`${baseUrl}/ws`);
+      globalStompClient = new Client({
+        webSocketFactory: () => socket,
+        reconnectDelay: 5000,
+        connectHeaders: { 'Access_Token': accessToken },
+      });
+
+      globalStompClient.onConnect = () => {
+        subscription = globalStompClient.subscribe(`/sub/chatroom/${roomName}`, (message) => {
+          const msg = JSON.parse(message.body);
+          const isDuplicate = messages.some(
+            m => m.timestamp === msg.timestamp && m.sender === msg.sender && m.message === msg.message
+          );
+          if (!isDuplicate) {
+            dispatch(addMessage(msg));
+          }
+        });
+      };
+
+      globalStompClient.onStompError = frame => console.error('WebSocket error:', frame);
+      globalStompClient.onDisconnect = () => console.log('WebSocket disconnected');
+      globalStompClient.activate();
+    }
+  }, [dispatch, messages]);
 
   // 채팅방 목록 가져오기
   useEffect(() => {
@@ -552,36 +581,7 @@ function ChatPage() {
         globalStompClient = null;
       }
     };
-  }, [dispatch, selectedRoomName, navigate, sellerEmail, sellerNickname, sender]);
-
-  const connectWebSocket = (roomName, sender, accessToken) => {
-    if (globalStompClient && globalStompClient.connected) {
-      if (subscription) subscription.unsubscribe();
-    } else {
-      const socket = new SockJS(`${baseUrl}/ws`);
-      globalStompClient = new Client({
-        webSocketFactory: () => socket,
-        reconnectDelay: 5000,
-        connectHeaders: { 'Access_Token': accessToken },
-      });
-
-      globalStompClient.onConnect = () => {
-        subscription = globalStompClient.subscribe(`/sub/chatroom/${roomName}`, (message) => {
-          const msg = JSON.parse(message.body);
-          const isDuplicate = messages.some(
-            m => m.timestamp === msg.timestamp && m.sender === msg.sender && m.message === msg.message
-          );
-          if (!isDuplicate) {
-            dispatch(addMessage(msg));
-          }
-        });
-      };
-
-      globalStompClient.onStompError = frame => console.error('WebSocket error:', frame);
-      globalStompClient.onDisconnect = () => console.log('WebSocket disconnected');
-      globalStompClient.activate();
-    }
-  };
+  }, [dispatch, selectedRoomName, navigate, sellerEmail, sellerNickname, sender, connectWebSocket]);
 
   const sendMessage = () => {
     if (message.trim() === '' || !globalStompClient || !globalStompClient.connected) return;
@@ -602,7 +602,7 @@ function ChatPage() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollTo(0, messagesEndRef.current.scrollHeight);
-  }, [messages]);
+  }, [messages,connectWebSocket]);
 
   const handleRoomClick = roomName => {
     const room = chatRooms.find(r => r.roomName === roomName);

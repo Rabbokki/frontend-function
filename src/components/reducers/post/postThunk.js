@@ -16,10 +16,13 @@ const getAuthHeaders = () => {
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (_, { rejectWithValue }) => {
-    const url = "/api/post";  // 상대 경로로 Nginx 프록시 사용
+    const url = "/api/post";
     console.log("Requesting URL:", url);
     try {
-      const response = await axios.get(url, { timeout: 10000 });
+      const response = await axios.get(url, { 
+        headers: getAuthHeaders(), // 인증 추가
+        timeout: 10000 
+      });
       return response.data.data || response.data;
     } catch (error) {
       console.error("Fetch error:", error);
@@ -32,7 +35,9 @@ export const fetchPostById = createAsyncThunk(
   "posts/fetchPostById",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/api/post/find/${postId}`);
+      const response = await axios.get(`${API_URL}/api/post/find/${postId}`, {
+        headers: getAuthHeaders(), // 인증 추가
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch post");

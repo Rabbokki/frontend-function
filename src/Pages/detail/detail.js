@@ -24,8 +24,6 @@ const DetailPage = () => {
   const baseUrlsee = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
 
 
-  const [cartAdd ,setCartAdd] = useState(false)
-
   useEffect(() => {
     dispatch(fetchPostById(id));
     dispatch(fetchPostLikeStatus(id));
@@ -205,7 +203,6 @@ const DetailPage = () => {
     }).catch((err)=>{
       console.log("이것은 에러여" , err)
     })
-    setCartAdd(true);
     alert("장바구니에 추가되었습니다.");
   }
 
