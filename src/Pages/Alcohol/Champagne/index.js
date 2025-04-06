@@ -11,7 +11,7 @@ function Champagne() {
   const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
 
   useEffect(() => {
-    axios.get(`${API_URL}/api/post/category/CHAMPAGNE`)
+    axios.get("/api/post/category/CHAMPAGNE")
       .then((res) => {
         console.log("Raw response:", res);  // 전체 응답 확인
         console.log("Response data:", res.data);
