@@ -23,25 +23,6 @@ const TopNav = () => {
   };
   
 
-
-  // const onSearch = ()=>{
-  //   const searchText = inputRef.current.value;
-  //   if(searchText){
-  //     axios.get(`/api/liqour`)
-  //     .then((response) =>{
-  //       if(response.data.length > 0){
-  //         alert("검색이 되었습니다")
-  //       }else{
-  //         alert("검색결과가 없습니다");
-  //       }
-  //     })
-  //     .catch((error)=>{
-  //       alert("오류")
-  //     });
-  //   }
-  //   inputRef.current.value='';
-  // };
-
   return (
     <div>
       <Navbar bg="light" data-bs-theme="light" style={{width:'100%'}}>

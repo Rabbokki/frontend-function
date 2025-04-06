@@ -50,22 +50,27 @@ const DetailPage = () => {
 
   const handleLikeToggle = async () => {
     if (isLoading) return;
-
-    const newLikedState = !isLiked;
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      alert("로그인이 필요합니다.");
+      navigate("/authenticate");
+      return;
+    }
+  
     setIsLoading(true);
+    const newLikedState = !isLiked;
     setIsLiked(newLikedState);
     setLocalLikeCount((prev) => (newLikedState ? prev + 1 : prev - 1));
-
+  
     try {
       if (newLikedState) {
-        await dispatch(addPostLike(postDetail.id)).unwrap();
+        await dispatch(addPostLike(id)).unwrap();
       } else {
-        await dispatch(removePostLike(postDetail.id)).unwrap();
+        await dispatch(removePostLike(id)).unwrap();
       }
-      dispatch(fetchPostLikeStatus(id));
-      dispatch(fetchUserData(accessToken));
+      await dispatch(fetchPostLikeStatus(id)).unwrap();
     } catch (error) {
-      console.error(`${newLikedState ? 'Add' : 'Remove'} like failed:`, error);
+      console.error("Like toggle failed:", error);
       setIsLiked(!newLikedState);
       setLocalLikeCount((prev) => (newLikedState ? prev - 1 : prev + 1));
     } finally {
