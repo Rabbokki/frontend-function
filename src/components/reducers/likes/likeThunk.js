@@ -8,10 +8,11 @@ const getAuthHeaders = () => {
   const refreshToken = localStorage.getItem("refreshToken");
   console.log("Access Token from localStorage:", accessToken);
   console.log("Refresh Token from localStorage:", refreshToken);
-  return {
-    ...(accessToken && { Access_Token: accessToken }),
-    ...(refreshToken && { Refresh: refreshToken }),
-  };
+  const headers = {};
+  if (accessToken) headers["Access_Token"] = accessToken;
+  if (refreshToken && refreshToken !== "undefined") headers["Refresh"] = refreshToken;  // "undefined" 문자열 방지
+  console.log("Prepared headers:", headers);
+  return headers;
 };
 
 export const addPostLike = createAsyncThunk(
@@ -19,7 +20,7 @@ export const addPostLike = createAsyncThunk(
   async (postId, { rejectWithValue }) => {
     console.log("Add like")
     try {
-      const response = await axios.post(`${API_URL}/api/likes/${postId}`, {}, {
+      const response = await axios.post(`/api/likes/${postId}`, {}, {
         headers: getAuthHeaders(),
       });
 
@@ -35,10 +36,10 @@ export const removePostLike = createAsyncThunk(
   async (postId, { rejectWithValue }) => {
     console.log("Remove like for postId:", postId);
     const headers = getAuthHeaders();
-    console.log("Request headers:", headers);  // 헤더 출력
     try {
       const response = await axios.delete(`/api/likes/${postId}`, {
         headers,
+        withCredentials: true,  // 인증 정보 포함 (필요 시)
       });
       console.log("Remove like response:", response.data);
       return response.data;
@@ -53,7 +54,7 @@ export const fetchPostLikeStatus = createAsyncThunk(
   "likes/fetchPostLikeStatus",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/api/likes/status/${postId}`, {
+      const response = await axios.get(`/api/likes/status/${postId}`, {
         headers: getAuthHeaders(),
       });
 
