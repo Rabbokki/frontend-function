@@ -68,10 +68,12 @@ const DetailPage = () => {
       } else {
         await dispatch(removePostLike(id)).unwrap();
       }
-      await dispatch(fetchPostLikeStatus(id)).unwrap();
+      const status = await dispatch(fetchPostLikeStatus(id)).unwrap();
+      setIsLiked(status.data);  // 서버 상태로 동기화
+      setLocalLikeCount(postDetail.likeCount);  // 최신 카운트 반영
     } catch (error) {
       console.error("Like toggle failed:", error);
-      setIsLiked(!newLikedState);
+      setIsLiked(!newLikedState);  // 롤백
       setLocalLikeCount((prev) => (newLikedState ? prev - 1 : prev + 1));
     } finally {
       setIsLoading(false);

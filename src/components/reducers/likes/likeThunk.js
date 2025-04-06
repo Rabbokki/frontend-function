@@ -34,7 +34,7 @@ export const removePostLike = createAsyncThunk(
   async (postId, { rejectWithValue }) => {
     console.log("Remove like")
     try {
-      const response = await axios.delete(`${API_URL}/api/${postId}`, {
+      const response = await axios.delete(`${API_URL}/api/likes/${postId}`, {
         headers: getAuthHeaders(),
       });
 

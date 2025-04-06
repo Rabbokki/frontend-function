@@ -11,14 +11,16 @@ function Champagne() {
   const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
 
   useEffect(() => {
-    axios.get(`${API_URL}/api/post/category/CHAMPAGNE`)  // "/api" 추가
+    axios.get(`${API_URL}/api/post/category/CHAMPAGNE`)
       .then((res) => {
-        console.log("Response data:", res.data);  // 응답 확인
-        setPost(Array.isArray(res.data) ? res.data : []);  // 배열 보장
+        console.log("Raw response:", res);  // 전체 응답 확인
+        console.log("Response data:", res.data);
+        const posts = Array.isArray(res.data) ? res.data : res.data.data || [];  // 중첩 구조 고려
+        setPost(posts);
       })
       .catch((err) => {
-        console.error("Error fetching posts:", err);
-        setPost([]);  // 에러 시 빈 배열
+        console.error("Error fetching posts:", err.response?.data || err.message);
+        setPost([]);
       });
   }, []);
 
