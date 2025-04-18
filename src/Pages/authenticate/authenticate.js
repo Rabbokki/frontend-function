@@ -30,18 +30,18 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
   
   //카카오 로그인
   const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
-  const REDIRECT_URI = 'http://localhost:3000';
+  const REDIRECT_URI = 'https://dopaminex.kro.kr/callback';
   const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`
   const handleKakaoLogin = ()=>{
     window.location.href = kakaoUrl
   }
   
   const handleGoogleLogin = () => {
-    dispatch(googleLogin());
+    window.location.href = 'https://dopaminex.kro.kr:8443/oauth2/authorization/google';
   };
   
   const handleNaverLogin = () => {
-    window.location.href = 'http://52.79.225.242:8081/oauth2/authorization/naver';
+    window.location.href = 'https://dopaminex.kro.kr:8443/oauth2/authorization/naver';
   };
 
   return (
