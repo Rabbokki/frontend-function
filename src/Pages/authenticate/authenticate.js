@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login, googleLogin } from "../../components/reducers/authenticate/authThunk";
+import { login } from "../../components/reducers/authenticate/authThunk";
 import { registerUser } from "../../components/reducers/user/userThunk";
 import "./authenticate.css";
 import AuthenticateButton from "../../components/buttons/AuthenticateButton";
