@@ -1,8 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
-
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
@@ -35,7 +33,7 @@ export const fetchPostById = createAsyncThunk(
   "posts/fetchPostById",
   async (postId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/api/post/find/${postId}`, {
+      const response = await axios.get(`/api/post/find/${postId}`, {
         headers: getAuthHeaders(), // 인증 추가
       });
       return response.data;
@@ -50,7 +48,7 @@ export const createPost = createAsyncThunk(
   async ({ formData, accessToken }, thunkAPI) => {
     try {
       const response = await axios.post(
-        `${API_URL}/api/post/create`,
+        `/api/post/create`,
         formData,
         {
           headers: { Access_Token: accessToken },
@@ -71,7 +69,7 @@ export const updatePost = createAsyncThunk(
   async ({ formData, postId, accessToken }, thunkAPI) => {
     try {
       const response = await axios.patch(
-        `${API_URL}/api/post/update/${postId}`,
+        `/api/post/update/${postId}`,
         formData,
         {
           headers: {
@@ -93,7 +91,7 @@ export const deletePost = createAsyncThunk(
   "posts/deletePost",
   async ({ postId, accessToken }, thunkAPI) => {
     try {
-      await axios.delete(`${API_URL}/api/post/delete/${postId}`, {
+      await axios.delete(`/api/post/delete/${postId}`, {
         headers: {
           Access_Token: accessToken,
         },
