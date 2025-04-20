@@ -2,14 +2,10 @@ import axios from 'axios';
 import { loginStart, loginSuccess, loginFailure } from './authSlice';
 import { fetchUserData } from '../user/userThunk';
 
-const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
-
-// 로그인 thunk
 export const login = (loginData) => async (dispatch) => {
   dispatch(loginStart());
   try {
-      const baseUrl = "https://dopaminex.kro.kr:8443";
-      const apiUrl = `${baseUrl.replace(/\/+$/, '')}/api/account/login`.replace(/\/+/g, '/');
+      const apiUrl = 'https://dopaminex.kro.kr:8443/api/account/login'.replace(/\/+/g, '/');
       console.log("Sending login request:", apiUrl, loginData);
       const response = await axios.post(apiUrl, loginData, {
           headers: { "Content-Type": "application/json" }
@@ -30,9 +26,8 @@ export const login = (loginData) => async (dispatch) => {
 export const googleLogin = () => async (dispatch) => {
   dispatch(loginStart());
   try {
-    // Google OAuth2 인증 페이지로 리다이렉션
-    window.location.href = `${API_URL}/oauth2/authorization/google`;
+      window.location.href = 'https://dopaminex.kro.kr:8443/oauth2/authorization/google';
   } catch (error) {
-    dispatch(loginFailure("Google 로그인 시작에 실패했습니다."));
+      dispatch(loginFailure("Google 로그인 시작에 실패했습니다."));
   }
 };
