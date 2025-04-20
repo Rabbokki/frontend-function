@@ -5,7 +5,7 @@ import { fetchUserData } from '../user/userThunk';
 export const login = (loginData) => async (dispatch) => {
   dispatch(loginStart());
   try {
-      const apiUrl = 'https://dopaminex.kro.kr:8443/api/account/login'.replace(/\/+/g, '/');
+      const apiUrl = 'https://dopaminex.kro.kr:8443/api/account/login';
       console.log("Sending login request:", apiUrl, loginData);
       const response = await axios.post(apiUrl, loginData, {
           headers: { "Content-Type": "application/json" }
