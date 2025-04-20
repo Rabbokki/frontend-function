@@ -1,6 +1,6 @@
 name: 배포
 env:
-  REACT_APP_BASE_URL: "/api/"  # 상대 경로로 변경
+  REACT_APP_API_URL: https://dopaminex.kro.kr:8443  # 상대 경로로 변경
 on:
   push:
     branches: ["main"]
