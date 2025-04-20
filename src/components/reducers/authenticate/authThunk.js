@@ -9,8 +9,8 @@ export const login = (loginData) => async (dispatch) => {
   dispatch(loginStart());
   try {
       const baseUrl = "https://dopaminex.kro.kr:8443";
-      const apiUrl = `${baseUrl.replace(/\/+$/, '')}/api/account/login`; // // 방지
-      console.log("Sending login request to:", apiUrl);
+      const apiUrl = `${baseUrl.replace(/\/+$/, '')}/api/account/login`.replace(/\/+/g, '/');
+      console.log("Sending login request:", apiUrl, loginData);
       const response = await axios.post(apiUrl, loginData, {
           headers: { "Content-Type": "application/json" }
       });
