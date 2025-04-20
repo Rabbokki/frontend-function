@@ -1,6 +1,6 @@
 name: 배포
 env:
-  REACT_APP_API_URL: https://dopaminex.kro.kr:8443  # 상대 경로로 변경
+  REACT_APP_API_URL: https://dopaminex.kro.kr:8443
 on:
   push:
     branches: ["main"]
@@ -15,7 +15,10 @@ jobs:
         with:
           node-version: '20'
       - name: 의존성 설치 및 빌드
+        env:
+          REACT_APP_API_URL: https://dopaminex.kro.kr:8443
         run: |
+          echo "REACT_APP_API_URL=$REACT_APP_API_URL" > .env
           npm install
           npm run build
       - name: 도커허브에 로그인

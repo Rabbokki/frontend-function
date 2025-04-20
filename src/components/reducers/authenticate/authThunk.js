@@ -5,7 +5,7 @@ import { fetchUserData } from '../user/userThunk';
 export const login = (loginData) => async (dispatch) => {
   dispatch(loginStart());
   try {
-      const apiUrl = 'https://dopaminex.kro.kr:8443/api/account/login';
+      const apiUrl = `${process.env.REACT_APP_API_URL}/api/account/login`;
       console.log("Sending login request:", apiUrl, loginData);
       const response = await axios.post(apiUrl, loginData, {
           headers: { "Content-Type": "application/json" },
@@ -27,7 +27,7 @@ export const login = (loginData) => async (dispatch) => {
 export const googleLogin = () => async (dispatch) => {
   dispatch(loginStart());
   try {
-      const googleUrl = 'https://dopaminex.kro.kr:8443/oauth2/authorization/google';
+      const googleUrl = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
       console.log("Redirecting to Google OAuth:", googleUrl);
       window.location.href = googleUrl;
   } catch (error) {
