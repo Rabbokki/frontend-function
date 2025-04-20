@@ -8,20 +8,22 @@ const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
 export const login = (loginData) => async (dispatch) => {
   dispatch(loginStart());
   try {
-    const response = await axios.post(`/api/account/login`, loginData);
-    const accessToken = response.headers['access_token'];
-    const refreshToken = response.headers['refresh_token'];
-    if (accessToken) {
+      const baseUrl = "https://dopaminex.kro.kr:8443";
+      const apiUrl = `${baseUrl.replace(/\/+$/, '')}/api/account/login`; // // 방지
+      console.log("Sending login request to:", apiUrl);
+      const response = await axios.post(apiUrl, loginData, {
+          headers: { "Content-Type": "application/json" }
+      });
+      console.log("Login response:", response.data, response.headers);
+      const accessToken = response.headers['access_token'];
+      const refreshToken = response.headers['refresh_token'];
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("userEmail", loginData.email);
-      localStorage.setItem("passwordLength", loginData.password.length);
-      console.log("Trying to log in...")
-      await dispatch(fetchUserData(accessToken)); // 사용자 정보 가져오기
+      await dispatch(fetchUserData(accessToken));
       dispatch(loginSuccess());
-    }
   } catch (error) {
-    dispatch(loginFailure("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요."));
+      console.error("Login error:", error.response?.data, error.message);
+      dispatch(loginFailure(error.response?.data?.message || "로그인 실패"));
   }
 };
 
