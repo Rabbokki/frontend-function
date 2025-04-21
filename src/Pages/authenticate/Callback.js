@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { loginSuccess } from '../reducers/authenticate/authSlice';
-import { fetchUserData } from '../reducers/user/userThunk';
+import { loginSuccess } from '../../components/reducers/authenticate/authSlice';
+import { fetchUserData } from '../../components/reducers/user/userThunk';
 
 const Callback = () => {
     const dispatch = useDispatch();
