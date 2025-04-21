@@ -19,7 +19,7 @@ export const login = (loginData) => async (dispatch) => {
         await dispatch(fetchUserData(accessToken));
         dispatch(loginSuccess({ accessToken }));
     } catch (error) {
-        console.error("Login error:", error.response?.data, error.message, error.config.url);
+        console.error("Login error:", error.response?.data, error.message, error.config?.url);
         dispatch(loginFailure(error.response?.data?.message || "로그인 실패"));
     }
 };

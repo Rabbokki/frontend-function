@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchUserDataStart, fetchUserDataSuccess, fetchUserDataFailure } from './userSlice';
 
 export const registerUser = createAsyncThunk(
     'user/registerUser',
@@ -29,27 +28,29 @@ export const registerUser = createAsyncThunk(
     }
 );
 
-export const fetchUserData = (accessToken) => async (dispatch) => {
-    dispatch(fetchUserDataStart());
-    try {
-        const apiUrl = `${process.env.REACT_APP_API_URL}/api/account/me`;
-        console.log("Sending request to:", apiUrl, "with Access_Token:", accessToken);
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Access_Token": accessToken
-            },
-            withCredentials: true
-        };
-        console.log("Request config:", config);
-        const response = await axios.get(apiUrl, config);
-        console.log("User data response:", response.data);
-        dispatch(fetchUserDataSuccess(response.data));
-    } catch (error) {
-        console.error("fetchUserData error:", error.message, error.config?.url, error.response?.status);
-        dispatch(fetchUserDataFailure(error.message || "사용자 데이터를 가져오지 못했습니다."));
+export const fetchUserData = createAsyncThunk(
+    'user/fetchUserData',
+    async (accessToken, { rejectWithValue }) => {
+        try {
+            const apiUrl = `${process.env.REACT_APP_API_URL}/api/account/me`;
+            console.log("Sending request to:", apiUrl, "with Access_Token:", accessToken);
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Access_Token": accessToken
+                },
+                withCredentials: true
+            };
+            console.log("Request config:", config);
+            const response = await axios.get(apiUrl, config);
+            console.log("User data response:", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("fetchUserData error:", error.message, error.config?.url, error.response?.status);
+            return rejectWithValue(error.message || "사용자 데이터를 가져오지 못했습니다.");
+        }
     }
-};
+);
 
 export const updateUserData = createAsyncThunk(
     'user/updateUserData',
