@@ -30,9 +30,6 @@ const LoginMenu = ({ emailRef, passwordRef, showLogin, setShowLogin }) => {
         dispatch(login(loginData));
     };
 
-    const REST_API_KEY = '59863455ad799376c5e0310b92c4e537';
-    const REDIRECT_URI = 'https://dopaminex.kro.kr/callback';
-    const kakaoUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
     const handleKakaoLogin = () => {
         window.location.href = 'https://dopaminex.kro.kr:8443/oauth2/authorization/kakao';
     };
