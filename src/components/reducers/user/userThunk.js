@@ -5,6 +5,7 @@ export const registerUser = createAsyncThunk(
     'user/registerUser',
     async (newUserData, { rejectWithValue }) => {
         try {
+            console.log("Registering user with API URL:", process.env.REACT_APP_API_URL);
             const formData = new FormData();
             const dtoBlob = new Blob([JSON.stringify({
                 email: newUserData.email,
@@ -14,15 +15,32 @@ export const registerUser = createAsyncThunk(
             })], { type: "application/json" });
             formData.append("dto", dtoBlob);
             if (newUserData.imgUrl) {
+                if (newUserData.imgUrl.size > 50 * 1024 * 1024) {
+                    console.error("Image size exceeds 50MB:", newUserData.imgUrl.size);
+                    return rejectWithValue("이미지 파일 크기가 50MB을 초과했습니다.");
+                }
                 formData.append("accountImg", newUserData.imgUrl);
+                console.log("Appended accountImg:", newUserData.imgUrl.name);
             }
+            console.log("Sending signup request to:", `${process.env.REACT_APP_API_URL}/api/account/signup`);
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/account/signup`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true,
                 timeout: 10000,
             });
+            console.log("Register response:", response.data);
+            if (typeof response.data === 'string' && response.data.includes('<!DOCTYPE html>')) {
+                console.error("Received HTML response:", response.data);
+                return rejectWithValue("Unexpected HTML response received instead of JSON.");
+            }
+            if (response.data.success && response.data.data.accessToken) {
+                localStorage.setItem("accessToken", response.data.data.accessToken);
+                localStorage.setItem("passwordLength", newUserData.password.length.toString());
+                console.log("Stored accessToken:", response.data.data.accessToken);
+            }
             return response.data;
         } catch (error) {
-            console.error("registerUser error:", error.response?.data, error.message);
+            console.error("Register error:", error.message, error.response?.data, error.config?.url);
             return rejectWithValue(error.response?.data?.message || "회원가입에 실패했습니다.");
         }
     }
@@ -32,6 +50,10 @@ export const fetchUserData = createAsyncThunk(
     'user/fetchUserData',
     async (accessToken, { rejectWithValue }) => {
         try {
+            if (!accessToken) {
+                console.error("No accessToken provided for fetchUserData");
+                return rejectWithValue("Access token is missing.");
+            }
             const apiUrl = `${process.env.REACT_APP_API_URL}/api/account/me`;
             console.log("Sending request to:", apiUrl, "with Access_Token:", accessToken);
             const config = {
@@ -44,6 +66,10 @@ export const fetchUserData = createAsyncThunk(
             console.log("Request config:", config);
             const response = await axios.get(apiUrl, config);
             console.log("User data response:", response.data);
+            if (typeof response.data === 'string' && response.data.includes('<!DOCTYPE html>')) {
+                console.error("Received HTML response:", response.data);
+                return rejectWithValue("Unexpected HTML response received instead of JSON.");
+            }
             return response.data;
         } catch (error) {
             console.error("fetchUserData error:", error.message, error.config?.url, error.response?.status);
@@ -63,6 +89,7 @@ export const updateUserData = createAsyncThunk(
             const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/account/me`, updatedData, {
                 headers: { "Access_Token": accessToken }
             });
+            console.log("Update user response:", response.data);
             return response.data;
         } catch (error) {
             console.error("updateUserData error:", error.response?.data, error.message);
@@ -78,6 +105,7 @@ export const fetchUserPosts = createAsyncThunk(
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/post/user/posts`, {
                 headers: { "Access_Token": accessToken }
             });
+            console.log("User posts response:", response.data);
             return response.data;
         } catch (error) {
             console.error("fetchUserPosts error:", error.response?.data, error.message);

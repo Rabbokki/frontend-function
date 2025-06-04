@@ -13,15 +13,23 @@ const Callback = () => {
         const params = new URLSearchParams(location.search);
         const accessToken = params.get('accessToken');
         const refreshToken = params.get('refreshToken');
+        const accountId = params.get('accountId');
 
         if (accessToken && refreshToken) {
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
-            dispatch(loginSuccess({ accessToken }));
-            dispatch(fetchUserData(accessToken));
-            navigate('/account');
+            if (accountId) localStorage.setItem('accountId', accountId);
+            console.log("OAuth callback: Stored tokens:", { accessToken, refreshToken, accountId });
+            dispatch(loginSuccess({ accessToken, accountId: accountId || null }));
+            dispatch(fetchUserData(accessToken))
+                .unwrap()
+                .then(() => navigate('/'))
+                .catch((error) => {
+                    console.error("Failed to fetch user data in Callback:", error);
+                    navigate('/authenticate');
+                });
         } else {
-            console.error("No tokens found in callback URL");
+            console.error("No tokens found in callback URL:", params.toString());
             navigate('/authenticate');
         }
     }, [dispatch, navigate, location]);

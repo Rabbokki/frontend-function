@@ -11,13 +11,18 @@ export const login = (loginData) => async (dispatch) => {
             headers: { "Content-Type": "application/json" },
             withCredentials: true
         });
-        console.log("Login response:", response.data, response.headers);
-        const accessToken = response.headers['access_token'];
-        const refreshToken = response.headers['refresh_token'];
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        await dispatch(fetchUserData(accessToken));
-        dispatch(loginSuccess({ accessToken }));
+        console.log("Login response:", response.data);
+        if (response.data.success) {
+            const { accessToken, refreshToken, accountId } = response.data.data;
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("accountId", accountId);
+            console.log("Stored tokens:", { accessToken, refreshToken, accountId });
+            await dispatch(fetchUserData(accessToken));
+            dispatch(loginSuccess({ accessToken, accountId }));
+        } else {
+            throw new Error(response.data.message || "로그인 실패");
+        }
     } catch (error) {
         console.error("Login error:", error.response?.data, error.message, error.config?.url);
         dispatch(loginFailure(error.response?.data?.message || "로그인 실패"));

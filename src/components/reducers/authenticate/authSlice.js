@@ -5,6 +5,7 @@ const initialState = {
     loading: false,
     error: null,
     accessToken: localStorage.getItem("accessToken") || null,
+    accountId: localStorage.getItem("accountId") || null,
 };
 
 const authSlice = createSlice({
@@ -19,6 +20,7 @@ const authSlice = createSlice({
             state.loggedIn = true;
             state.loading = false;
             state.accessToken = action.payload.accessToken;
+            state.accountId = action.payload.accountId;
         },
         loginFailure: (state, action) => {
             state.error = action.payload;
@@ -27,8 +29,10 @@ const authSlice = createSlice({
         logout: (state) => {
             state.loggedIn = false;
             state.accessToken = null;
+            state.accountId = null;
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
+            localStorage.removeItem("accountId");
         },
     },
 });

@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -24,14 +27,32 @@ import ChatPage from '../Pages/Chat/ChatPage.js';
 import ChatRoom from '../Pages/Chat/ChatRoom.js';
 import Reviews from '../Pages/review/review.js';
 import WriteReviews from '../Pages/review/writeReview.js';
-import { useSelector } from 'react-redux';
+import { fetchUserData } from '../components/reducers/user/userThunk';
 
 const RouteComponents = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const accessToken = useSelector((state) => state.auth.accessToken);
     const userData = useSelector((state) => state.user.userData);
+    const authLoading = useSelector((state) => state.auth.loading);
 
-    console.log("accessToken", accessToken);
-    console.log("account정보", userData);
+    console.log("RouteComponents: accessToken=", accessToken);
+    console.log("RouteComponents: account정보=", userData);
+
+    useEffect(() => {
+        if (accessToken && !userData && !authLoading) {
+            console.log("Fetching user data in RouteComponents");
+            dispatch(fetchUserData(accessToken))
+                .unwrap()
+                .catch((err) => {
+                    console.error("RouteComponents: Failed to fetch user data:", err);
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+                    localStorage.removeItem("accountId");
+                    navigate('/authenticate');
+                });
+        }
+    }, [dispatch, navigate, accessToken, userData, authLoading]);
 
     return (
         <div>
