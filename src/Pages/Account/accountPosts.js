@@ -69,7 +69,7 @@ const AccountPosts = () => {
 
   if (loading) return <p>게시물을 불러오는 중...</p>;
   if (error) return <p>오류: {error}</p>;
-  if (!userData || userData.postList.length === 0) return <p>등록한 상품이 없습니다.</p>;
+  if (!userData || userData?.postList.length === 0) return <p>등록한 상품이 없습니다.</p>;
 
   return (
     <div className="account-posts-wrapper">
