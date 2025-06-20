@@ -27,7 +27,7 @@ const TopNav = () => {
       <Navbar bg="light" data-bs-theme="light" style={{width:'100%'}}>
         <Container>
           <Navbar.Brand href="/">
-            <img src="/image/logo.jpg" style={{ width: "100px", height: "auto" }} alt="Logo" />
+            <img src="/image/logo.png" style={{ width: "100px", height: "auto" }} alt="Logo" />
           </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link as={Link} to={"/search-list"}>ListPage</Nav.Link>
@@ -40,7 +40,7 @@ const TopNav = () => {
           </Nav>
             <div className='searchBox'>
               <input type='text' placeholder='category' ref={inputRef} className='searchInput'></input>
-              <button onClick={onSearch} id='search-Btn'><img src='/image/image.png' alt='search icon' className='search-Img'></img></button>
+              <button onClick={onSearch} id='search-Btn'><img src='/image/search.png' alt='search icon' className='search-Img'></img></button>
             </div>
           <Nav>
             <Nav.Link as={Link} to={"/newPost"}>

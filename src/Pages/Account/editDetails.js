@@ -1,115 +1,149 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchUserData, updateUserData } from '../../components/reducers/user/userThunk';
-import EditButton from "../../components/buttons/EditButton";
-import SaveChangesButton from '../../components/buttons/SaveChangesButton';
 import "./editDetails.css";
 
-const formStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '30vh',
-    padding: '20px'
-}
-
 const EditDetails = () => {
-    const dispatch = useDispatch();
-    const { userData, loading, error } = useSelector((state) => state.user);
-    const passwordLength = useSelector((state) => state.user.passwordLength);
-    const [editField, setEditField] = useState(null);
-    const [newEmail, setNewEmail] = useState("");
-    const [newNickname, setNewNickname] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [editing, setEditing] = useState(false);
-  
-    const handleEditClick = (field) => {
-      setEditField(field);
-      if (field === "email") setNewEmail(userData.email);
-      if (field === "nickname") setNewNickname(userData.nickname);
-      if (field === "password") setNewPassword(userData.password);
+  const { userData, loading, error } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
+  const [profileData, setProfileData] = useState({
+    nickname: '',
+    email: '',
+    birthday: '',
+    imgUrl: '',
+  });
+
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      setProfileData({
+        nickname: userData?.nickname,
+        email: userData?.email,
+        birthday: userData?.birthday,
+        imgUrl: userData?.imgUrl,
+      });
+    }
+    fetchUserInfo();
+  }, []);
+
+  const handleProfileChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImageFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setProfileData((prev) => ({ ...prev, imgUrl: previewUrl }));
+    }
+  };
+
+  const handleImageDelete = () => {
+    setSelectedImageFile(null);
+    setProfileData((prev) => ({ ...prev, imgUrl: '' }));
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleSaveProfile = async () => {
+    console.log("Fart master");
+    const formData = new FormData();
+    const updateData = {
+      nickname: profileData.nickname,
+      email: profileData.email,
+      birthday: profileData.birthday,
+      imgUrl: profileData.imgUrl,
     };
+
+    const jsonBlob = new Blob([JSON.stringify(updateData)], {
+      type: 'application/json',
+    });
+
+    formData.append('request', jsonBlob);
+
+    if (selectedImageFile) {
+      formData.append('profileImage', selectedImageFile);
+    } else if (!profileData.imgUrl) {
+      updateData.imgUrl = '';
+    }
+
+    dispatch(updateUserData(formData)).unwrap()
+      .then(() => navigate('/account'))
+      .catch((error) => console.error("오류"));
+  };
   
-    const handleEditUnactive = () => {
-      setEditField(null);
-      setEditing(false);
-      if (newEmail === "") setNewEmail("");
-      if (newNickname === "") setNewNickname(""); 
-      if (newPassword === "") setNewPassword("");
-    };
-  
-    useEffect(() => {
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
-        dispatch(fetchUserData(accessToken));
-      }
-    }, [dispatch]);
-  
-    const handleEmailChange = (event) => {
-      setNewEmail(event.target.value);
-      setEditing(true);
-    };
-    const handleNicknameChange = (event) => {
-      setNewNickname(event.target.value);
-      setEditing(true);
-    };
-    const handlePasswordChange = (event) => {
-      setNewPassword(event.target.value);
-      setEditing(true);
-    };
-  
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      const updatedData = {
-        email: newEmail || userData.email,
-        nickname: newNickname || userData.nickname,
-        password: newPassword || userData.password,
-      };
-      dispatch(updateUserData(updatedData));
-    };
-  
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-  
-    return (
-      <div>
-        {userData ? (
-          <form style={formStyle} onSubmit={handleSubmit}>
-            <div>
-              <input
-                placeholder={userData.email}
-                readOnly={editField !== 'email'}
-                onChange={handleEmailChange}
-                className={`p-2 ${editField !== 'email' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
-              />
-              <EditButton clickEventEdit={() => handleEditClick('email')} clickEventDone={handleEditUnactive} fieldName="email" editField={editField} />
-            </div>
-            <div>
-              <input
-                placeholder={userData.nickname}
-                readOnly={editField !== 'nickname'}
-                onChange={handleNicknameChange}
-                className={`p-2 ${editField !== 'nickname' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
-              />
-              <EditButton clickEventEdit={() => handleEditClick('nickname')} clickEventDone={handleEditUnactive} fieldName="nickname" editField={editField} />
-            </div>
-            <div>
-              <input
-                placeholder={passwordLength > 0 ? "*".repeat(passwordLength) : "Enter new password"} 
-                readOnly={editField !== 'password'}
-                onChange={handlePasswordChange}
-                className={`p-2 ${editField !== 'password' ? 'bg-gray-200' : 'bg-white'} placeholder-gray-400`}
-              />
-              <EditButton clickEventEdit={() => handleEditClick('password')} clickEventDone={handleEditUnactive} fieldName="password" editField={editField} />
-            </div>
-            {editing && <SaveChangesButton editing={editing} />}
-          </form>
+  return (
+    <div className="edit-details-container">
+      <h2>프로필 수정</h2>
+
+      <div className="profile-image-section">
+        {profileData.imgUrl ? (
+          <img src={profileData.imgUrl} alt="Profile Preview" className="profile-preview" />
         ) : (
-          <p>사용자 정보를 로드 중...</p>
+          <div className="profile-placeholder">No Image</div>
         )}
+        <div className="image-buttons">
+          <button className="change-image-button" onClick={triggerFileInput}>이미지 변경</button>
+            {profileData.imgUrl && (
+          <button className="delete-image-button" onClick={handleImageDelete}>삭제</button>
+            )}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+        </div>
       </div>
-    );
+
+      <div className="form-group">
+        <label>닉네임</label>
+        <input
+          type="text"
+          name="nickname"
+          value={profileData.nickname}
+          onChange={handleProfileChange}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>이메일</label>
+        <input
+          type="email"
+          name="email"
+          value={profileData.email}
+          onChange={handleProfileChange}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>생년월일</label>
+        <input
+          type="date"
+          name="birthday"
+          value={profileData.birthday}
+          onChange={handleProfileChange}
+        />
+      </div>
+
+      <div className="save-button">
+        <button className="save-changes-button" onClick={handleSaveProfile}>
+          저장하기
+        </button>
+      </div>
+    </div>
+  );
 };
   
 

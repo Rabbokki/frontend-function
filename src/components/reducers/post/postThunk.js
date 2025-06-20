@@ -48,7 +48,7 @@ export const createPost = createAsyncThunk(
   async ({ formData, accessToken }, thunkAPI) => {
     try {
       const response = await axios.post(
-        `/api/post/create`,
+        '/api/post/create',
         formData,
         {
           headers: { Access_Token: accessToken },

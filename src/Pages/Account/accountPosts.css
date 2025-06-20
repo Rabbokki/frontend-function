@@ -1,41 +1,41 @@
 .account-posts-container {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
 
-  .account-posts-wrapper {
-    position: relative;
-  }
+.account-posts-wrapper {
+  position: relative;
+}
 
-  .sort-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: white;
-    padding: 6px 10px;
-    border-radius: 5px;
-    z-index: 10;
-    margin-top: 12px;
-    margin-bottom: 10px;
-    justify-content: center;
-  }
+.sort-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  z-index: 10;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
   
-  .post-card {
-    display: flex;
-    position: relative;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-    background: white;
-    transition: box-shadow 0.2s ease-in-out;
-    padding: 8px;
-  }
+.post-card {
+  display: flex;
+  position: relative;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+  transition: box-shadow 0.2s ease-in-out;
+  padding: 8px;
+}
   
   .post-card:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -153,13 +153,6 @@
     padding-left: 10px;
   }
 
-  .sort-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  
   #sort {
     padding: 6px;
     border-radius: 5px;

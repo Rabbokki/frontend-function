@@ -9,20 +9,80 @@
   padding-right: 40px;
 }
 
-.like-card {
+.account-likes-container {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.account-likes-wrapper {
+  position: relative;
+}
+
+.sort-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 6px 10px;
+  border-radius: 5px;
+  z-index: 10;
+  margin-top: 12px;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.like-card {
+  display: flex;
+  position: relative;
+  align-items: center;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  background-color: white;
+  background: white;
   transition: box-shadow 0.2s ease-in-out;
-  min-width: 180px;
-  max-width: 250px;
+  padding: 8px;
 }
 
 .like-card:hover {
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.like-action {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.like-button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff69b4;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.like-button:hover {
+  background-color: #b0b0b0;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 .fade-out {
@@ -69,6 +129,54 @@
   color: #333;
 }
 
+.post-image {
+  padding: 0 !important;
+  margin: 0 auto;
+  width: 250px;
+  height: 180px;
+  padding-right: 70px;
+  object-fit: contain;
+  background-color: white;
+  display: block;
+  cursor: pointer;
+}
+
+.post-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.title-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding-left: 10px;
+}
+
+.post-title {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.post-price {
+  font-size: 18px;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.description-container {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  padding-left: 10px;
+}
+
 .post-time {
   font-size: 12px;
   color: #777;
@@ -89,7 +197,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background-color: #f9f9f9;
+  background-color: white;
   cursor: pointer;
   display: block;
   margin: 10px auto;

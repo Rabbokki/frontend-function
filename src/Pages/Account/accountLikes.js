@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../components/reducers/user/userThunk";
 import { addPostLike, removePostLike } from "../../components/reducers/likes/likeThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faHeartBroken } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";  // Import Framer Motion
 import "./accountLikes.css";
 
@@ -18,6 +18,8 @@ const AccountLikes = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { userData, loading, error } = useSelector((state) => state.user);
+  const [hoveredPostId, setHoveredPostId] = useState(null);
+
   const likedPosts = useSelector((state) => state.likes.likedPosts);
   const accessToken = localStorage.getItem("accessToken");
   const [removingLikes, setRemovingLikes] = useState(new Set());
@@ -58,60 +60,57 @@ const AccountLikes = () => {
   };
 
   if (error) return <p>오류: {error}</p>;
-  if (!userData || userData.likeList.length === 0) return <p>찜한 상품이 없습니다.</p>;
+  if (!userData || userData.postLikes.length === 0) return <p>찜한 상품이 없습니다.</p>;
 
   return (
-    <div className="account-likes-grid">
-      {userData.likeList.map((like, index) => {
-        const isLiked = likedPosts.includes(String(like.postId));
-        const isFading = removingLikes.has(like.postId);
-
-        return (
-          <motion.div 
-            key={like.id} 
-            className={`like-card ${isFading ? "fade-out" : ""}`}
-            custom={index} 
-            variants={fadeInVariant} 
-            initial="hidden" 
-            animate="visible"
+    <div className="account-likes-wrapper">
+      <div className="account-likes-container">
+        {userData.postLikes.map((like, index) => (
+          <div
+            key={like.id}
+            className="like-card fade-in"
+            style={{ animationDelay: `${index * 0.2}s` }}
           >
-            <div className="user-info">
-              <div className="avatar">
-                <img
-                  src={like.profilePic || "/image/blankProfile.png"}
-                  alt="User Display Pic"
-                  className="profile-image"
-                />
-              </div>
-              <div className="user-details">
-                <span className="user-name">{like.sellerNickname}</span>
-                <span className="post-time">{new Date(like.createdAt).toLocaleDateString()}</span>
-              </div>
-              <FontAwesomeIcon
-                icon={faHeart}
-                className={`heart-icon ${isLiked ? "liked" : ""}`}
-                onClick={() => handleLikeToggle(like.postId, isLiked)}
-              />
+            <div className="like-action">
+              <button
+                className="like-button"
+                onClick={() => handleLikeToggle(like.postId, true)}
+                onMouseEnter={() => setHoveredPostId(like.postId)}
+                onMouseLeave={() => setHoveredPostId(null)}
+              >
+                <FontAwesomeIcon icon={hoveredPostId === like.postId ? faHeartBroken : faHeart} />
+              </button>
             </div>
 
             <img
-              src={like.imgUrl}
-              alt={like.postTitle}
-              className="like-image"
-              onClick={() => navigate(`/detail/${like.postId}`)}
+              src={like.post.imgUrl}
+              alt={like.post.title}
+              className="post-image"
+              onClick={() => navigate(`/detail/${like.post.id}`)}
             />
 
-            <div className="like-content">
-              <h3 className="like-title" onClick={() => navigate(`/detail/${like.postId}`)}>
-                {like.postTitle}
-              </h3>
-              <p className="like-price">{like.postPrice.toLocaleString()} 원</p>
+            <div className="post-content">
+              <div className="title-price-container">
+                <h3
+                  className="post-title"
+                  onClick={() => navigate(`/detail/${like.post.id}`)}
+                >
+                  {like.post.title}
+                </h3>
+                <p className="post-price">
+                  {like.post.price.toLocaleString()} 원
+                </p>
+              </div>
+
+              <div className="description-container">
+                <p className="post-description">{like.post.content}</p>
+              </div>
             </div>
-          </motion.div>
-        );
-      })}
+          </div>
+        ))}
+      </div>
     </div>
-  );
-};
+    );
+  };  
 
 export default AccountLikes;

@@ -13,7 +13,6 @@ const fadeInVariant = {
 
 const AccountDetails = ({ userData, handleLogout, navigate }) => {
     const passwordLength = localStorage.getItem("passwordLength");
-    console.log("userData:", userData); // 디버깅 로그
 
     return (
         <motion.div className="account-grid" initial="hidden" animate="visible">
@@ -44,7 +43,6 @@ const AccountDetails = ({ userData, handleLogout, navigate }) => {
                                 {post.imgUrl && <img src={post.imgUrl} alt={post.title} className="post-image" />}
                                 <p><strong>{post.title}</strong></p>
                                 <p>{post.price}원</p>
-                                <p><small>{new Date(post.createdAt).toLocaleString()}</small></p>
                             </li>
                         ))}
                     </ul>
@@ -57,13 +55,12 @@ const AccountDetails = ({ userData, handleLogout, navigate }) => {
             {/* Likes Section */}
             <motion.div className="likes-card" custom={2} variants={fadeInVariant}>
                 <h2 className="card-title">찜</h2>
-                {userData?.bookMarks?.length > 0 ? (
+                {userData?.postLikes?.length > 0 ? (
                     <ul>
-                        {userData.bookMarks.slice(-8).reverse().map((like) => (
+                        {userData?.postLikes.slice(-8).reverse().map((like) => (
                             <li key={like.id} onClick={() => navigate(`/detail/${like.postId}`)} style={{ cursor: "pointer" }}>
-                                {like.imgUrl && <img src={like.imgUrl} alt={like.postTitle} className="post-image" />}
-                                <p><strong>{like.postTitle}</strong></p>
-                                <p><small>{new Date(like.createdAt).toLocaleString()}</small></p>
+                                {like.post.imgUrl && <img src={like.post.imgUrl} alt={like.post.title} className="post-image" />}
+                                <p><strong>{like.post.title}</strong></p>
                             </li>
                         ))}
                     </ul>
@@ -92,10 +89,13 @@ export default function AccountPage() {
                 navigate('/authenticate');
             });
         }
+        console.log("User data: ", userData)
+        console.log("User data post list: ", userData?.postList)
     }, [dispatch, navigate, userData, loading]);
 
     const handleLogout = () => {
-        localStorage.clear();
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         dispatch(logout());
         navigate('/authenticate');
     };

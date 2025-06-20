@@ -9,8 +9,9 @@ function Whiskey(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
   useEffect(()=>{
-    axios.get("/post/category/WHISKY")
+    axios.get("/api/post/category/WHISKY")
     .then((res)=>{
+      console.log("WHISKY response:", res.data);
       setPost(res.data)
     })
   },[])

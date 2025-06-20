@@ -1,10 +1,14 @@
 import "./cart.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import axios from "axios";
 
 function CartPage() {
+  const navigate = useNavigate();
   const [cartList, setCartList] = useState([]);
-  const baseUrl = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
+  const { userData, loading, error } = useSelector((state) => state.user);
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const accessToken = localStorage.getItem("accessToken");
   console.log("이것은 토큰이여", accessToken);
@@ -12,10 +16,11 @@ function CartPage() {
   useEffect(() => {
     if (accessToken) {
       axios
-        .get(`${baseUrl}/cart/find`, {
+        .get(`${process.env.REACT_APP_API_URL}/api/cart/find`, {
           headers: { Access_Token: accessToken },
         })
         .then((res) => {
+          console.log("res.data.data ah siol: ", res.data)
           setCartList(res.data);
         })
         .catch((err) => {
@@ -24,51 +29,46 @@ function CartPage() {
     } else {
       console.log("토큰값이 없습니다");
     }
-  }, [accessToken, baseUrl]);
+  }, [accessToken]);
   const handleMinuse = async(id)=>{
-    await axios.patch(`${baseUrl}/cart/update/${id}?status=-1` , {} ,{
+    await axios.patch(`${process.env.REACT_APP_API_URL}/api/cart/update/${id}?status=-1` , {} ,{
       headers: {  Access_Token: accessToken },
     });
-    const res = await axios.get(`${baseUrl}/cart/find`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/find`, {
       headers: { Access_Token: accessToken },
     });
     setCartList(res.data);
 
   };
   const handleplus = async(id)=>{
-    await axios.patch(`${baseUrl}/cart/update/${id}?status=+1` , {} ,{
+    await axios.patch(`${process.env.REACT_APP_API_URL}/api/cart/update/${id}?status=+1` , {} ,{
       headers: {  Access_Token: accessToken },
     });
-    const res = await axios.get(`${baseUrl}/cart/find`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/find`, {
       headers: { Access_Token: accessToken },
     });
     setCartList(res.data);
   };
   
   const handleDelete = async(id)=>{
-    await axios.delete(`${baseUrl}/cart/delete/${id}` , {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/api/cart/delete/${id}` , {
       headers: {Access_Token: accessToken},
     });
-    const res = await axios.get(`${baseUrl}/cart/find`,{
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/cart/find`,{
       headers: {Access_Token: accessToken},
     });
     setCartList(res.data)
   }
 
+  let price = Array.isArray(cartList)
+  ? cartList.reduce((acc, item) => acc + item.count * item.price, 0).toLocaleString()
+  : "0";
 
-  
-  
-
-  
-
-
-
-  let price = cartList.reduce((acc, item)=>acc+(item.count * item.price), 0).toLocaleString();
   return (
     <div className="top">
       <h1>Cart Page</h1>
       <div className="cart-container">
-        {cartList.length > 0 ? (
+        {Array.isArray(cartList) && cartList.length > 0 ? (
           cartList.map((item, index) => (
             <div key={index} className="cart-item">
               <div className="cart-item-image">
@@ -101,7 +101,7 @@ function CartPage() {
             총 결제 금액{" "}
             {price}원
           </h2>
-          <button>결제 하기</button>
+          <button onClick={() => navigate('/paymentSuccess')}>결제 하기</button>
         </div>
       </div>
     </div>

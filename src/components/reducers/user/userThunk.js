@@ -79,23 +79,31 @@ export const fetchUserData = createAsyncThunk(
 );
 
 export const updateUserData = createAsyncThunk(
-    'user/updateUserData',
-    async (updatedData, { rejectWithValue }) => {
-        const accessToken = localStorage.getItem("accessToken");
-        if (!accessToken) {
-            return rejectWithValue("로그인 상태가 아닙니다.");
-        }
-        try {
-            const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/account/me`, updatedData, {
-                headers: { "Access_Token": accessToken }
-            });
-            console.log("Update user response:", response.data);
-            return response.data;
-        } catch (error) {
-            console.error("updateUserData error:", error.response?.data, error.message);
-            return rejectWithValue("사용자 정보를 업데이트하는 데 실패했습니다.");
-        }
+  'user/updateUserData',
+  async (updatedData, { rejectWithValue }) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+      return rejectWithValue("로그인 상태가 아닙니다.");
     }
+
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/account/me`,
+        updatedData,
+        {
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+          },
+          withCredentials: true
+        }
+      );
+      console.log("Update user response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("updateUserData error:", error.message, error.response?.data);
+      return rejectWithValue("사용자 정보를 업데이트하는 데 실패했습니다.");
+    }
+  }
 );
 
 export const fetchUserPosts = createAsyncThunk(

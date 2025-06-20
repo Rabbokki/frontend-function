@@ -18,6 +18,7 @@ const Payment = () => {
       return;
     }
     dispatch(fetchPostById(postId));
+    console.log("payment page")
   }, [postId, dispatch]);
 
   const handlePayment = async () => {

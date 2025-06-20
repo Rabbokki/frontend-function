@@ -1,10 +1,106 @@
-.bg-gray-200 {
-  background-color: #b4b4b4;
-}
-.bg-white {
-  background-color: #ffffff;
+.edit-details-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fafafa;
 }
 
-::placeholder {
-  color: #e6e6e6;
+.edit-details-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-image-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.profile-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 14px;
+  margin: 0 auto;
+}
+
+.image-buttons button {
+  margin: 5px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.change-image-button,
+.delete-image-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px;
+}
+
+.change-image-button:hover {
+  background-color: #45a049;
+}
+
+.delete-image-button {
+  background-color: #f44336;
+}
+
+.delete-image-button:hover {
+  background-color: #d7372f;
+}
+
+.save-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.save-changes-button {
+  z-index: 9999;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-changes-button:hover {
+  background-color: #45a049;
 }

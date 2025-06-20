@@ -11,7 +11,7 @@ function Wine(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
   useEffect(()=>{
-    axios.get("/post/category/WINE")
+    axios.get("/api/post/category/WINE")
     .then((res)=>{
       setPost(res.data)
     })

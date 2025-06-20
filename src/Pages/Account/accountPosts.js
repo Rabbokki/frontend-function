@@ -89,7 +89,7 @@ const AccountPosts = () => {
           <div
             key={post.id}
             className="post-card fade-in"
-            style={{ animationDelay: `${index * 0.2}s` }} // Staggered delay effect
+            style={{ animationDelay: `${index * 0.2}s` }}
           >
             {/* Edit & Delete Buttons Positioned at Top Right */}
             <div className="post-actions">

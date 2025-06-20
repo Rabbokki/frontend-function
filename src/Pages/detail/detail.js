@@ -25,6 +25,10 @@ const DetailPage = () => {
 
 
   useEffect(() => {
+  console.log('🔥 DetailPage mounted');
+}, []);
+
+  useEffect(() => {
     dispatch(fetchPostById(id));
     dispatch(fetchPostLikeStatus(id));
   }, [dispatch, id]);
@@ -64,10 +68,6 @@ const DetailPage = () => {
       } else {
         await dispatch(removePostLike(id)).unwrap();
       }
-      const status = await dispatch(fetchPostLikeStatus(id)).unwrap();
-      setIsLiked(status.data);  // 서버 상태로 동기화
-      const updatedPost = await dispatch(fetchPostById(id)).unwrap();  // 최신 게시물 정보 가져오기
-      setLocalLikeCount(updatedPost.likeCount);  // 최신 좋아요 수 반영
     } catch (error) {
       console.error("Like toggle failed:", error);
       setIsLiked(!newLikedState);  // 롤백
@@ -197,8 +197,9 @@ const DetailPage = () => {
   const accessToken = localStorage.getItem("accessToken");
   console.log("이것은 토큰이여" , accessToken)
   console.log(postDetail)
-  const handleCartAdd = async()=>{
-    await axios.post(`${baseUrlsee}/cart/add/${id}` , {} , {
+
+  const handleCartAdd = async()=> {
+    await axios.post(`${process.env.REACT_APP_API_URL}/api/cart/add/${id}` , {} , {
       headers: { Access_Token: accessToken} ,
     }).catch((err)=>{
       console.log("이것은 에러여" , err)
@@ -228,6 +229,7 @@ const DetailPage = () => {
         <p className="time-ago">{postDetail.timeAgo}</p>
         <div className="buttons">
           <button
+            type="button"
             className={`wishlist ${isLiked ? "liked" : ""}`}
             onClick={handleLikeToggle}
             disabled={isLoading}

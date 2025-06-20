@@ -25,35 +25,3 @@
     cursor: pointer;
     transition: opacity 0.3s ease-in-out;
   }
-
-  .save-changes-button {
-    width: 100%;
-    
-    color: white;
-    background-color: #5a67d8;
-
-    max-width: 200px;
-    margin: 0 auto;
-    display: block;
-    
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    
-    border: none;
-    border-radius: 6px;
-    
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.save-changes-button.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.save-changes-button:hover {
-    background-color: #434190;
-}

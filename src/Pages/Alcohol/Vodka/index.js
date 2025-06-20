@@ -11,7 +11,7 @@ function Vodka(){
   const [post , setPost] = useState([]);
   const Navigate = useNavigate();
   useEffect(()=>{
-    axios.get("/post/category/VODKA")
+    axios.get("/api/post/category/VODKA")
     .then((res)=>{
       setPost(res.data)
     })
