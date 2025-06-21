@@ -23,11 +23,6 @@ const DetailPage = () => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const baseUrlsee = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
 
-
-  useEffect(() => {
-  console.log('🔥 DetailPage mounted');
-}, []);
-
   useEffect(() => {
     dispatch(fetchPostById(id));
     dispatch(fetchPostLikeStatus(id));

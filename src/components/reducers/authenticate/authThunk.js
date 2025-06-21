@@ -13,10 +13,12 @@ export const login = (loginData) => async (dispatch) => {
         });
         console.log("Login response:", response.data);
         if (response.data.success) {
-            const { accessToken, refreshToken, accountId } = response.data.data;
+            console.log("login:", response.data.data)
+            const { accessToken, refreshToken, accountId, email } = response.data.data;
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             localStorage.setItem("accountId", accountId);
+            localStorage.setItem("userEmail", email);
             console.log("Stored tokens:", { accessToken, refreshToken, accountId });
             await dispatch(fetchUserData(accessToken));
             dispatch(loginSuccess({ accessToken, accountId }));

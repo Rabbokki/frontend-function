@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { fetchUserData } from '../../components/reducers/user/userThunk.js';
 import { postReview } from '../../components/reducers/review/reviewThunk.js';
 import './writeReview.css';
 
 const WriteReview = ({ onSubmit }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { userData } = useSelector((state) => state.user);
   const { title, image, postId } = useLocation().state || {};
   const [rating, setRating] = useState(0);
-  const [setImages] = useState([]);
   const [hover, setHover] = useState(0);
   const [content, setContent] = useState('');
 
@@ -65,7 +65,8 @@ const WriteReview = ({ onSubmit }) => {
     setRating(0);
     setHover(0);
     setContent('');
-    setImages([]);
+
+    navigate(`/detail/${postId}/reviews`);
   };
   
 

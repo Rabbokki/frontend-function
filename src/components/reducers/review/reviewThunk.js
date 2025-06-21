@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_BASE_URL || "http://backend:8081";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const getAuthHeaders = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -39,8 +39,8 @@ export const fetchReviews = createAsyncThunk(
           { accountId, rating, content }, 
           { headers: { ...getAuthHeaders(), "Content-Type": "application/json" } } 
         );
-        console.log(response.data)
-        return response.data;
+        console.log("Full backend response:" , response)
+        return response.data.data;
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || error.message);
       }

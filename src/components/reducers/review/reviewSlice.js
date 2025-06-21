@@ -30,8 +30,12 @@ const reviewSlice = createSlice({
         state.error = null;
       })
       .addCase(postReview.fulfilled, (state, action) => {
+        console.log("postReview payload:", action.payload);
         state.loading = false;
-        state.reviews.push(action.payload); // Append the new review
+        if (!Array.isArray(state.reviews)) {
+          state.reviews = [];
+        }
+        state.reviews.push(action.payload);
       })
       .addCase(postReview.rejected, (state, action) => {
         state.loading = false;
