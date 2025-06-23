@@ -13,15 +13,18 @@ export const login = (loginData) => async (dispatch) => {
         });
         console.log("Login response:", response.data);
         if (response.data.success) {
-            console.log("login:", response.data.data)
+            console.log("Login data:", response.data.data);
             const { accessToken, refreshToken, accountId, email } = response.data.data;
+            if (!email) {
+                console.warn("Email missing in login response:", response.data.data);
+            }
             localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             localStorage.setItem("accountId", accountId);
-            localStorage.setItem("userEmail", email);
-            console.log("Stored tokens:", { accessToken, refreshToken, accountId });
+            localStorage.setItem("userEmail", email || "");
+            console.log("Stored tokens:", { accessToken, refreshToken, accountId, userEmail: email });
             await dispatch(fetchUserData(accessToken));
-            dispatch(loginSuccess({ accessToken, accountId }));
+            dispatch(loginSuccess({ accessToken, accountId, email }));
         } else {
             throw new Error(response.data.message || "로그인 실패");
         }
@@ -52,5 +55,31 @@ export const kakaoLogin = () => async (dispatch) => {
     } catch (error) {
         console.error("Kakao login error:", error.message);
         dispatch(loginFailure("Kakao 로그인 시작에 실패했습니다."));
+    }
+};
+
+// OAuth 콜백 처리
+export const handleOAuthCallback = (params) => async (dispatch) => {
+    dispatch(loginStart());
+    try {
+        const apiUrl = `${process.env.REACT_APP_API_URL}/api/account/oauth/callback`;
+        console.log("Handling OAuth callback:", params);
+        const response = await axios.get(apiUrl, { params });
+        console.log("OAuth callback response:", response.data);
+        if (response.data.success) {
+            const { accessToken, refreshToken, accountId, email } = response.data.data;
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            localStorage.setItem("accountId", accountId);
+            localStorage.setItem("userEmail", email);
+            console.log("Stored OAuth tokens:", { accessToken, refreshToken, accountId, userEmail: email });
+            await dispatch(fetchUserData(accessToken));
+            dispatch(loginSuccess({ accessToken, accountId, email }));
+        } else {
+            throw new Error(response.data.message || "OAuth 로그인 실패");
+        }
+    } catch (error) {
+        console.error("OAuth callback error:", error.response?.data, error.message);
+        dispatch(loginFailure(error.response?.data?.message || "OAuth 로그인 실패"));
     }
 };

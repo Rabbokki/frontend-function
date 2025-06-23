@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPostById } from "../../components/reducers/post/postThunk";
 import { addPostLike, removePostLike, fetchPostLikeStatus } from "../../components/reducers/likes/likeThunk";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faHeart, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 import { faHeart, faEye, faStar } from "@fortawesome/free-solid-svg-icons";
+import { loginSuccess } from "../../components/reducers/authenticate/authSlice";
+import axios from "axios";
 import "./detail.css";
 
 const DetailPage = () => {
@@ -16,12 +16,12 @@ const DetailPage = () => {
 
   const { postDetail, loading, error } = useSelector((state) => state.posts);
   const { likedPosts } = useSelector((state) => state.likes);
+  const { email: senderEmail } = useSelector((state) => state.auth);
 
   const [isLiked, setIsLiked] = useState(false);
   const [localLikeCount, setLocalLikeCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const baseUrl = process.env.REACT_APP_BASE_URL;
-  const baseUrlsee = process.env.REACT_APP_BASE_URL || "http://192.168.0.71:8081";
+  const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
   useEffect(() => {
     dispatch(fetchPostById(id));
@@ -30,7 +30,7 @@ const DetailPage = () => {
 
   useEffect(() => {
     if (postDetail) {
-      console.log('Redux postDetail:', postDetail);
+      console.log("Redux postDetail:", postDetail);
       setLocalLikeCount(postDetail.likeCount);
     }
   }, [postDetail]);
@@ -39,7 +39,7 @@ const DetailPage = () => {
     if (likedPosts) {
       const liked = likedPosts.includes(String(id));
       setIsLiked(liked);
-      console.log('likedPosts:', likedPosts, 'isLiked:', liked);
+      console.log("likedPosts:", likedPosts, "isLiked:", liked);
     }
   }, [likedPosts, id]);
 
@@ -51,12 +51,12 @@ const DetailPage = () => {
       navigate("/authenticate");
       return;
     }
-  
+
     setIsLoading(true);
     const newLikedState = !isLiked;
     setIsLiked(newLikedState);
     setLocalLikeCount((prev) => (newLikedState ? prev + 1 : prev - 1));
-  
+
     try {
       if (newLikedState) {
         await dispatch(addPostLike(id)).unwrap();
@@ -65,7 +65,7 @@ const DetailPage = () => {
       }
     } catch (error) {
       console.error("Like toggle failed:", error);
-      setIsLiked(!newLikedState);  // 롤백
+      setIsLiked(!newLikedState);
       setLocalLikeCount((prev) => (newLikedState ? prev - 1 : prev + 1));
     } finally {
       setIsLoading(false);
@@ -73,102 +73,129 @@ const DetailPage = () => {
   };
 
   const handleChat = async (postId, sellerEmail) => {
-    console.log('handleChat called');
-    const accessToken = localStorage.getItem('accessToken');
-    const sender = localStorage.getItem('userEmail');
+    console.log("handleChat called");
+    const accessToken = localStorage.getItem("accessToken");
+    let sender = senderEmail || localStorage.getItem("userEmail");
 
-    if (!accessToken || !sender) {
-        alert('로그인이 필요합니다.');
-        navigate('/authenticate');
+    if (!sender) {
+      try {
+        const userResponse = await axios.get(`${baseUrl}/api/account/me`, {
+          headers: { Access_Token: accessToken },
+        });
+        console.log("User response:", userResponse.data);
+        sender = userResponse.data.data.email;
+        localStorage.setItem("userEmail", sender);
+        dispatch(loginSuccess({ 
+          accessToken, 
+          accountId: localStorage.getItem("accountId"), 
+          email: sender 
+        }));
+        console.log("Fetched userEmail:", sender);
+      } catch (error) {
+        console.error("Failed to fetch userEmail:", error.response?.data, error.message);
+        alert("사용자 정보를 가져오지 못했습니다. 다시 로그인해주세요.");
+        navigate("/authenticate");
         return;
+      }
     }
 
-    console.log('Sender:', sender);
-    console.log('Receiver:', sellerEmail);
-    console.log('PostId:', postId);
+    console.log("Base URL:", baseUrl);
+    console.log("Access Token:", accessToken);
+    console.log("Sender:", sender);
+    console.log("Receiver:", sellerEmail);
+    console.log("PostId:", postId);
+
+    if (!accessToken || !sender) {
+      alert("로그인이 필요합니다.");
+      navigate("/authenticate");
+      return;
+    }
 
     if (sender === sellerEmail) {
-        console.log('Sender and receiver are the same:', sender);
-        alert('자신과는 채팅할 수 없습니다.');
-        return;
+      console.log("Sender and receiver are the same:", sender);
+      alert("자신과는 채팅할 수 없습니다.");
+      return;
     }
 
     try {
-        const payload = JSON.parse(atob(accessToken.split('.')[1]));
-        console.log('Token expiration:', new Date(payload.exp * 1000).toISOString());
-        if (Date.now() > payload.exp * 1000) {
-            alert('토큰이 만료되었습니다. 다시 로그인해주세요.');
-            navigate('/authenticate');
-            localStorage.removeItem('accessToken');
-            return;
-        }
+      const payload = JSON.parse(atob(accessToken.split(".")[1]));
+      console.log("Token expiration:", new Date(payload.exp * 1000).toISOString());
+      if (Date.now() > payload.exp * 1000) {
+        alert("토큰이 만료되었습니다. 다시 로그인해주세요.");
+        navigate("/authenticate");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userEmail");
+        return;
+      }
 
-        console.log('Fetching existing chat rooms...');
-        const chatRoomsResponse = await axios.get(`${baseUrl}/chat/rooms`, {
-            headers: { 'Access_Token': accessToken },
+      console.log("Fetching existing chat rooms...");
+      const chatRoomsResponse = await axios.get(`${baseUrl}/chat/rooms`, {
+        headers: { Access_Token: accessToken },
+      });
+      console.log("Chat rooms response:", chatRoomsResponse.data);
+      const rooms = chatRoomsResponse.data.content || chatRoomsResponse.data.data || [];
+      console.log(
+        "Chat rooms list:",
+        rooms.map((room) => ({
+          roomName: room.roomName,
+          postId: room.postId,
+          sender: room.sender,
+          receiver: room.receiver,
+        }))
+      );
+
+      const existingRoom = rooms.find((room) => {
+        const matchPostId = room.postId === postId;
+        const matchUsers =
+          (room.sender === sender && room.receiver === sellerEmail) ||
+          (room.sender === sellerEmail && room.receiver === sender);
+        console.log(`Checking room: ${room.roomName}, PostId match: ${matchPostId}, Users match: ${matchUsers}`);
+        return matchPostId && matchUsers;
+      });
+
+      if (existingRoom) {
+        console.log("Existing room found:", existingRoom.roomName);
+        navigate(`/chat/${existingRoom.roomName}`, {
+          state: {
+            postId,
+            sellerEmail,
+            image: postDetail.imageUrls && postDetail.imageUrls[0],
+            title: postDetail.title,
+            price: postDetail.price,
+            content: postDetail.content,
+            sellerNickname: postDetail.sellerNickname,
+          },
         });
-        console.log('Chat rooms full response:', chatRoomsResponse.data);
-        const rooms = chatRoomsResponse.data.content || chatRoomsResponse.data.data || [];
-        console.log('Chat rooms list:', rooms.map(room => ({
-            roomName: room.roomName,
-            postId: room.postId,
-            sender: room.sender,
-            receiver: room.receiver,
-        })));
+        return;
+      }
 
-        const existingRoom = rooms.find(room => {
-            const matchPostId = room.postId === postId;
-            const matchUsers = 
-                (room.sender === sender && room.receiver === sellerEmail) || 
-                (room.sender === sellerEmail && room.receiver === sender);
-            console.log(`Checking room: ${room.roomName}, PostId match: ${matchPostId}, Users match: ${matchUsers}`);
-            return matchPostId && matchUsers;
+      console.log("No existing room found, creating new chat room...");
+      const response = await axios.post(
+        `${baseUrl}/chat`,
+        { postId, targetEmail: sellerEmail },
+        { headers: { Access_Token: accessToken } }
+      );
+      console.log("Chat creation response:", response.data);
+      if (response.data.success) {
+        navigate(`/chat/${response.data.data.roomName}`, {
+          state: {
+            postId,
+            sellerEmail,
+            image: postDetail.imageUrls && postDetail.imageUrls[0],
+            title: postDetail.title,
+            price: postDetail.price,
+            content: postDetail.content,
+            sellerNickname: postDetail.sellerNickname,
+          },
         });
-
-        if (existingRoom) {
-            console.log('Existing room found:', existingRoom.roomName);
-            navigate(`/chat/${existingRoom.roomName}`, {
-                state: {
-                    postId,
-                    sellerEmail,
-                    image: postDetail.imageUrls && postDetail.imageUrls[0],
-                    title: postDetail.title,
-                    price: postDetail.price,
-                    content: postDetail.content,
-                    sellerNickname: postDetail.sellerNickname,
-                },
-            });
-            return;
-        }
-
-        console.log('No existing room found, creating new chat room...');
-        const response = await axios.post(
-            `${baseUrl}/chat`,
-            { postId, targetEmail: sellerEmail },
-            { headers: { 'Access_Token': accessToken } }
-        );
-        console.log('Chat creation response:', response.data);
-        if (response.data.success) {
-            navigate(`/chat/${response.data.data.roomName}`, {
-                state: {
-                    postId,
-                    sellerEmail,
-                    image: postDetail.imageUrls && postDetail.imageUrls[0],
-                    title: postDetail.title,
-                    price: postDetail.price,
-                    content: postDetail.content,
-                    sellerNickname: postDetail.sellerNickname,
-                },
-            });
-        } else {
-            alert(`채팅방 생성 실패: ${response.data.error || '알 수 없는 오류'}`);
-        }
+      } else {
+        alert(`채팅방 생성 실패: ${response.data.error || "알 수 없는 오류"}`);
+      }
     } catch (error) {
-        console.error('Chat handling failed:', error);
-        if (error.response) console.log('Error response:', error.response.data);
-        alert(`채팅 처리 중 오류 발생: ${error.message}`);
+      console.error("Chat handling failed:", error.response?.status, error.response?.data, error.message);
+      alert(`채팅 처리 중 오류 발생: ${error.response?.data?.message || error.message}`);
     }
-};
+  };
 
   const handleBuyNow = () => {
     if (!postDetail) {
@@ -186,21 +213,26 @@ const DetailPage = () => {
     });
   };
 
+  const handleCartAdd = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+      await axios.post(
+        `${baseUrl}/api/cart/add/${id}`,
+        {},
+        {
+          headers: { Access_Token: accessToken },
+        }
+      );
+      alert("장바구니에 추가되었습니다.");
+    } catch (err) {
+      console.error("Cart add error:", err.response?.data, err.message);
+      alert("장바구니 추가 실패: " + (err.response?.data?.message || err.message));
+    }
+  };
+
   if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">Error: {error}</p>;
   if (!postDetail) return <p className="not-found">Post not found.</p>;
-  const accessToken = localStorage.getItem("accessToken");
-  console.log("이것은 토큰이여" , accessToken)
-  console.log(postDetail)
-
-  const handleCartAdd = async()=> {
-    await axios.post(`${process.env.REACT_APP_API_URL}/api/cart/add/${id}` , {} , {
-      headers: { Access_Token: accessToken} ,
-    }).catch((err)=>{
-      console.log("이것은 에러여" , err)
-    })
-    alert("장바구니에 추가되었습니다.");
-  }
 
   return (
     <div className="detail-page">
@@ -217,7 +249,7 @@ const DetailPage = () => {
           <FontAwesomeIcon icon={faEye} className="eye-icon" /> {postDetail.viewCount}
           <FontAwesomeIcon icon={faHeart} className="heart-icon" /> {localLikeCount}
           <FontAwesomeIcon icon={faStar} className="star-icon" />{" "}
-          {postDetail.averageRating ? postDetail.averageRating.toFixed(1) : 'No rating'}
+          {postDetail.averageRating ? postDetail.averageRating.toFixed(1) : "No rating"}
         </span>
         <p className="product-price">{postDetail.price}원</p>
         <p className="product-content">{postDetail.content}</p>
@@ -239,7 +271,7 @@ const DetailPage = () => {
             onClick={() => handleChat(postDetail.id, postDetail.sellerEmail)}
             disabled={!postDetail.sellerEmail || isLoading}
           >
-            챗
+            채팅
           </button>
           <button onClick={handleBuyNow} className="buy-now">바로구매</button>
           <button
@@ -256,14 +288,9 @@ const DetailPage = () => {
           >
             리뷰
           </button>
-          {/* 장바구니 */}
-          <button
-            onClick={handleCartAdd}
-            className="cart"
-          >
+          <button onClick={handleCartAdd} className="cart">
             장바구니
           </button>
-          
         </div>
       </div>
     </div>
