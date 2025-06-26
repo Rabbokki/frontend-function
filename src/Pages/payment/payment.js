@@ -5,7 +5,7 @@ import { fetchPostById } from "../../components/reducers/post/postThunk";
 import { initiatePayment } from "../../components/reducers/payment/paymentThunk";
 
 const Payment = () => {
-  const { id: postId } = useParams();
+  const { id: userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,9 +17,9 @@ const Payment = () => {
       console.error("No postId found!");
       return;
     }
-    dispatch(fetchPostById(postId));
+    dispatch(fetchPostById(userId));
     console.log("payment page")
-  }, [postId, dispatch]);
+  }, [userId, dispatch]);
 
   const handlePayment = async () => {
     if (!postDetail) return;
