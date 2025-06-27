@@ -22,17 +22,33 @@ function ChatPage() {
   const [sender, setSender] = useState(null);
   const [receiver, setReceiver] = useState(null);
   const [chatRooms, setChatRooms] = useState([]);
-  const [selectedRoomName, setSelectedRoomName] = useState(urlRoomName);
+  const [selectedRoomName, setSelectedRoomName] = useState(urlRoomName || '');
   const messagesEndRef = useRef(null);
+  const reconnectTimeoutRef = useRef(null);
 
   const { image, title, price, content, sellerEmail, sellerNickname } = location.state || {};
 
   const connectWebSocket = useCallback((roomName, sender, accessToken) => {
-    console.log('Attempting WebSocket connection for room:', roomName);
+    if (!roomName) {
+      console.error('Room name is undefined, cannot connect WebSocket');
+      return;
+    }
+    if (!accessToken) {
+      console.error('Access token is missing, cannot connect WebSocket');
+      return;
+    }
+    console.log('Attempting WebSocket connection for room:', roomName, 'with Access_Token:', accessToken.substring(0, 20) + '...');
+
     if (globalStompClient && globalStompClient.connected) {
-      console.log('Existing WebSocket connection found, unsubscribing previous subscription');
-      if (subscription) subscription.unsubscribe();
-    } else {
+      console.log('Existing WebSocket connection found, checking subscription');
+      if (subscription && subscription.destination !== `/sub/chatroom/${roomName}`) {
+        console.log('Unsubscribing previous subscription:', subscription.destination);
+        subscription.unsubscribe();
+        subscription = null;
+      }
+    }
+
+    if (!globalStompClient || !globalStompClient.connected) {
       const socket = new SockJS(`${baseUrl}/ws`);
       globalStompClient = new Client({
         webSocketFactory: () => socket,
@@ -43,41 +59,56 @@ function ChatPage() {
 
       globalStompClient.onConnect = frame => {
         console.log('WebSocket connected:', frame);
-        subscription = globalStompClient.subscribe(`/sub/chatroom/${roomName}`, message => {
-          console.log('Received message:', message.body);
-          try {
-            const msg = JSON.parse(message.body);
-            const isDuplicate = messages.some(
-              m => m.timestamp === msg.timestamp && m.sender === msg.sender && m.message === msg.message
-            );
-            if (!isDuplicate) {
-              dispatch(addMessage({
-                roomId: msg.roomId,
-                roomName: msg.roomName,
-                message: msg.message,
-                sender: msg.sender,
-                timestamp: msg.timestamp || msg.createAt, // createAt 대체
-                createAt: msg.createAt,
-              }));
+        if (!subscription) {
+          subscription = globalStompClient.subscribe(`/sub/chatroom/${roomName}`, message => {
+            console.log('Received message:', message.body);
+            try {
+              const msg = JSON.parse(message.body);
+              const isDuplicate = messages.some(
+                m => m.timestamp === msg.timestamp && m.sender === msg.sender && m.message === msg.message
+              );
+              if (!isDuplicate) {
+                dispatch(addMessage({
+                  roomId: msg.roomId,
+                  roomName: msg.roomName,
+                  message: msg.message,
+                  sender: msg.sender,
+                  timestamp: msg.timestamp || msg.createAt,
+                  createAt: msg.createAt,
+                }));
+              }
+            } catch (e) {
+              console.error('Failed to parse message:', e, message.body);
             }
-          } catch (e) {
-            console.error('Failed to parse message:', e, message.body);
-          }
-        });
-        console.log('Subscribed to:', `/sub/chatroom/${roomName}`);
+          });
+          console.log('Successfully subscribed to:', `/sub/chatroom/${roomName}`);
+        }
       };
 
       globalStompClient.onStompError = frame => {
         console.error('WebSocket error:', frame.headers['message'], frame.body);
+        if (frame.headers['message'].includes('Invalid Access_Token')) {
+          alert('유효하지 않은 토큰입니다. 다시 로그인해주세요.');
+          navigate('/authenticate');
+        } else if (frame.headers['message'].includes('Already immutable')) {
+          alert('서버에서 메시지 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        } else {
+          alert(`WebSocket 오류: ${frame.headers['message']}`);
+        }
       };
 
       globalStompClient.onDisconnect = () => {
         console.log('WebSocket disconnected');
+        subscription = null;
+      };
+
+      globalStompClient.onWebSocketClose = event => {
+        console.log('WebSocket closed:', event);
       };
 
       globalStompClient.activate();
     }
-  }, [dispatch, messages]);
+  }, [dispatch, messages, navigate]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -119,18 +150,28 @@ function ChatPage() {
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    if (!selectedRoomName || !accessToken || !sender) return;
+    if (!selectedRoomName || !accessToken || !sender) {
+      console.log('Missing selectedRoomName, accessToken, or sender:', { selectedRoomName, accessToken, sender });
+      return;
+    }
 
     setReceiver(sellerNickname || sellerEmail);
 
     const fetchChatData = async () => {
       try {
+        console.log('Fetching chat data for room:', selectedRoomName);
         const roomResponse = await axios.get(`${baseUrl}/chat/${selectedRoomName}`, {
           headers: { Access_Token: accessToken },
         });
         const roomData = roomResponse.data.data;
-        dispatch(setRoomName(roomData.name));
-        dispatch(setRoomId(roomData.id));
+        console.log('Fetched room data:', roomData);
+        if (!roomData || !roomData.roomName) {
+          console.error('Invalid room data:', roomData);
+          alert('채팅방 정보를 불러오지 못했습니다.');
+          return;
+        }
+        dispatch(setRoomName(roomData.roomName));
+        dispatch(setRoomId(roomData.roomId || roomData.id));
 
         const messagesResponse = await axios.get(`${baseUrl}/chat/${selectedRoomName}/messages`, {
           headers: { Access_Token: accessToken },
@@ -138,7 +179,7 @@ function ChatPage() {
         const messages = messagesResponse.data.data || [];
         dispatch(setMessages(messages));
 
-        connectWebSocket(roomData.name, sender, accessToken);
+        connectWebSocket(roomData.roomName, sender, accessToken);
       } catch (error) {
         console.error('Failed to fetch chat data:', error.response?.data, error.message);
         alert('채팅 데이터를 불러오지 못했습니다.');
@@ -147,13 +188,15 @@ function ChatPage() {
     fetchChatData();
 
     return () => {
-      if (globalStompClient && globalStompClient.connected) {
-        if (subscription) {
-          subscription.unsubscribe();
-          subscription = null;
-        }
+      if (globalStompClient && globalStompClient.connected && subscription) {
+        console.log('Cleaning up: Unsubscribing from', subscription.destination);
+        subscription.unsubscribe();
+        subscription = null;
         globalStompClient.deactivate();
         globalStompClient = null;
+      }
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
       }
     };
   }, [dispatch, selectedRoomName, navigate, sellerEmail, sellerNickname, sender, connectWebSocket]);
@@ -163,10 +206,17 @@ function ChatPage() {
       console.log('Empty message, not sending');
       return;
     }
+    if (!selectedRoomName) {
+      console.error('selectedRoomName is undefined, cannot send message');
+      alert('채팅방을 선택해주세요.');
+      return;
+    }
     if (!globalStompClient || !globalStompClient.connected) {
       console.error('WebSocket not connected, attempting to reconnect');
       alert('WebSocket 연결이 끊어졌습니다. 재연결을 시도합니다.');
-      connectWebSocket(selectedRoomName, sender, localStorage.getItem('accessToken'));
+      reconnectTimeoutRef.current = setTimeout(() => {
+        connectWebSocket(selectedRoomName, sender, localStorage.getItem('accessToken'));
+      }, 1000);
       return;
     }
 
@@ -192,6 +242,10 @@ function ChatPage() {
 
   const handleRoomClick = roomName => {
     const room = chatRooms.find(r => r.roomName === roomName);
+    if (!room) {
+      console.error('Room not found:', roomName);
+      return;
+    }
     setSelectedRoomName(roomName);
     const opponent = room.sender === sender ? room.receiver : room.sender;
     navigate(`/chat/${roomName}`, {
